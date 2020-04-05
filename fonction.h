@@ -20,11 +20,21 @@ public:
 private slots:
     //void on_pushButton_clicked();
 
+   // void on_pushButton_f_clicked();
+
+    //void on_pushButton_2_f_clicked();
+
+
+
+   // void on_modifier_f_clicked();
+
+   // void on_supprimer_f_clicked();
+
     void on_pushButton_f_clicked();
 
     void on_pushButton_2_f_clicked();
 
-
+    void on_comboBox_modif_currentIndexChanged();
 
     void on_modifier_f_clicked();
 

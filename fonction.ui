@@ -113,7 +113,7 @@
     <enum>QTabWidget::Triangular</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -348,9 +348,9 @@ font-weight: bold;
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>70</x>
        <y>30</y>
-       <width>341</width>
+       <width>411</width>
        <height>221</height>
       </rect>
      </property>
@@ -372,11 +372,18 @@ font-weight: bold;
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>130</width>
+        <width>158</width>
         <height>181</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;ID Fonction modif :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QLabel" name="label_8">
          <property name="text">
@@ -410,13 +417,25 @@ font-weight: bold;
      <widget class="QWidget" name="verticalLayoutWidget_4">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>260</x>
         <y>30</y>
-        <width>151</width>
+        <width>141</width>
         <height>181</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QComboBox" name="comboBox_modif">
+         <property name="styleSheet">
+          <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QLineEdit" name="cx_idfonction_2">
          <property name="styleSheet">
@@ -507,24 +526,6 @@ font-weight: bold;
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Nom fonction :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="cx_nomfonction_3">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>150</y>
-       <width>181</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit {
-padding: 5px;
-border-radius: 5px;
-
-font-weight: bold;
-}</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="supprimer_f">
      <property name="geometry">
       <rect>
@@ -544,6 +545,24 @@ font-weight: bold;
      </property>
      <property name="text">
       <string>Supprimer</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_sup">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>150</y>
+       <width>191</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
      </property>
     </widget>
    </widget>
