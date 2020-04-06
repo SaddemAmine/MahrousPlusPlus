@@ -27,7 +27,7 @@ CONFIG += c++11  widgets
 SOURCES += \
     animale.cpp \
     animaux.cpp \
-    besoinanimal.cpp \
+    besoinanim.cpp \
     besoinplante.cpp \
     categorie.cpp \
     fonction.cpp \
@@ -40,7 +40,7 @@ SOURCES += \
     plante.cpp \
     plantes.cpp \
     productionpalnte.cpp \
-    produitanimal.cpp \
+    produitanim.cpp \
     resh.cpp \
     typeanimal.cpp \
     typeplante.cpp
@@ -49,7 +49,7 @@ SOURCES += \
 HEADERS += \
     animale.h \
     animaux.h \
-    besoinanimal.h \
+    besoinanim.h \
     besoinplante.h \
     categorie.h \
     fonction.h \
@@ -61,7 +61,7 @@ HEADERS += \
     plante.h \
     plantes.h \
     productionpalnte.h \
-    produitanimal.h \
+    produitanim.h \
     resh.h \
     typeanimal.h \
     typeplante.h
@@ -70,7 +70,7 @@ HEADERS += \
 FORMS += \
         animale.ui \
         animaux.ui \
-        besoinanimal.ui \
+        besoinanim.ui \
         besoinplante.ui \
         categorie.ui \
         fonction.ui \
@@ -81,7 +81,7 @@ FORMS += \
         plante.ui \
         plantes.ui \
         productionpalnte.ui \
-        produitanimal.ui \
+        produitanim.ui \
         resh.ui \
         typeanimal.ui \
         typeplante.ui

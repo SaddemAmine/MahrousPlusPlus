@@ -5,7 +5,6 @@
 #include <QTimer>
 #include <QMainWindow>
 #include <QMediaPlayer>
-#include <stats.h>
 namespace Ui {
 class produitanim;
 }
@@ -37,7 +36,7 @@ private:
     Ui::produitanim *ui;
     QTimer *timer;
     QMediaPlayer *click;
-    stats * s;
+
 };
 
 #endif // PRODUITANIM_H

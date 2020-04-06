@@ -8,6 +8,7 @@
 #include <QStyleFactory>
 #include <QMediaPlayer>
 #include <QPixmap>
+
 produitanim::produitanim(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::produitanim)
@@ -103,10 +104,4 @@ void produitanim::on_pushButton_4_clicked()
         qry->exec();
         modal->setQuery(*qry);
         ui->table->setModel(modal);
-}
-
-void produitanim::on_pushButton_5_clicked()
-{
-    s =new stats(this);
-    s-> show();
 }
