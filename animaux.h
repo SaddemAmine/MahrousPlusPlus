@@ -4,8 +4,8 @@
 #include <QDialog>
 #include "animale.h"
 #include "typeanimal.h"
-#include "besoinanimal.h"
-#include "produitanimal.h"
+#include "besoinanim.h"
+#include "produitanim.h"
 namespace Ui {
 class animaux;
 }
@@ -31,8 +31,8 @@ private:
     Ui::animaux *ui;
     animale *a;
     typeanimal *t;
-    besoinanimal *ba;
-    produitanimal *pa;
+    besoinanim *ba;
+    produitanim *pa;
 };
 
 #endif // ANIMAUX_H

@@ -38,12 +38,12 @@ void animaux::on_pushButton_3_clicked()
 
 void animaux::on_pushButton_4_clicked()
 {
-    ba =new besoinanimal(this);
+    ba =new besoinanim(this);
     ba->show();
 }
 
 void animaux::on_pushButton_5_clicked()
 {
-    pa =new produitanimal(this);
+    pa =new produitanim(this);
     pa->show();
 }

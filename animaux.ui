@@ -121,7 +121,7 @@ font-weight: bold;
 }</string>
    </property>
    <property name="text">
-    <string>Besoin animal</string>
+    <string>Besoins des animaux</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_5">
@@ -142,7 +142,7 @@ font-weight: bold;
 }</string>
    </property>
    <property name="text">
-    <string>produit animal</string>
+    <string>produits des animaux</string>
    </property>
   </widget>
   <zorder>pic</zorder>
