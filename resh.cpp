@@ -35,3 +35,9 @@ void resh::on_pushButton_3_clicked()
     p=new personnel (this);
     p->show();
 }
+
+void resh::on_pushButton_4_clicked()
+{
+    r = new reclamations_rh(this);
+    r->show();
+}

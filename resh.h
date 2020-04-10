@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "fonction.h"
 #include "personnel.h"
+#include "reclamations_rh.h"
 namespace Ui {
 class resh;
 }
@@ -21,10 +22,13 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_pushButton_4_clicked();
+
 private:
     Ui::resh *ui;
     fonction *f;
     personnel *p;
+    reclamations_rh * r;
 };
 
 #endif // RESH_H
