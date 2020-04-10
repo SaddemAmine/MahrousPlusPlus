@@ -41,6 +41,7 @@ SOURCES += \
     plantes.cpp \
     productionpalnte.cpp \
     produitanim.cpp \
+    reclamations_rh.cpp \
     resh.cpp \
     typeanimal.cpp \
     typeplante.cpp
@@ -62,6 +63,7 @@ HEADERS += \
     plantes.h \
     productionpalnte.h \
     produitanim.h \
+    reclamations_rh.h \
     resh.h \
     typeanimal.h \
     typeplante.h
@@ -82,6 +84,7 @@ FORMS += \
         plantes.ui \
         productionpalnte.ui \
         produitanim.ui \
+        reclamations_rh.ui \
         resh.ui \
         typeanimal.ui \
         typeplante.ui
