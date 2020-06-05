@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Statistique_fournisseur</class>
+ <widget class="QDialog" name="Statistique_fournisseur">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>746</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>330</y>
+     <width>47</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>360</y>
+     <width>47</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>390</y>
+     <width>47</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>460</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: &quot;red&quot;;
+
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+
+</string>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Statistique_fournisseur</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>674</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>841</x>
+     <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

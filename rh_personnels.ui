@@ -1,0 +1,1039 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>rh_personnels</class>
+ <widget class="QDialog" name="rh_personnels">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>690</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="AjouterPersonnel">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>550</y>
+     <width>241</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Ajouter</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>123</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Nom:</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="affichage">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>410</y>
+     <width>521</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QLineEdit" name="cx_cin">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>168</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ModifierPeronnel">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>492</y>
+     <width>241</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Modifier</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>138</y>
+     <width>123</width>
+     <height>87</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>CIN:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="status">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>380</y>
+     <width>251</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>No Action...</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cx_nom">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>240</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="SupprimerPersonnel">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>432</y>
+     <width>241</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ImprimerpdfHistoriqueCategorieMateriel">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>250</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Imprimer to PDF</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="RechercheCategorieMateriel">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>198</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Recherche</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="HistoriqueCategorieMateriel">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>250</y>
+     <width>181</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Ouvrir l'historique</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="historique_categorie">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>170</y>
+     <width>241</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="trieriddecroi">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>260</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+   </property>
+   <property name="text">
+    <string>ID Catégorie ↓</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_HR">
+   <property name="geometry">
+    <rect>
+     <x>802</x>
+     <y>309</y>
+     <width>181</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="trierAZ">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>290</y>
+     <width>83</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+   </property>
+   <property name="text">
+    <string>A-Z</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="RecherhceHistoriqueCategoreMateriel">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>310</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+padding: 5px;
+border-radius: 5px;
+background-color:#0094ff;
+font-weight: bold;
+}
+QPushButton:hover
+{
+color :white;
+}</string>
+   </property>
+   <property name="text">
+    <string>Find</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_recherche">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>198</y>
+     <width>181</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="trieridcroi">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>230</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+   </property>
+   <property name="text">
+    <string>ID Catégorie ↑ </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>200</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <underline>true</underline>
+    </font>
+   </property>
+   <property name="text">
+    <string>Trier selon :</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="trierZA">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>320</y>
+     <width>83</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+   </property>
+   <property name="text">
+    <string>Z-A</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pic">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>690</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="remarque_nom">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>240</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text_cin">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>208</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="remarque_cin">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>168</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text_nom">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>280</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>30</y>
+     <width>321</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt; font-weight:600; color:#0000ff;&quot;&gt;Mahrous++&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>280</y>
+     <width>123</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Prénom:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cx_prenom">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>310</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="remarque_prenom">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>310</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text_prenom">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>350</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>350</y>
+     <width>123</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Adresse:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cx_adresse">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>380</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="remarque_adresse">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>380</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text_adresse">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>420</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text_date">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>490</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="remarque_date">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>450</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>420</y>
+     <width>123</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Date Embauche:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text_fn">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>560</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="remarque_fn">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>520</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>490</y>
+     <width>123</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Fonction:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>520</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="cx_date">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>450</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+</string>
+   </property>
+   <property name="displayFormat">
+    <string>dd/MM/yy</string>
+   </property>
+  </widget>
+  <zorder>pic</zorder>
+  <zorder>AjouterPersonnel</zorder>
+  <zorder>label_2</zorder>
+  <zorder>affichage</zorder>
+  <zorder>cx_cin</zorder>
+  <zorder>ModifierPeronnel</zorder>
+  <zorder>label</zorder>
+  <zorder>status</zorder>
+  <zorder>cx_nom</zorder>
+  <zorder>SupprimerPersonnel</zorder>
+  <zorder>ImprimerpdfHistoriqueCategorieMateriel</zorder>
+  <zorder>RechercheCategorieMateriel</zorder>
+  <zorder>HistoriqueCategorieMateriel</zorder>
+  <zorder>historique_categorie</zorder>
+  <zorder>trieriddecroi</zorder>
+  <zorder>lineEdit_HR</zorder>
+  <zorder>trierAZ</zorder>
+  <zorder>RecherhceHistoriqueCategoreMateriel</zorder>
+  <zorder>lineEdit_recherche</zorder>
+  <zorder>trieridcroi</zorder>
+  <zorder>label_5</zorder>
+  <zorder>trierZA</zorder>
+  <zorder>remarque_nom</zorder>
+  <zorder>text_cin</zorder>
+  <zorder>remarque_cin</zorder>
+  <zorder>text_nom</zorder>
+  <zorder>label_10</zorder>
+  <zorder>label_4</zorder>
+  <zorder>cx_prenom</zorder>
+  <zorder>remarque_prenom</zorder>
+  <zorder>text_prenom</zorder>
+  <zorder>label_6</zorder>
+  <zorder>cx_adresse</zorder>
+  <zorder>remarque_adresse</zorder>
+  <zorder>text_adresse</zorder>
+  <zorder>text_date</zorder>
+  <zorder>remarque_date</zorder>
+  <zorder>label_7</zorder>
+  <zorder>text_fn</zorder>
+  <zorder>remarque_fn</zorder>
+  <zorder>label_8</zorder>
+  <zorder>comboBox</zorder>
+  <zorder>cx_date</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
