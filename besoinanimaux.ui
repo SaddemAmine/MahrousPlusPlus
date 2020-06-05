@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>animaux</class>
- <widget class="QDialog" name="animaux">
+ <class>besoinanimaux</class>
+ <widget class="QDialog" name="besoinanimaux">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,13 +30,13 @@
     </font>
    </property>
    <property name="text">
-    <string>ID Animal :</string>
+    <string>ID besoin :</string>
    </property>
    <property name="buddy">
-    <cstring>cx_ida</cstring>
+    <cstring>cx_idb</cstring>
    </property>
   </widget>
-  <widget class="QLineEdit" name="cx_ida">
+  <widget class="QLineEdit" name="cx_idb">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -71,7 +71,46 @@ font-weight: bold;
     </font>
    </property>
    <property name="text">
-    <string>Age Animal</string>
+    <string>eau Animal</string>
+   </property>
+   <property name="buddy">
+    <cstring>cx_eau</cstring>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cx_eau">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>230</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cx_nutrition">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>270</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
@@ -79,7 +118,7 @@ font-weight: bold;
     <rect>
      <x>30</x>
      <y>270</y>
-     <width>111</width>
+     <width>131</width>
      <height>31</height>
     </rect>
    </property>
@@ -91,7 +130,10 @@ font-weight: bold;
     </font>
    </property>
    <property name="text">
-    <string>Sexe Animal :</string>
+    <string>Nutrition Animal</string>
+   </property>
+   <property name="buddy">
+    <cstring>cx_nutrition</cstring>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -111,54 +153,37 @@ font-weight: bold;
     </font>
    </property>
    <property name="text">
-    <string>Etat :</string>
+    <string>Abri :</string>
+   </property>
+   <property name="buddy">
+    <cstring>cx_abri</cstring>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox_idespece">
+  <widget class="QLineEdit" name="cx_abri">
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>360</y>
+     <y>310</y>
      <width>171</width>
      <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
+    <string notr="true">QLineEdit {
 padding: 5px;
 border-radius: 5px;
 
 font-weight: bold;
-</string>
+}</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_7">
+  <widget class="QTableView" name="afficher_besoinanimaux">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>360</y>
-     <width>121</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Id Espece:</string>
-   </property>
-  </widget>
-  <widget class="QTableView" name="afficher_animaux">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
+     <x>380</x>
      <y>190</y>
-     <width>481</width>
-     <height>281</height>
+     <width>441</width>
+     <height>261</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -191,9 +216,9 @@ QTableView
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>680</x>
-     <y>520</y>
-     <width>241</width>
+     <x>550</x>
+     <y>500</y>
+     <width>171</width>
      <height>31</height>
     </rect>
    </property>
@@ -223,9 +248,9 @@ color :white;
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>680</x>
-     <y>570</y>
-     <width>241</width>
+     <x>550</x>
+     <y>550</y>
+     <width>171</width>
      <height>31</height>
     </rect>
    </property>
@@ -255,9 +280,9 @@ color :white;
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>680</x>
-     <y>620</y>
-     <width>241</width>
+     <x>550</x>
+     <y>600</y>
+     <width>171</width>
      <height>31</height>
     </rect>
    </property>
@@ -287,9 +312,9 @@ color :white;
   <widget class="QPushButton" name="pushButton_9">
    <property name="geometry">
     <rect>
-     <x>440</x>
+     <x>420</x>
      <y>150</y>
-     <width>371</width>
+     <width>341</width>
      <height>31</height>
     </rect>
    </property>
@@ -340,7 +365,7 @@ color :white;
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>500</y>
+     <y>490</y>
      <width>171</width>
      <height>151</height>
     </rect>
@@ -355,9 +380,9 @@ color :white;
   <widget class="QPushButton" name="pushButton_5">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>520</y>
-     <width>221</width>
+     <x>380</x>
+     <y>550</y>
+     <width>161</width>
      <height>31</height>
     </rect>
    </property>
@@ -388,7 +413,7 @@ color :white;
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>650</y>
+     <y>640</y>
      <width>391</width>
      <height>20</height>
     </rect>
@@ -400,9 +425,9 @@ color :white;
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>480</y>
-     <width>381</width>
+     <x>380</x>
+     <y>450</y>
+     <width>371</width>
      <height>31</height>
     </rect>
    </property>
@@ -420,9 +445,9 @@ color :white;
   <widget class="QLineEdit" name="recherche">
    <property name="geometry">
     <rect>
-     <x>1000</x>
-     <y>300</y>
-     <width>181</width>
+     <x>940</x>
+     <y>320</y>
+     <width>171</width>
      <height>31</height>
     </rect>
    </property>
@@ -438,15 +463,15 @@ font-weight: bold;
   <widget class="QPushButton" name="pushButton_8">
    <property name="geometry">
     <rect>
-     <x>930</x>
-     <y>300</y>
-     <width>61</width>
+     <x>840</x>
+     <y>320</y>
+     <width>51</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>10</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -466,8 +491,8 @@ border: none;image :url(C:/Users/ASUS/Downloads/business-and-finance (3).png);
   <widget class="QRadioButton" name="radioButton_5">
    <property name="geometry">
     <rect>
-     <x>925</x>
-     <y>230</y>
+     <x>835</x>
+     <y>250</y>
      <width>111</width>
      <height>31</height>
     </rect>
@@ -488,14 +513,14 @@ font-weight: bold;
 </string>
    </property>
    <property name="text">
-    <string>Age ↑ </string>
+    <string>Eau ↑ </string>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButton_3">
    <property name="geometry">
     <rect>
-     <x>1050</x>
-     <y>230</y>
+     <x>990</x>
+     <y>250</y>
      <width>111</width>
      <height>31</height>
     </rect>
@@ -516,14 +541,14 @@ font-weight: bold;
 </string>
    </property>
    <property name="text">
-    <string>Age ↓</string>
+    <string>Eau ↓</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButton">
    <property name="geometry">
     <rect>
-     <x>925</x>
-     <y>210</y>
+     <x>835</x>
+     <y>280</y>
      <width>131</width>
      <height>31</height>
     </rect>
@@ -544,14 +569,14 @@ font-weight: bold;
 </string>
    </property>
    <property name="text">
-    <string>Id Animal↑</string>
+    <string>ID Besoin ↑</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButton_2">
    <property name="geometry">
     <rect>
-     <x>1050</x>
-     <y>210</y>
+     <x>990</x>
+     <y>280</y>
      <width>131</width>
      <height>31</height>
     </rect>
@@ -572,21 +597,21 @@ font-weight: bold;
 </string>
    </property>
    <property name="text">
-    <string>Id Animal ↓</string>
+    <string>ID Besoin  ↓</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_10">
    <property name="geometry">
     <rect>
-     <x>1030</x>
-     <y>370</y>
-     <width>71</width>
+     <x>970</x>
+     <y>380</y>
+     <width>61</width>
      <height>61</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>11</pointsize>
+     <pointsize>10</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -606,9 +631,9 @@ border: none;image :url(C:/Users/ASUS/Downloads/bars (1).png);
   <widget class="QRadioButton" name="radioButton_4">
    <property name="geometry">
     <rect>
-     <x>930</x>
-     <y>260</y>
-     <width>121</width>
+     <x>840</x>
+     <y>230</y>
+     <width>131</width>
      <height>18</height>
     </rect>
    </property>
@@ -620,15 +645,15 @@ border: none;image :url(C:/Users/ASUS/Downloads/bars (1).png);
     </font>
    </property>
    <property name="text">
-    <string>Id Espece  ↑</string>
+    <string>Nutrition :A-Z</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButton_6">
    <property name="geometry">
     <rect>
-     <x>1055</x>
-     <y>261</y>
-     <width>121</width>
+     <x>995</x>
+     <y>230</y>
+     <width>131</width>
      <height>18</height>
     </rect>
    </property>
@@ -640,52 +665,14 @@ border: none;image :url(C:/Users/ASUS/Downloads/bars (1).png);
     </font>
    </property>
    <property name="text">
-    <string>Id Espece ↓</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>400</y>
-     <width>61</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>CIN :</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox_cin">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>400</y>
-     <width>171</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">
-padding: 5px;
-border-radius: 5px;
-
-font-weight: bold;
-</string>
+    <string>Nutrition :Z-A</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>960</x>
-     <y>190</y>
+     <x>865</x>
+     <y>200</y>
      <width>101</width>
      <height>16</height>
     </rect>
@@ -702,50 +689,12 @@ font-weight: bold;
     <string>Trier Selon :</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>450</y>
-     <width>141</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Id Besoin  :</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox_idba">
-   <property name="geometry">
-    <rect>
-     <x>171</x>
-     <y>440</y>
-     <width>171</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">
-padding: 5px;
-border-radius: 5px;
-
-font-weight: bold;
-</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_4">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>570</y>
-     <width>221</width>
+     <x>380</x>
+     <y>600</y>
+     <width>161</width>
      <height>31</height>
     </rect>
    </property>
@@ -785,13 +734,54 @@ color :white;
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt; font-weight:600; color:#0000ff;&quot;&gt;Mahrous ++&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="cx_vaco">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>350</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+padding: 5px;
+border-radius: 5px;
+
+font-weight: bold;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>350</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Vaco :</string>
+   </property>
+   <property name="buddy">
+    <cstring>cx_abri</cstring>
+   </property>
+  </widget>
   <widget class="QPushButton" name="pushButton_12">
    <property name="geometry">
     <rect>
-     <x>940</x>
-     <y>360</y>
+     <x>830</x>
+     <y>380</y>
      <width>71</width>
-     <height>81</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="font">
@@ -813,257 +803,55 @@ border: none;image :url(C:/Users/ASUS/Downloads/multimedia (1).png);
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_13">
+  <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>620</y>
-     <width>221</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-padding: 5px;
-border-radius: 5px;
-background-color:#0094ff;
-font-weight: bold;
-}
-QPushButton:hover
-{
-color :white;
-}</string>
-   </property>
-   <property name="text">
-    <string>Afficher Image</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="age">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
+     <x>300</x>
      <y>230</y>
-     <width>171</width>
+     <width>47</width>
      <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-padding: 5px;
-border-radius: 5px;
-
-font-weight: bold;
-</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="Malade">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>310</y>
-     <width>81</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
+    <string notr="true">image:url(C:/Users/ASUS/Downloads/weather.png)</string>
    </property>
    <property name="text">
-    <string>Malade</string>
+    <string/>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup_2</string>
-   </attribute>
   </widget>
-  <widget class="QRadioButton" name="Bonne">
+  <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>330</y>
-     <width>81</width>
-     <height>18</height>
+     <x>300</x>
+     <y>270</y>
+     <width>47</width>
+     <height>31</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
+   <property name="styleSheet">
+    <string notr="true">image:url(C:/Users/ASUS/Downloads/dog (1).png)</string>
    </property>
    <property name="text">
-    <string>Bonne</string>
+    <string/>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup_2</string>
-   </attribute>
-  </widget>
-  <widget class="QRadioButton" name="Blesse">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>310</y>
-     <width>71</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Blesse</string>
-   </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup_2</string>
-   </attribute>
-  </widget>
-  <widget class="QRadioButton" name="femme">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>280</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Femme</string>
-   </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup</string>
-   </attribute>
-  </widget>
-  <widget class="QRadioButton" name="homme">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>280</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Homme</string>
-   </property>
-   <attribute name="buttonGroup">
-    <string notr="true">buttonGroup</string>
-   </attribute>
   </widget>
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>280</y>
-     <width>21</width>
-     <height>21</height>
+     <x>300</x>
+     <y>350</y>
+     <width>47</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">image :url(C:/Users/ASUS/Downloads/gender.png);</string>
+    <string notr="true">image:url(C:/Users/ASUS/Downloads/vaccine.png)</string>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_13">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>280</y>
-     <width>20</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">image :url(C:/Users/ASUS/Downloads/male.png);
-</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_14">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>310</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">image :url(C:/Users/ASUS/Downloads/emoji.png);
-</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_15">
-   <property name="geometry">
-    <rect>
-     <x>336</x>
-     <y>310</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">image:url(C:/Users/ASUS/Downloads/sad.png)</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_16">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>330</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">image:url(C:/Users/ASUS/Downloads/smile.png)</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_17">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -1081,13 +869,14 @@ font-weight: bold;
   </widget>
   <zorder>pic</zorder>
   <zorder>label</zorder>
-  <zorder>cx_ida</zorder>
+  <zorder>cx_idb</zorder>
   <zorder>label_2</zorder>
+  <zorder>cx_eau</zorder>
+  <zorder>cx_nutrition</zorder>
   <zorder>label_5</zorder>
   <zorder>label_6</zorder>
-  <zorder>comboBox_idespece</zorder>
-  <zorder>label_7</zorder>
-  <zorder>afficher_animaux</zorder>
+  <zorder>cx_abri</zorder>
+  <zorder>afficher_besoinanimaux</zorder>
   <zorder>pushButton</zorder>
   <zorder>pushButton_3</zorder>
   <zorder>pushButton_2</zorder>
@@ -1106,32 +895,17 @@ font-weight: bold;
   <zorder>pushButton_10</zorder>
   <zorder>radioButton_4</zorder>
   <zorder>radioButton_6</zorder>
-  <zorder>label_3</zorder>
-  <zorder>comboBox_cin</zorder>
   <zorder>label_4</zorder>
-  <zorder>label_9</zorder>
-  <zorder>comboBox_idba</zorder>
   <zorder>pushButton_4</zorder>
   <zorder>label_11</zorder>
+  <zorder>cx_vaco</zorder>
+  <zorder>label_7</zorder>
   <zorder>pushButton_12</zorder>
-  <zorder>pushButton_13</zorder>
-  <zorder>age</zorder>
-  <zorder>Malade</zorder>
-  <zorder>Bonne</zorder>
-  <zorder>Blesse</zorder>
-  <zorder>femme</zorder>
-  <zorder>homme</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_9</zorder>
   <zorder>label_12</zorder>
   <zorder>label_13</zorder>
-  <zorder>label_14</zorder>
-  <zorder>label_15</zorder>
-  <zorder>label_16</zorder>
-  <zorder>label_17</zorder>
  </widget>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>

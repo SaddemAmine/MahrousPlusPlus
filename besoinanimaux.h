@@ -1,22 +1,22 @@
-#ifndef ANIMAUX_H
-#define ANIMAUX_H
-#include "gestion_animaux.h"
+#ifndef BESOINANIMAUX_H
+#define BESOINANIMAUX_H
+#include "gestion_besoinanimaux.h"
 #include"gestion_especeanimal.h"
-#include "stat_animaux.h"
+#include "stat_besoinanimaux.h"
 #include "speek/speekajouter.h"
 #include <QDialog>
 
 namespace Ui {
-class animaux;
+class besoinanimaux;
 }
 
-class animaux : public QDialog
+class besoinanimaux : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit animaux(QWidget *parent = nullptr);
-    ~animaux();
+    explicit besoinanimaux(QWidget *parent = nullptr);
+    ~besoinanimaux();
 
     void on_radioButton_6_clicked();
 private slots:
@@ -46,7 +46,7 @@ private slots:
 
     void init();
 
-    void on_afficher_animaux_activated(const QModelIndex &index);
+    void on_afficher_besoinanimaux_activated(const QModelIndex &index);
 
     void on_radioButton_4_clicked();
 
@@ -54,18 +54,16 @@ private slots:
 
 
 
-    int on_pushButton_12_clicked();
-
-    void on_pushButton_13_clicked();
+    int  on_pushButton_12_clicked();
 
 private:
-    Ui::animaux *ui;
-    gestion_animaux tmppl;
+    Ui::besoinanimaux *ui;
+    gestion_besoinanimaux tmppl;
     gestion_especeanimal tmpcat;
-    Stat_animaux *s;
-    SpeekAjouter  sa;
+    stat_besoinanimaux *s;
+    SpeekAjouter  sa;  
 
 };
 
-#endif // ANIMAUX_H
+#endif // BESOINANIMAUX_H
 
