@@ -1,28 +1,53 @@
-#include "mainwindow.h"
+#include "menu.h"
+#include <QSplashScreen>
+#include <QTimer>
 #include <QApplication>
+#include <QMediaPlayer>
+#include<QDebug>
 #include <QMessageBox>
-#include "connection.h"
-
+#include "connexion.h"
 #include <QMediaPlayer>
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
-    MainWindow w;
-    Connection c;
+    QSplashScreen *splash=new QSplashScreen ;
+    splash->setPixmap(QPixmap("A:/PROJET QT/qt/logo.png"));
+            splash->show();
+
+
+    connexion c;
+
+    QMessageBox msgBox;
     bool test=c.createconnect();
+     Menu w;
     if(test)
-    {w.show();
-        QMessageBox::information(nullptr, QObject::tr("Database is opened"),
+    {
+        QTimer::singleShot(10000,splash,SLOT(close()));
+            QTimer::singleShot(2500,&w,SLOT(show()));
+
+       // w.show();
+//w.showFullScreen()
+        /*QMessageBox::information(nullptr, QObject::tr("Database is opened"),
                     QObject::tr("Connection Successful.\n"
-                                "Click OK to continue."), QMessageBox::Ok);
+                                "Click OK to continue."), QMessageBox::Ok);*/
+        QPixmap pix("A:/LOGO.png");
+
+       msgBox.setText("Database is opened\nConnection Successful.\nClick OK to continue.");
+       msgBox.setIconPixmap(pix);
+        msgBox.exec();
+
+
 
 }
     else
-        QMessageBox::critical(nullptr, QObject::tr("database is not open"),
-                    QObject::tr("Connection Failed.\n"
-                                "Click Cancel to exit."), QMessageBox::Cancel);
+   {
+    QPixmap pix("A:/LOGO.png");
 
-
-
+   msgBox.setText("Connection Failed.\n"
+                  "Click Cancel to exit.");
+   msgBox.setIconPixmap(pix);
+    msgBox.exec();
+}
     return a.exec();
 }

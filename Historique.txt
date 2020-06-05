@@ -1,0 +1,6 @@
+
+Fonction a été ajoutée sous :
+ idF :p 
+ nomF : a 
+ Salaire : d
+ Salaire : aaa

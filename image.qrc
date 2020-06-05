@@ -1,0 +1,65 @@
+<RCC>
+    <qresource prefix="/IMG">
+        <file>image/animal.png</file>
+        <file>image/animals (1).png</file>
+        <file>image/animals (2).png</file>
+        <file>image/animals (3).png</file>
+        <file>image/animals.png</file>
+        <file>image/arrows.png</file>
+        <file>image/at.png</file>
+        <file>image/bars (1).png</file>
+        <file>image/bars (2).png</file>
+        <file>image/briefcase (1).png</file>
+        <file>image/briefcase (2).png</file>
+        <file>image/business.png</file>
+        <file>image/business-and-finance (3).png</file>
+        <file>image/businessman.png</file>
+        <file>image/camera.png</file>
+        <file>image/chicken.png</file>
+        <file>image/computer.png</file>
+        <file>image/construction.png</file>
+        <file>image/cow.png</file>
+        <file>image/dog (1).png</file>
+        <file>image/dog.png</file>
+        <file>image/do-it-yourself.png</file>
+        <file>image/electronics.png</file>
+        <file>image/emails.png</file>
+        <file>image/emoji.png</file>
+        <file>image/farm.png</file>
+        <file>image/file (1).png</file>
+        <file>image/file.png</file>
+        <file>image/flat.png</file>
+        <file>image/gender.png</file>
+        <file>image/growing-seed.png</file>
+        <file>image/image.png</file>
+        <file>image/leaf.png</file>
+        <file>image/left-chevron.png</file>
+        <file>image/loupe.png</file>
+        <file>image/male.png</file>
+        <file>image/multimedia (1).png</file>
+        <file>image/natural.png</file>
+        <file>image/nature (2).png</file>
+        <file>image/nature (3).png</file>
+        <file>image/nature (4).png</file>
+        <file>image/notepad.png</file>
+        <file>image/orientation (1).png</file>
+        <file>image/orientation.png</file>
+        <file>image/pdf (1).png</file>
+        <file>image/phone.png</file>
+        <file>image/phone-book (1).png</file>
+        <file>image/phone-book (2).png</file>
+        <file>image/repair-tool.png</file>
+        <file>image/sad.png</file>
+        <file>image/smile.png</file>
+        <file>image/sprout.png</file>
+        <file>image/technology.png</file>
+        <file>image/toolbox (1).png</file>
+        <file>image/toolbox.png</file>
+        <file>image/tools-and-utensils (2).png</file>
+        <file>image/transports1.png</file>
+        <file>image/transports2.png</file>
+        <file>image/travel.png</file>
+        <file>image/vaccine.png</file>
+        <file>image/weather.png</file>
+    </qresource>
+</RCC>
