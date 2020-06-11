@@ -27,8 +27,6 @@ private slots:
 
     void on_actionRotate_triggered();
 
-    void on_pushButton_2_clicked();
-
 private:
     Ui::image *ui;
     //per visualizzare una immagine

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1305</width>
-    <height>798</height>
+    <width>1200</width>
+    <height>691</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -173,44 +173,6 @@ font-weight: bold;
     <string>Quitter</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>550</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Convertir</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>550</y>
-     <width>62</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>.png</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>.jpg</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>.bmp</string>
-    </property>
-   </item>
-  </widget>
   <action name="actionZoomInOut">
    <property name="text">
     <string>ZoomInOut</string>
@@ -238,8 +200,6 @@ font-weight: bold;
   <zorder>rigth_LBL</zorder>
   <zorder>ctrl_LBL</zorder>
   <zorder>pushButton</zorder>
-  <zorder>pushButton_2</zorder>
-  <zorder>comboBox</zorder>
  </widget>
  <resources/>
  <connections>

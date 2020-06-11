@@ -9,8 +9,6 @@
 #include <QMainWindow>
 #include <QMediaPlayer>
 #include <QScrollBar>
-#include<QFileInfo>
-#include <QMessageBox>
 image::image(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::image)
@@ -163,43 +161,4 @@ void image::keyReleaseEvent(QKeyEvent *k)
     if (k->key() == Qt::Key_Control) {ctrl_down = false;}
     ui->ctrl_LBL->setText("CTRL up");
 
-}
-
-void image::on_pushButton_2_clicked()
-{
-    QString fileName =ui->chemin_2->text();
-    if (fileName != "")
-    {
-        QFileInfo fileinfo =QFile(fileName);
-        QString newFilename =fileinfo.path() + "/" +fileinfo.completeBaseName();
-
-        QImage image =QImage (ui->chemin_2->text());
-        if(!image.isNull())
-        {
-            int format =ui->comboBox->currentIndex();
-            if (format == 0)
-            {
-                newFilename += ".png";
-            }else if (format == 1)
-            {
-                newFilename += ".jpg";
-            }
-            else if(format == 2)
-            {
-                newFilename += ".bmp";
-            }
-            qDebug() << newFilename <<format ;
-            if (image.save(newFilename,0, -1))
-            {
-                QMessageBox::information(this,"Success","Imga Conserted Successfully");
-            }
-            else {QMessageBox::warning(this,"Failed","Image Not Converted ");}
-        }else
-        {
-            QMessageBox::warning(this,"Failed","Failed To Open Image");
-        }
-    }else
-    {
-        QMessageBox::warning(this,"Failed","No File Selected");
-    }
 }
