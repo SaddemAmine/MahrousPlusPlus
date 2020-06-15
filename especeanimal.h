@@ -3,6 +3,8 @@
 #include "gestion_especeanimal.h"
 #include <QDialog>
 #include "speek/speekajouter.h"
+#include "speek/speekmodifier.h"
+#include "speek/speeksupprimer.h"
 #include <QtWidgets/qmainwindow.h>
 #include <QTextToSpeech>
 namespace Ui {
@@ -42,11 +44,11 @@ private slots:
 
     void on_afficher_especeanimal_activated(const QModelIndex &index);
 
+    void on_pushButton_5_clicked();
 
+    void on_pushButton_7_clicked();
 
-
-
-
+    void on_pushButton_8_clicked();
 
 private:
     Ui::especeanimal *ui;
@@ -54,6 +56,8 @@ private:
 
       QTextToSpeech *m_speech;
       SpeekAjouter  sa;
+      SpeekModifier sm;
+      SpeekSupprimer ss;
 };
 
 #endif // ESPECEANIMAL_H

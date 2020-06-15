@@ -26,6 +26,9 @@ especeanimal::especeanimal(QWidget *parent) :
     int h =ui->pic->height();
     ui->pic->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
     ui->afficher_especeanimal->setModel(tmpcat.afficher_especeanimal());
+    //refreche mil lawellllllllllllllllllllllllllllllllllllllllll
+
+    //ui->comboBox_supp->setModel(tmpcat.afficher_Clist());
     ui->cx_idespeceanimal->setEnabled(1);
 
 }
@@ -50,7 +53,7 @@ void especeanimal::on_pushButton_clicked()
 
 
     gestion_especeanimal C(IDESPECE,NOMESPECE);
-    //controle de saisie bech n5arajhom fonction bech na3emlelhom il appel fil modif
+//controle de saisie bech n5arajhom fonction bech na3emlelhom il appel fil modif
 
     if(C.verif_vide(C.get_idC())==false  )
     {
@@ -94,7 +97,7 @@ void especeanimal::on_pushButton_clicked()
 
         if(test)
         {
-
+            // ui->text_id->hide();
             QFile file("A:\\integration\\mahrousplusplus\\Historique\\HistoriqueEspeceAnimal.txt");
             if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
                 return;
@@ -105,8 +108,9 @@ void especeanimal::on_pushButton_clicked()
 
 
             init();
-            ui->label_3->setText("Espéce ajouté");
-
+            ui->label_3->setText("Catégorie ajouté");
+            //ba3ed il ajout refreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeecheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+            //ui->comboBox_supp->setModel(tmpcat.afficher_Clist());
             ui->afficher_especeanimal->setModel(tmpcat.afficher_especeanimal());
 
         }
@@ -126,9 +130,11 @@ void especeanimal::on_pushButton_2_clicked()
     bool test=tmpcat.supprimer_especeanimal(idC);
     if(test)
     {    ui->afficher_especeanimal->setModel(tmpcat.afficher_especeanimal());
-        ui->label_3->setText("Supprimer Espéce");
+        //refreshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+        //ui->comboBox_supp->setModel(tmpcat.afficher_Clist());
+        ui->label_3->setText("Supprimer Catégorie");
         ui->cx_idespeceanimal->setEnabled(1);
-        //ss.speak();//speak supprimer
+       ss.speak();//speak supprimer
         init();
     }
     else
@@ -141,7 +147,7 @@ void especeanimal::on_pushButton_3_clicked()
 {
 
     QString IDESPECE = ui->cx_idespeceanimal->text();
-
+    // ui->cx_idespece;
     QString NOMESPECE= ui->cx_nomespeceanimal->text();
 
 
@@ -151,10 +157,11 @@ void especeanimal::on_pushButton_3_clicked()
     {
 
         ui->afficher_especeanimal->setModel(tmpcat.afficher_especeanimal());//refresh
-
-        ui->label_3->setText("Modifier Espéce");
+        //refreshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+        //ui->comboBox_supp->setModel(tmpcat.afficher_Clist());
+        ui->label_3->setText("Modifier Catégorie");
         ui->cx_idespeceanimal->setEnabled(1);
-        //sm.speak();//speak modif
+        sm.speak();//speak modif
         init();
 
     }
@@ -184,34 +191,54 @@ void especeanimal::on_pushButton_4_clicked()
 void especeanimal::on_pushButton_6_clicked()
 {
     ui->afficher_especeanimal->setModel(tmpcat.afficher_especeanimal());//refresh
-    ui->label_3->setText("Afficher la liste des Espéces");
     //ui->comboBox_supp->setModel(tmpcat.afficher_Clist());
 }
 //trie selon nomespece croissant
 void especeanimal::on_radioButton_3_clicked()
 {
+    QSqlQueryModel * model= new QSqlQueryModel();
 
-    ui->afficher_especeanimal->setModel(tmpcat.afficher_nomCroissant());//refresh
+    model->setQuery("select * from ESPECESANIMAUX ORDER BY NOMESPECE ");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID Catégorie "));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Catégorie"));
 
-    ui->label_3->setText("Trier A-Z");
+    ui->afficher_especeanimal->setModel(model) ;
+    ui->label_3->setText("Trier Z-A");
 }
 //trie selon nomespece decroissant
 void especeanimal::on_radioButton_4_clicked()
 {
-    ui->afficher_especeanimal->setModel(tmpcat.afficher_nomDecroissant());//refresh
-    ui->label_3->setText("Trier Z-A");
+    QSqlQueryModel * model= new QSqlQueryModel();
+
+    model->setQuery("select * from ESPECESANIMAUX ORDER BY NOMESPECE desc");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID Catégorie "));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Catégorie"));
+
+    ui->afficher_especeanimal->setModel(model) ;
+    ui->label_3->setText("Trier A-Z");
 }
 //trie selon idespece croissant
 void especeanimal::on_radioButton_clicked()
 {
+    QSqlQueryModel * model= new QSqlQueryModel();
 
-    ui->afficher_especeanimal->setModel(tmpcat.afficher_idCroissant());//refresh
+    model->setQuery("select * from ESPECESANIMAUX ORDER BY IDESPECE ");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID Catégorie "));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Catégorie"));
+
+    ui->afficher_especeanimal->setModel(model) ;
     ui->label_3->setText("Trier Croissant du IdCatégorie");
 }
 //trie selon idespece decroissant
 void especeanimal::on_radioButton_2_clicked()
 {
-    ui->afficher_especeanimal->setModel(tmpcat.afficher_idDecroissant());//refresh
+    QSqlQueryModel * model= new QSqlQueryModel();
+
+    model->setQuery("select * from ESPECESANIMAUX ORDER BY IDESPECE desc ");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID Catégorie "));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Catégorie"));
+
+    ui->afficher_especeanimal->setModel(model) ;
     ui->label_3->setText("Trier Décroissant du IdCatégorie");
 }
 
@@ -221,8 +248,7 @@ void especeanimal::on_afficher_especeanimal_activated(const QModelIndex &index)
     QString val=ui->afficher_especeanimal->model()->data(index).toString();
     QSqlQuery qry ;
 
-    // qry.prepare("Select * from ESPECESANIMAUX where nomespece='"+val+"' ");
-    qry=tmpcat.tableclicked(val);
+    qry.prepare("Select * from ESPECESANIMAUX where nomespece='"+val+"' ");
     if (qry.exec())
     {
         while (qry.next())
@@ -231,11 +257,73 @@ void especeanimal::on_afficher_especeanimal_activated(const QModelIndex &index)
             ui->cx_idespeceanimal->setDisabled(1);
             ui->cx_idespeceanimal->setText(qry.value(0).toString());
             ui->cx_nomespeceanimal->setText(qry.value(1).toString());
-            ui->label_3->setText("Ecpéce Selectionée");
         }
     }
 
 }
 
+void especeanimal::on_pushButton_5_clicked()
+{
+    QFile file ("A:\\integration\\mahrousplusplus\\Historique\\HistoriqueEspeceAnimal.txt");
+       if (!file.open(QIODevice::ReadOnly))
+     {
+          QMessageBox::information(0,"info",file.errorString());
+       }
+       QTextStream in (&file);
+       ui->Historique_Espece->setText(in.readAll());
+}
+
+void especeanimal::on_pushButton_7_clicked()
+{
+    QPrinter printer;
+        printer.setPrinterName("desierd printer name");
+        QPrintDialog dialog(&printer,this);
+        if(dialog.exec()== QDialog::Rejected) return;
+        ui->Historique_Espece->print(&printer);
+}
+
+void especeanimal::on_pushButton_8_clicked()
+{
+    QString searchString = ui->Find_Historique->text();
+       QTextDocument *document = ui->Historique_Espece->document();
+  on_pushButton_5_clicked();
+       bool found = false;
+
+       document->undo();
+
+       if (searchString.isEmpty()) {
+           QMessageBox::information(this, tr("Empty Search Field"),
+                                    tr("The search field is empty. "
+                                       "Please enter a word and click Find."));
+       } else {
+           QTextCursor highlightCursor(document);
+           QTextCursor cursor(document);
+
+          cursor.beginEditBlock();
 
 
+          QTextCharFormat plainFormat(highlightCursor.charFormat());
+           QTextCharFormat colorFormat = plainFormat;
+           colorFormat.setForeground(Qt::red);
+
+          while (!highlightCursor.isNull() && !highlightCursor.atEnd()) {
+               highlightCursor = document->find(searchString, highlightCursor,
+                                                QTextDocument::FindWholeWords);
+
+               if (!highlightCursor.isNull()) {
+                   found = true;
+                   highlightCursor.movePosition(QTextCursor::WordRight,
+                                                QTextCursor::KeepAnchor);
+                   highlightCursor.mergeCharFormat(colorFormat);
+               }
+           }
+
+
+           cursor.endEditBlock();
+
+           if (found == false) {
+               QMessageBox::information(this, tr("Word Not Found"),
+                                        tr("Sorry, the word cannot be found."));
+           }
+       }
+}
