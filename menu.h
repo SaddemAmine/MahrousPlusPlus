@@ -27,6 +27,7 @@
 #include "stat_besoinplantes.h"
 #include "gestion_produit_plante.h"
 #include"stat_productionplante.h"
+#include"statistique_age_personnels.h"
 #include <QTimer>
 #include <QMainWindow>
 #include <QMediaPlayer>
@@ -40,6 +41,7 @@
 #include "rh_fonctions_ops.h"
 #include "rh_personnels_ops.h"
 #include "stat_salaire_fonction.h"
+#include "reclamations.h"
 namespace Ui {
 class Menu;
 }
@@ -75,8 +77,34 @@ bool controleDeSaisiefonction();
     int Statistique_partie5();
     int Statistique_partie6();
     int Statistique_partie7();
-    void paintEvent();
+
     void initmenu();
+    void boutonradiocm();
+    bool controleDeSaisieCategoerieMateriel();
+    bool testnom(QString q);
+    bool controleDeSaisieaffectation();
+    bool controleDeSaisieFournisseur();
+    bool testnomf(QString q);
+    bool testprenomf(QString q);
+    bool testnomm(QString q);
+    bool testmarquem(QString q);
+    bool testdescm(QString q);
+    bool controleDeSaisieMateriel();
+    bool controleDeSaisieCategoeriePlante();
+    bool testnomCP(QString q);
+    bool controleDeSaisiePlante();
+    bool controleDeSaisieAnimal();
+    bool testnutrition(QString q);
+    bool testabri(QString q);
+    bool testvac(QString q);
+    bool controleDeSaisieBesoinAnimal();
+    bool testproduit(QString q);
+    bool controleDeSaisieProductionAnimal();
+    bool testnutp(QString q);
+    bool controleDeSaisieBesoinPlante();
+    bool testproduitp(QString q);
+    bool controleDeSaisieProductionPlante();
+    void initfonction();
 private slots:
     void on_pushButton_28_clicked();
     void on_pushButton_22_clicked();
@@ -287,7 +315,7 @@ private slots:
     void on_recherche_textChanged(const QString &arg1);
     void on_Recherche_textChanged(const QString &arg1);
     void on_pushButton_140_clicked();
-    void on_pushButton_139_clicked();
+
     //parametre
     void on_positionChanged(qint64 position );
 
@@ -407,6 +435,37 @@ void on_pushButton_211_clicked();
 
 void on_pushButton_212_clicked();
 
+void on_checkBox_clicked(bool checked);
+
+
+
+void on_pushButton_10_clicked();
+
+void on_pushButton_159_clicked();
+
+void on_comboBox_r_currentIndexChanged();
+
+void on_pushButton_36_clicked();
+
+void on_pushButton_160_clicked();
+
+void on_pushButton_161_clicked();
+
+void on_pushButton_162_clicked();
+
+void on_pushButton_163_clicked();
+
+void on_pushButton_164_clicked();
+
+void on_pushButton_165_clicked();
+
+int on_pushButton_166_clicked();
+
+bool controleDeSaisieEspeceAnimal();
+bool testnomEA(QString );
+
+void on_stat_clicked();
+
 private:
     Ui::Menu *ui;
     categorie_materiel *cm;
@@ -435,6 +494,7 @@ private:
     stat_besoinplantes *sbp;
     stat_productionplante *spp;
     stat_salaire_fonction *stf;
+    reclamations r;
     capture *c;
     QString lng;
     Statistique_fournisseur *f;
@@ -446,11 +506,13 @@ private:
     QPropertyAnimation *animation1;
     QPropertyAnimation *animation2;
     QParallelAnimationGroup *animationGroup;
+    statistique_age_personnels *sap;
     int cl;
     int speek;
     int securite;
     int a;
     systeme sy;
+
 
 };
 

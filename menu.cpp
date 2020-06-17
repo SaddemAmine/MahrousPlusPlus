@@ -24,36 +24,40 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
-    qDebug () << sy.login("00000002","1234");
+    ui->cx_password->setEchoMode(QLineEdit::EchoMode(0));
+    QPixmap pix("C:/Users/ASUS/Downloads/hide.png");
+    int w =ui->eye->width();
+    int h =ui->eye->height();
+    ui->eye->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+    //qDebug () << sy.login("00000002","1234");
     //volume
-    QPixmap pix("C:/Users/ASUS/Downloads/speaker.png");
-    int w =ui->volume->width();
-    int h =ui->volume->height();
-    ui->volume->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+    QPixmap pix1("C:/Users/ASUS/Downloads/speaker.png");
+    int w1 =ui->volume->width();
+    int h1 =ui->volume->height();
+    ui->volume->setPixmap(pix1.scaled(w1,h1,Qt::KeepAspectRatio));
     lng="";
     cl=1;
     speek=1;
     securite =1;
     a=0;
     ui->stackedWidget->setCurrentIndex(13);
-
     //animation
 
     animation1 =new QPropertyAnimation (ui->pushButton_140,"geometry");
     animation1->setDuration(2000);
     animation1->setStartValue(ui->pushButton_140->geometry());
-    animation1->setEndValue(QRect(720,430,91,31));
+    animation1->setEndValue(QRect(700,480,91,31));
     animation2 =new QPropertyAnimation (ui->pushButton_138,"geometry");
     animation2->setDuration(2000);
     animation2->setStartValue(ui->pushButton_138->geometry());
-    animation2->setEndValue(QRect(340,430,91,31));
+    animation2->setEndValue(QRect(450,480,91,31));
     animationGroup =new QParallelAnimationGroup;
     animationGroup->addAnimation(animation1);
     animationGroup->addAnimation(animation2);
     animationGroup->start();
 
 
-
+    ui->cx_password->setEchoMode(QLineEdit::EchoMode(2));
     //parametre
     ui->pushButton_150->hide();
     ui->pushButton_144->hide();
@@ -61,7 +65,7 @@ Menu::Menu(QWidget *parent) :
     player= new QMediaPlayer();
     player->setMedia(QUrl::fromLocalFile("A:\\integration\\integration final\\2\\mahrousplusplus\\Farma.mp3"));
     player->play();
-    connect(player, &QMediaPlayer::positionChanged, this, &Menu::on_positionChanged);
+    connect(player, &QMediaPlayer::positionChanged, this,&Menu::on_positionChanged);
     connect(player, &QMediaPlayer::durationChanged, this, &Menu::on_durationChanged);
     click = new QMediaPlayer();
     click->setMedia(QUrl::fromLocalFile("A:/integration/integration final/2/mahrousplusplus/click.mp3"));
@@ -94,7 +98,7 @@ Menu::Menu(QWidget *parent) :
     ui->cx_idcategorieplante->setEnabled(1);
     //plante
     ui->afficher_plante->setModel(tmppl.afficher_plante());
-    ui->comboBox_categorie_2->setModel(tmpcat.afficher_Clist());
+    ui->comboBox_categorie_2->setModel(tmpcatp.afficher_Clist());
     ui->comboBox_cin_2->setModel(tmppl.afficher_CINlist());
     ui->comboBox_IDBP->setModel(tmppl.afficher_IDBPlist());
     ui->cx_idp->setEnabled(1);
@@ -114,10 +118,10 @@ Menu::Menu(QWidget *parent) :
     ui->comboBox_cin_3->setModel(tmpa.afficher_CINlist());
     ui->comboBox_idba->setModel(tmpa.afficher_IDBAlist());
     ui->cx_ida->setEnabled(1);
-    //besoin animaux
+    //besoin plante
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());
     ui->cx_idb->setEnabled(1);
-    //production animaux
+    //production plante
     ui->comboBox_CP->setModel(tmppp.afficher_pplist());
     ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());
     //fonction
@@ -125,9 +129,11 @@ Menu::Menu(QWidget *parent) :
     rh_fonctions_ops f;
     ui->affichage->setModel(f.afficherFonctions(1));
     //personnel
-
     ui->affichage_2->setModel(p.afficherPersonnels());
     ui->comboBox->setModel(f.afficherFonctions(0));
+    //reclamations
+    reclamations r;
+    ui->comboBox_r->setModel(r.preplist());
 
 }
 
@@ -135,6 +141,7 @@ Menu::~Menu()
 {
     delete ui;
 }
+
 //fonction initialisation
 //categorie materiel
 void Menu::initcm()
@@ -151,7 +158,6 @@ void Menu::initaf()
     ui->cx_id_affectation->setEnabled(1);
     ui->Recherche->clear();
 }
-
 //materiel
 void Menu::initm()
 {
@@ -164,6 +170,8 @@ void Menu::initm()
     ui->cx_desc->clear();
     ui->cx_nomM->clear();
     ui->recherche->clear();
+    ui->prix->setValue(0);
+    ui->stock->setValue(0);
 }
 //fournisseur
 void Menu::initf()
@@ -177,15 +185,33 @@ void Menu::initf()
     ui->cx_prenomf->clear();
     ui->cx_recherche->clear();
     ui->cx_recherche->clear();
-
+    //ui->homme->setChecked(false);
+    //ui->homme->setCheckable(false);*
+    ui->homme->setAutoExclusive(false);
+    ui->homme->setChecked(false);
+    // ui->homme->setAutoExclusive(true);
+    ui->femme->setAutoExclusive(false);
+    ui->femme->setChecked(false);
 }
 //categorie plante
 void Menu::initcp()
 {
-    ui->cx_idcategorie->clear();
-    ui->cx_nomcategorie->clear();
+    ui->cx_idcategorieplante->clear();
+    ui->cx_nomcategorieplante->clear();
     ui->cx_idcategorieplante->setEnabled(1);
     ui->lineEdit_recherchecategorieplante->clear();
+}
+//bouton radio
+void Menu::boutonradiocm()
+{
+    ui->trieridcroi->setAutoExclusive(false);
+    ui->trieridcroi->setChecked(false);
+    ui->trieriddecroi->setAutoExclusive(false);
+    ui->trieriddecroi->setChecked(false);
+    ui->trierAZ->setAutoExclusive(false);
+    ui->trierAZ->setChecked(false);
+    ui->trierZA->setAutoExclusive(false);
+    ui->trierZA->setChecked(false);
 }
 //plante
 void Menu::initp()
@@ -194,6 +220,7 @@ void Menu::initp()
     ui->photo_2->clear();
     ui->chemin_2->clear();
     ui->cx_idp->setEnabled(1);
+    ui->Quantite->setValue(0);
 
 }
 //besoin animal
@@ -205,6 +232,8 @@ void Menu::initba()
     ui->cx_abri->clear();
     ui->cx_vaco->clear();
     ui->cx_idb->setEnabled(1);
+    ui->chemin_3->clear();
+    ui->photo_3->clear();
 
 }
 //production animal
@@ -214,6 +243,7 @@ void Menu::initpa()
     ui->cx_ppa->clear();
     ui->cx_prix->clear();
     ui->chemin_4->clear();
+    ui->photo_4->clear();
     ui->cx_idpa->setEnabled(1);
 }
 //espece animal
@@ -228,6 +258,9 @@ void Menu::inita()
 {
     ui->cx_ida->clear();
     ui->cx_ida->setEnabled(1);
+    ui->photo_5->clear();
+    ui->age_2->setValue(0);
+    ui->chemin_5->clear();
 }
 //Besoin Plante
 void Menu::initbp()
@@ -235,6 +268,7 @@ void Menu::initbp()
     ui->cx_idbp->clear();
     ui->cx_nutp->clear();
     ui->cx_idbp->setEnabled(1);
+    ui->Eau->setValue(0);
 }
 //production plante
 void Menu::initpp()
@@ -277,6 +311,15 @@ void Menu::initmenu()
     ui->pushButton_95->setEnabled(1);
 
 
+}
+//init fonction
+void Menu::initfonction()
+{
+    ui->cx_idFonction->clear();
+    ui->cx_idFonction->setEnabled(1);
+    ui->cx_nomFonction->clear();
+    ui->cx_salaire->setValue(0);
+    ui->cx_description->clear();
 }
 //bouton categorie materiel
 void Menu::on_pushButton_clicked()
@@ -331,6 +374,9 @@ void Menu::on_pushButton_6_clicked()
     { click->play();}
     else
     { click->stop();}
+    tmpmat.supprimer_materiel0();
+
+    ui->afficher_materiel->setModel(tmpmat.afficher_materiel());
     ui->stackedWidget->setCurrentIndex(3);
 
 
@@ -395,10 +441,61 @@ void Menu::on_pushButton_24_clicked()
     }else {  sa.stop();}
 }
 //categorie materiel
+//controle de saisie
+bool Menu::controleDeSaisieCategoerieMateriel(){
+    bool result = true;
+    bool number = true;
+
+    ui->cx_idcategorie->text().toInt(&number);
+
+    if(ui->cx_idcategorie->text() == ""){
+        ui->remarque_id->setText("*");
+        if (lng=="en")
+        {ui->text_id_3->setText("id empty!");}
+        else {ui->text_id_3->setText("id vide!");}
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_id->setText("*");
+            if (lng=="en")
+            { ui->text_id_3->setText("id C not numeric!"); }
+            else {ui->text_id_3->setText("id C non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_id->setText("");
+            ui->text_id_3->setText("");
+        }
+
+    if(ui->cx_nomcategorie->text() == ""){
+        ui->remarque_nom->setText("*");
+        if (lng=="en")
+        { ui->text_nom_3->setText("empty name!");}
+        else {ui->text_nom_3->setText("nom vide!");}
+        result = false;
+    }
+    else{
+        ui->remarque_nom->setText("");
+        ui->text_nom_3->setText("");
+    }
+
+    return result;
+}
+//test nom
+bool Menu::testnom(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nom->setText("*");
+        ui->text_nom_3->setText("le nom non string !");
+        result = false;
+    }
+
+    return result;
+}
 //afficher categorie materiel
 void Menu::on_AfficherCategorieMateriel_clicked()
 {
-
     if (cl==1)
     { click->play();}
     else
@@ -425,7 +522,7 @@ void Menu::on_AfficherCategorieMateriel_clicked()
 }
 //supprimer categorie
 void Menu::on_SupprimerCategorieMateriel_clicked()
-{
+{boutonradiocm();
 
     if (cl==1)
     { click->play();}
@@ -436,51 +533,79 @@ void Menu::on_SupprimerCategorieMateriel_clicked()
         QMessageBox msgBox;
         QString idC = ui->cx_idcategorie->text();
         QString NOMCATEGORIE =ui->cx_nomcategorie->text();
-        bool test=tmpcat.supprimer_Categorie(idC);
-        if(test)
+        if (controleDeSaisieCategoerieMateriel())
         {
-            ui->afficher_categorie->setModel(tmpcat.afficher_Categorie());
-            if(speek==1)
+            bool test=tmpcat.supprimer_Categorie(idC);
+            if(test)
+            {
+                ui->afficher_categorie->setModel(tmpcat.afficher_Categorie());
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.supprimercmen(NOMCATEGORIE);
+                        ui->label_3->setText("Remove category");}
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.supprimercmfr(NOMCATEGORIE);
+                        ui->label_3->setText("Supprimer Catégorie");
+                    }
+                }else {  sa.stop();}
+                ui->cx_idcategorie->setEnabled(1);
+                initcm();
+            }
+            else
+
             {
                 if (lng=="en")
                 {
-                    sa.languageSelecteden();
-                    sa.supprimercmen(NOMCATEGORIE);
-                    ui->label_3->setText("Remove category");}
+                    QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                    msgBox.setText("verify id  !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
                 else
                 {
-                    sa.languageSelectedfr();
-                    sa.supprimercmfr(NOMCATEGORIE);
-                    ui->label_3->setText("Supprimer Catégorie");
+                    QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                    msgBox.setText("verifier l'id !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-            }else {  sa.stop();}
-            ui->cx_idcategorie->setEnabled(1);
-            initcm();
-        }
-        else
-
-        {
-            QPixmap pix("A:/LOGO.png");
-
-            msgBox.setText("verifier l'id  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+            }
         }
     }
+
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier categorie
 void Menu::on_ModifierCategorieMaeriel_clicked()
-{
+{boutonradiocm();
     if (cl==1)
     { click->play();}
     else
@@ -491,52 +616,78 @@ void Menu::on_ModifierCategorieMaeriel_clicked()
         QString IDCATEGORIE = ui->cx_idcategorie->text();
         QString NOMCATEGORIE= ui->cx_nomcategorie->text();
         gestion_categorie_materiel C(IDCATEGORIE,NOMCATEGORIE);
-
-        bool test=tmpcat.modifier_Categorie(C);
-        if(test)
+        if(controleDeSaisieCategoerieMateriel()&&testnom(ui->cx_nomcategorie->text()))
         {
-            ui->afficher_categorie->setModel(tmpcat.afficher_Categorie());//refresh
-            if(speek==1)
+            bool test=tmpcat.modifier_Categorie(C);
+            if(test)
+            {
+                ui->afficher_categorie->setModel(tmpcat.afficher_Categorie());//refresh
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifiercmen();
+                        ui->label_3->setText("Edit category");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.modifiercmfr();
+                        ui->label_3->setText("Modifier Catégorie");
+                    }
+                }else {  sa.stop();}
+                initcm();
+            }
+            else
             {
                 if (lng=="en")
                 {
-                    sa.languageSelecteden();
-                    sa.modifiercmen();
-                    ui->label_3->setText("Edit category");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.modifiercmfr();
-                    ui->label_3->setText("Modifier Catégorie");
-                }
-            }else {  sa.stop();}
-            initcm();
-        }
-        else
-        {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
 
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
+                    msgBox.setText("Invalid category !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
 
-            msgBox.setText("Catégorie non valide  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+                    msgBox.setText("Catégorie non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+            }
         }
     }
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //ajouter categorie
 void Menu::on_AjouterCategorieMateriel_clicked()
-{
+{boutonradiocm();
     if (cl==1)
     { click->play();}
     else
@@ -547,54 +698,83 @@ void Menu::on_AjouterCategorieMateriel_clicked()
         IDCATEGORIE=ui->cx_idcategorie->text();
         NOMCATEGORIE=ui->cx_nomcategorie->text();
         gestion_categorie_materiel C(IDCATEGORIE,NOMCATEGORIE);
-        bool test=C.ajouter_Categorie();
-        if(test)
+        if(controleDeSaisieCategoerieMateriel()&&testnom(ui->cx_nomcategorie->text()))
         {
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueCategorieMateriel.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nCatégorie a été ajoutée sous :\n idC :"+IDCATEGORIE+" \n nomC : "+NOMCATEGORIE+"";
-            cout << message2;
-            initcm();
-            if(speek==1)
+            bool test=C.ajouter_Categorie();
+            if(test)
             {
-                if (lng=="en")
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueCategorieMateriel.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nCatégorie a été ajoutée sous :\n idC :"+IDCATEGORIE+" \n nomC : "+NOMCATEGORIE+"";
+                cout << message2;
+                initcm();
+
+                ui->comboBox_categorie->setModel(tmpcat.afficher_Clist());
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.ajoutercmen(NOMCATEGORIE);
-                    ui->label_3->setText("Add category");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.ajoutercmen(NOMCATEGORIE);
+                        ui->label_3->setText("Add category");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.ajoutercmfr(NOMCATEGORIE);
+                        ui->label_3->setText("Ajouter Catégorie");
+                    }
+                }else {  sa.stop();}
+                ui->afficher_categorie->setModel(tmpcat.afficher_Categorie());
+
+            }
+            else
+            {
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");//I ajout
+
+                    msgBox.setText("Category already exists!.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
-                {
-                    sa.languageSelectedfr();
-                    sa.ajoutercmfr(NOMCATEGORIE);
-                    ui->label_3->setText("Ajouter Catégorie");
+                {QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Catégorie existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
-            }else {  sa.stop();}
-            ui->afficher_categorie->setModel(tmpcat.afficher_Categorie());
-
-        }
-        else
-        {
-
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-
-            msgBox.setText("Catégorie existe deja  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+            }
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 
 }
@@ -602,11 +782,12 @@ void Menu::on_AjouterCategorieMateriel_clicked()
 void Menu::on_afficher_categorie_activated(const QModelIndex &index)
 {
 
-
+    boutonradiocm();
     QString val=ui->afficher_categorie->model()->data(index).toString();
     QSqlQuery qry ;
 
     qry=tmpcat.tableclicked(val);
+
     if (qry.exec())
     {
         while (qry.next())
@@ -614,21 +795,24 @@ void Menu::on_afficher_categorie_activated(const QModelIndex &index)
             ui->cx_idcategorie->setDisabled(1);
             ui->cx_idcategorie->setText(qry.value(0).toString());
             ui->cx_nomcategorie->setText(qry.value(1).toString());
-            if(speek==1)
+            if (controleDeSaisieCategoerieMateriel())
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clicked();
-                    ui->label_3->setText("Selected Category");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.selectionee();
-                    ui->label_3->setText("Catégorie Selectionnée");
-                }
-            }else {  sa.stop();}
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clicked();
+                        ui->label_3->setText("Selected Category");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.selectionee();
+                        ui->label_3->setText("Catégorie Selectionnée");
+                    }
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -761,6 +945,175 @@ void Menu::on_lineEdit_recherche_textChanged(const QString &arg1)
     }
 }
 //materiel
+bool Menu::testnomm(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nomm->setText("*");
+        if(lng=="en")
+        {ui->text_nomm->setText("non string name !");}
+        else
+        { ui->text_nomm->setText("le nom non string !"); }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::testmarquem(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_marquem->setText("*");
+        if(lng=="en")
+        {ui->text_marquem->setText("non string brand !"); }
+        else { ui->text_marquem->setText("marque non string !");}
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::testdescm(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_descm->setText("*");
+        if(lng=="en")
+        {ui->text_descm->setText("description not string !");}
+        else{ui->text_descm->setText("description non string !");}
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::controleDeSaisieMateriel(){
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_idm->text().toInt(&number);
+
+    //id
+    if(ui->cx_idm->text() == ""){
+        ui->remarque_idm->setText("*");
+        if(lng=="en")
+        {ui->text_idm->setText("empty id!");}
+        else {ui->text_idm->setText("id vide!");}
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idm->setText("*");
+            if(lng=="en")
+            {  ui->text_idm->setText("id M non numeric!");}
+            else {ui->text_idm->setText("id M non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idm->setText("");
+            ui->text_idm->setText("");
+        }
+
+
+    //nom
+    if(ui->cx_nomM->text() == ""){
+        ui->remarque_nomm->setText("*");
+        if(lng=="en")
+        {  ui->text_nomm->setText("empty name!");}
+        else{ui->text_nomm->setText("nom vide!");}
+        result = false;
+    }
+    else if (testnom(ui->cx_nomM->text()))
+    {
+        ui->remarque_nomm->setText("");
+        ui->text_nomm->setText("");
+    }
+    //marque
+    if(ui->cx_marque->text() == ""){
+        ui->remarque_marquem->setText("*");
+        if(lng=="en")
+        { ui->text_marquem->setText("empty mark!");}
+        else {
+            ui->text_marquem->setText("marque vide!");
+        }
+        result = false;
+    }
+    else if (testmarquem(ui->cx_marque->text())){
+        ui->remarque_marquem->setText("");
+        ui->text_marquem->setText("");
+    }
+    //prix
+    if( ui->prix->value() <=0 ){
+        ui->remarque_prix->setText("*");
+        if(lng=="en")
+        {ui->text_prix->setText("price must be > 0  ");}
+        else{ui->text_prix->setText("prix doit etre > 0  ");}
+        result = false;
+    }
+    else{
+        ui->remarque_prix->setText("");
+        ui->text_prix->setText("");
+    }
+    //stock
+    if( ui->stock->value() <=0 ){
+        ui->remarque_stock->setText("*");
+        if (lng=="en")
+        { ui->text_stock->setText("stock must be > 0  ");}
+        else {ui->text_stock->setText("stock doit etre > 0  ");
+
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_stock->setText("");
+        ui->text_stock->setText("");
+    }
+    //desc
+    if(ui->cx_desc->toPlainText()== ""){
+        ui->remarque_descm->setText("*");
+        if(lng=="en")
+        { ui->text_descm->setText("empty description!");}
+        else
+        {
+            ui->text_descm->setText("description vide!");
+        }
+        result = false;
+    }else if (ui->cx_desc->toPlainText().length() < 20)
+    {
+        ui->remarque_descm->setText("*");
+        if(lng=="en")
+        { ui->text_descm->setText("description size > 20 !");}
+        else
+        {ui->text_descm->setText("taille du description > 20 !");
+
+        }
+        result = false;
+    }
+    else
+        if (testdescm(ui->cx_desc->toPlainText())){
+            ui->remarque_descm->setText("");
+            ui->text_descm->setText("");
+        }
+    //chemin
+    if(ui->chemin->text() == "")
+    {
+        ui->remarque_image->setText("*");
+        if(lng=="en")
+        { ui->text_image->setText("choose an image!");}
+        else
+        {
+            ui->text_image->setText("il faut choisir une image !");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_image->setText("");
+        ui->text_image->setText("");
+    }
+
+    return result;
+}
 //ajouter materiel
 void Menu::on_pushButton_22_clicked()
 {
@@ -775,61 +1128,94 @@ void Menu::on_pushButton_22_clicked()
         QString MARQUEMATERIEL= ui->cx_marque->text();
         int PRIXMATERIEL = ui->prix->text().toInt();
         int STOCKMATERIEL = ui->stock->text().toInt();
-        QString DESCMATERIEL= ui->cx_desc->text();
-        QString IDCATEGORIE = ui->comboBox_categorie->currentText();
-        QString IDFOURNISSUER = ui->comboBox_idf->currentText();
+        QString DESCMATERIEL= ui->cx_desc->toPlainText();
         QString IMAGE =ui->chemin->text();//LABEL CHEMIN
+
+        QAbstractItemModel * model = ui->comboBox_categorie->model();
+        QString IDCATEGORIE = model->data(model->index(ui->comboBox_categorie->currentIndex(),1)).toString();
+
+        QAbstractItemModel * model1 = ui->comboBox_idf->model();
+        QString IDFOURNISSUER = model1->data(model1->index(ui->comboBox_idf->currentIndex(),1)).toString();
+
         gestion_materiel M(IDMATERIEL,NOMMATERIEL,MARQUEMATERIEL,PRIXMATERIEL,STOCKMATERIEL,DESCMATERIEL,IDCATEGORIE,IMAGE,IDFOURNISSUER);
-        bool test=M.ajouter_materiel();
-        if(test)
+        if(controleDeSaisieMateriel()&&testnomm( ui->cx_nomM->text())&&testdescm( ui->cx_desc->toPlainText())&&testmarquem(ui->cx_marque->text()))
         {
-            if(speek==1)
-            {
-                if (lng=="en")
+            bool test=M.ajouter_materiel();
+            if(test)
+            {ui->comboBox_materiel->setModel(tmpmat.afficher_Mlist());
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.ajoutermen(NOMMATERIEL);
-                    ui->label_22->setText("Add Material");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.ajoutermen(NOMMATERIEL);
+                        ui->label_22->setText("Add Material");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.ajoutermfr(NOMMATERIEL);
+                        ui->label_22->setText("Ajouter Matériel");
+                    }
+
+                }else {  sa.stop();}
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueMateriel.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nMaterile  a été ajoutée sous : \nIdM:"+IDMATERIEL+"\nNomM: "+NOMMATERIEL+"\nMarqueM: "+MARQUEMATERIEL+"\nPrixM: "+ui->prix->text()+"\nStockM: "+STOCKMATERIEL+"\nDescriptionM: "+DESCMATERIEL+"\nIdC: "+IDCATEGORIE+"\nCheminImage: "+IMAGE+"\nIdF: "+IDFOURNISSUER ;
+                cout << message2;
+                ui->afficher_materiel->setModel(tmpmat.afficher_materiel());//refresh
+                ui->count->setNum(tmpmat.afficher_count());
+                initm();
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText(" Material already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();
-                    sa.ajoutermfr(NOMMATERIEL);
-                    ui->label_22->setText("Ajouter Matériel");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Matériel existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
 
-            }else {  sa.stop();}
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueMateriel.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nMaterile  a été ajoutée sous : \nIdM:"+IDMATERIEL+"\nNomM: "+NOMMATERIEL+"\nMarqueM: "+MARQUEMATERIEL+"\nPrixM: "+ui->prix->text()+"\nStockM: "+STOCKMATERIEL+"\nDescriptionM: "+DESCMATERIEL+"\nIdC: "+IDCATEGORIE+"\nCheminImage: "+IMAGE+"\nIdF: "+IDFOURNISSUER ;
-            cout << message2;
-            ui->afficher_materiel->setModel(tmpmat.afficher_materiel());//refresh
-            ui->count->setNum(tmpmat.afficher_count());
-            initm();
+            }
         }
-        else{
+    }
+    else
+    {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
 
-            msgBox.setText("Matériel existe deja  !.\n"
-                           "Click Cancel to exit.");
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
             msgBox.setIconPixmap(pix);
             msgBox.exec();
 
         }
     }
-    else
-    {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
-    }
 }
 //supprimer materiel
 void Menu::on_pushButton_27_clicked()
@@ -869,22 +1255,46 @@ void Menu::on_pushButton_27_clicked()
         else
 
         {
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
+            if(lng=="en")
+            { QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+                msgBox.setText("verify id  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
 
-            msgBox.setText("verifier le id  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+                msgBox.setText("verifier l'id !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
         }
     }
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier materiel
@@ -903,55 +1313,87 @@ void Menu::on_pushButton_28_clicked()
         QString MARQUEMATERIEL= ui->cx_marque->text();
         int PRIXMATERIEL = ui->prix->text().toInt();
         int STOCKMATERIEL = ui->stock->text().toInt();
-        QString DESCMATERIEL= ui->cx_desc->text();
-        QString IDCATEGORIE = ui->comboBox_categorie->currentText();
-        QString IDFOURNISSUER = ui->comboBox_idf->currentText();
+        QString DESCMATERIEL= ui->cx_desc->toPlainText();
+        QAbstractItemModel * model = ui->comboBox_categorie->model();
+        QString IDCATEGORIE = model->data(model->index(ui->comboBox_categorie->currentIndex(),1)).toString();
+
+        QAbstractItemModel * model1 = ui->comboBox_idf->model();
+        QString IDFOURNISSUER = model1->data(model1->index(ui->comboBox_idf->currentIndex(),1)).toString();
+
         QString IMAGE= ui->chemin->text();//LABEL CHEMIN
 
-
-
         gestion_materiel M(IDMATERIEL,NOMMATERIEL,MARQUEMATERIEL,PRIXMATERIEL,STOCKMATERIEL,DESCMATERIEL,IDCATEGORIE,IMAGE,IDFOURNISSUER);
-        bool test=tmpmat.modifier_materiel(M);
-        if(test)
+        if(controleDeSaisieMateriel()&&testnomm( ui->cx_nomM->text())&&testdescm( ui->cx_desc->toPlainText())&&testmarquem(ui->cx_marque->text()))
         {
 
-            ui->afficher_materiel->setModel(tmpmat.afficher_materiel());//refresh
+            bool test=tmpmat.modifier_materiel(M);
+            if(test)
+            {
+                ui->count->setStyleSheet("QLabel{min-width: 20px; min-height: 20px;max-width:20px; max-height: 16px;border-radius: 8px;  border:1px solid black;background:red;}");
+                ui->count->setNum(tmpmat.afficher_count());
+                ui->afficher_materiel->setModel(tmpmat.afficher_materiel());//refresh
+                ui->comboBox_materiel->setModel(tmpmat.afficher_Mlist());
+                if(speek==1)   {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifiermen();
+                        ui->label_22->setText("Edit Material");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.modifiermfr();
+                        ui->label_22->setText("Modifier Matériel");
+                    }
 
-            if(speek==1)   {
-                if (lng=="en")
+                }
+                else {  sa.stop();}
+                initm();
+            }
+            else
+            {
+                if(lng=="en")
                 {
-                    sa.languageSelecteden();
-                    sa.modifiermen();
-                    ui->label_22->setText("Edit Material");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid material  !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();
-                    sa.modifiermfr();
-                    ui->label_22->setText("Modifier Matériel");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Matériel non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
+            }
+        }}
 
-            }else {  sa.stop();}
-            initm();
-        }
-        else
-        {
+    else {
 
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-            msgBox.setText("Matériel non valide  !.\n"
-                           "Click Cancel to exit.");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
             msgBox.setIconPixmap(pix);
             msgBox.exec();
-        }
-    }
-    else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //ajouter photo materile
@@ -1092,7 +1534,7 @@ void Menu::on_recherche_textChanged(const QString &arg1)
 
     }
     else {
-        ui->afficher_categorie->setModel(tmpmat.rechercher(q)) ;
+        ui->afficher_materiel->setModel(tmpmat.rechercher(q)) ;
         if (lng=="en")
         {
             ui->label_22->setText("Research");
@@ -1387,7 +1829,7 @@ int Menu::on_pushButton_13_clicked()
 
     }
 
-    QString id,nom,marque,prix ,stock , desc , idc , image ,idf;
+    QString id,nom,marque,prix ,stock , idc , image ,idf;
     QSqlQuery   qrry ;
     int i =50;
     int k=0;
@@ -1422,14 +1864,14 @@ int Menu::on_pushButton_13_clicked()
                 painter.drawText (90,10,"Marque");
                 painter.drawText (150,10,"Prix");
                 painter.drawText (200,10,"Stock");
-                painter.drawText (260,10,"Desc");
-                painter.drawText (310,10,"idC");
-                painter.drawText (370,10,"URL");
-                painter.drawText (590,10,"Photo");
-                painter.drawText (650,10,"idF");
+
+                painter.drawText (250,10,"idC");
+
+                painter.drawText (500,10,"Photo");
+                painter.drawText (360,10,"idF");
             }
 
-            painter.setFont(QFont("Arial",10));
+            painter.setFont(QFont("Arial",11));
             QPen penblack(Qt::black);
 
             painter.setPen(penblack);
@@ -1451,20 +1893,18 @@ int Menu::on_pushButton_13_clicked()
             stock=qrry.value(4).toString();
             painter.drawText(j*51,i, stock);
             j++;
-            desc=qrry.value(5).toString();
-            painter.drawText(j*52,i, desc);
-            j++;
+
             idc=qrry.value(6).toString();
             painter.drawText(j*53,i, idc);
             j++;
             image=qrry.value(7).toString();
-            painter.drawText(j*54,i, image);
+
 
             QImage chemin(image);
             painter.drawPixmap(j*80,i,50,50,QPixmap::fromImage(QImage(chemin)));
             j++;
             idf=qrry.value(8).toString();
-            painter.drawText(j*83,i, idf);
+            painter.drawText(j*54,i, idf);
 
             i+=80;
 
@@ -1547,22 +1987,25 @@ void Menu::on_afficher_materiel_activated(const QModelIndex &index)
             ui->photo->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
             ui->comboBox_idf->setCurrentText(qry.value(8).toString());
 
-            if(speek==1)
+            if(controleDeSaisieMateriel()&&testnomm( ui->cx_nomM->text())&&testdescm( ui->cx_desc->toPlainText())&&testmarquem(ui->cx_marque->text()))
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clickedmen();
-                    ui->label_22->setText("Selected Material");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.clickedmfr();
-                    ui->label_22->setText("Matériel Sélectionée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clickedmen();
+                        ui->label_22->setText("Selected Material");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.clickedmfr();
+                        ui->label_22->setText("Matériel Sélectionée");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -1606,7 +2049,7 @@ void Menu::on_pushButton_26_clicked()
 }
 //afficher materiel
 void Menu::on_pushButton_18_clicked()
-{
+{initm();
     if (cl==1)
     { click->play();}
     else
@@ -1629,6 +2072,34 @@ void Menu::on_pushButton_18_clicked()
     ui->afficher_materiel->setModel(tmpmat.afficher_materiel());
 }
 //affectation
+bool Menu::controleDeSaisieaffectation()
+{ bool result = true;
+    bool number = true;
+
+    ui->cx_id_affectation->text().toInt(&number);
+
+    if(ui->cx_id_affectation->text() == ""){
+        ui->remarque_idaffectation->setText("*");
+        if(lng=="en")
+        { ui->text_idaffectation->setText("empty id!");}
+        else
+        { ui->text_idaffectation->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idaffectation->setText("*");
+            if(lng=="en")
+            { ui->text_idaffectation->setText("id Non-numeric assignment!");}
+            else
+            {ui->text_idaffectation->setText("id Affectation non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idaffectation->setText("");
+            ui->text_idaffectation->setText("");
+        }
+
+    return result;
+}
 //ajouter affectation
 void Menu::on_pushButton_8_clicked()
 {
@@ -1638,64 +2109,103 @@ void Menu::on_pushButton_8_clicked()
     { click->stop();}
     if(securite==0)
     {
-        QString IDAFFECTATION,CIN,IDMATERIEL;
+        QString IDAFFECTATION;
         IDAFFECTATION=ui->cx_id_affectation->text();
-        CIN=ui->comboBox_cin->currentText();
-        IDMATERIEL=ui->comboBox_materiel->currentText();
+
         QString NOMMATERIEL,MARQUEMATERIEL,DESCMATERIEL,IDCATEGORIE,IMAGE,IDFOURNISSUER;
         int PRIXMATERIEL,STOCKMATERIEL;
+        QAbstractItemModel * model = ui->comboBox_materiel->model();
+        QString IDMATERIEL = model->data(model->index(ui->comboBox_materiel->currentIndex(),1)).toString();
+        QAbstractItemModel * model1 = ui->comboBox_cin->model();
+        QString CIN = model1->data(model1->index(ui->comboBox_cin->currentIndex(),1)).toString();
         gestion_affectation A(IDAFFECTATION,CIN,IDMATERIEL);
         gestion_materiel M(IDMATERIEL,NOMMATERIEL,MARQUEMATERIEL,PRIXMATERIEL,STOCKMATERIEL,DESCMATERIEL,IDCATEGORIE,IMAGE,IDFOURNISSUER);
-        bool test=A.ajouter_Affectation();
-        if(test)
+        if (controleDeSaisieaffectation())
         {
-            tmpaff.Modifier_Stock(M);
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueAffectation.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nAffectation a été ajoutée sous :\n idA:"+IDAFFECTATION+" \n CIN:"+CIN+" \n idM:"+IDMATERIEL ;
-            cout << message2;
 
-            initaf();
-            ui->afficher_affectation->setModel(tmpaff.afficher_Affectation());
+            ui->comboBox_cin->setModel(tmpmat.afficher_CINlist());
+            ui->comboBox_materiel->setModel(tmpmat.afficher_Mlist());
+            bool test=A.ajouter_Affectation();
+            if(test)
+            {//tmpmat.supprimer_stock( );
 
-            if(speek==1)
+                tmpaff.Modifier_Stock(M);
+                tmpmat.supprimer_materiel0();
+                ui->count->setStyleSheet("QLabel{min-width: 20px; min-height: 20px;max-width:20px; max-height: 16px;border-radius: 8px;  border:1px solid black;background:red;}");
+                ui->count->setNum(tmpmat.afficher_count());
+                ui->afficher_materiel->setModel(tmpmat.afficher_materiel());
+                ui->comboBox_cin->setModel(tmpmat.afficher_CINlist());
+                ui->comboBox_materiel->setModel(tmpmat.afficher_Mlist());
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueAffectation.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nAffectation a été ajoutée sous :\n idA:"+IDAFFECTATION+" \n CIN:"+CIN+" \n idM:"+IDMATERIEL ;
+                cout << message2;
+
+                initaf();
+                ui->afficher_affectation->setModel(tmpaff.afficher_Affectation());
+
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.ajouteraen();
+                        ui->label_8->setText("Add Assignment");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.ajouterafr();
+                        ui->label_8->setText("Ajouter Affectation ");
+                    }
+
+                }else {  sa.stop();}
+
+            }
+            else
             {
-                if (lng=="en")
+                if(lng=="en")
                 {
-                    sa.languageSelecteden();
-                    sa.ajouteraen();
-                    ui->label_8->setText("Add Assignment");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Affectation existe deja  !.\n"
+                                   " Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.ajouterafr();
-                    ui->label_8->setText("Ajouter Affectation ");
+                else {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Assignment already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
+            }
+        }
+    }
 
-            }else {  sa.stop();}
+    else {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
 
         }
         else
-        {
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-            msgBox.setText("Affectation existe deja  !.\n"
-                           "Click Cancel to exit.");
+            msgBox.setText("Il faut désactiver la sécurite .");
             msgBox.setIconPixmap(pix);
             msgBox.exec();
-        }
-    }
-    else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+        }
     }
 }
 //afficher affectation
@@ -1741,23 +2251,29 @@ void Menu::on_afficher_affectation_activated(const QModelIndex &index)
             ui->cx_id_affectation->setText(qry.value(0).toString());
             ui->comboBox_cin->setCurrentText(qry.value(1).toString());
             ui->comboBox_materiel->setCurrentText(qry.value(2).toString());
+            /*f.setId(p.getIdFonction());
+            QAbstractItemModel * model = f.afficherFonctions(2);
 
-            if(speek==1)
+            ui->comboBox->setCurrentIndex(ui->comboBox->findText(model->data(model->index(0,0)).toString()));*/
+            if (controleDeSaisieaffectation())
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clickedena();
-                    ui->label_8->setText("Selected Assignment");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.clickedfra();
-                    ui->label_8->setText("Affectation Sélectionnée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clickedena();
+                        ui->label_8->setText("Selected Assignment");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.clickedfra();
+                        ui->label_8->setText("Affectation Sélectionnée");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -1798,22 +2314,45 @@ void Menu::on_pushButton_3_clicked()
         }
         else
         {
-
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-            msgBox.setText("verifier l'id  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+            if(lng=="en")
+            {
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+                msgBox.setText("verify id !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+                msgBox.setText("verifier l'id  !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
         }
     }
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier Affectation
@@ -1831,47 +2370,77 @@ void Menu::on_pushButton_4_clicked()
         QString  IDMATERIEL = ui->comboBox_materiel->currentText();
 
         gestion_affectation A(IDAFFECTATION,CIN,IDMATERIEL);
-        bool test=tmpaff.modifier_Affectation(A);
-        if(test)
+        QString NOMMATERIEL,MARQUEMATERIEL,DESCMATERIEL,IDCATEGORIE,IMAGE,IDFOURNISSUER;
+        int PRIXMATERIEL,STOCKMATERIEL;
+        gestion_materiel M(IDMATERIEL,NOMMATERIEL,MARQUEMATERIEL,PRIXMATERIEL,STOCKMATERIEL,DESCMATERIEL,IDCATEGORIE,IMAGE,IDFOURNISSUER);
+        if (controleDeSaisieaffectation())
         {
-
-            ui->afficher_affectation->setModel(tmpaff.afficher_Affectation());
-
-            if(speek==1)
+            bool test=tmpaff.modifier_Affectation(A);
+            if(test)
             {
-                if (lng=="en")
+                tmpaff.Modifier_Stock(M);
+                ui->afficher_materiel->setModel(tmpmat.afficher_materiel());
+                ui->afficher_affectation->setModel(tmpaff.afficher_Affectation());
+
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.modifieraen();
-                    ui->label_8->setText("Edit Assignment");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifieraen();
+                        ui->label_8->setText("Edit Assignment");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.modifierafr();
+                        ui->label_8->setText("Modifier Affectation");
+                    }
+                }else {  sa.stop();}
+                initaf();
+            }
+            else
+            {
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Matériel non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();
-                    sa.modifierafr();
-                    ui->label_8->setText("Modifier Affectation");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid material  !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-            }else {  sa.stop();}
-            initaf();
-        }
-        else
-        {
-
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-            msgBox.setText("Matériel non valide  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+            }
         }
     }
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //trier selon id Affectation  croissant
@@ -2005,6 +2574,189 @@ void Menu::on_Recherche_textChanged(const QString &arg1)
     }
 }
 //fournisseur
+
+bool Menu::testnomf(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nomf->setText("*");
+        if (lng=="en")
+        { ui->text_nomf->setText("non string name !");}
+        else {
+            ui->text_nomf->setText("le nom non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::testprenomf(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_prenomf->setText("*");
+        if(lng=="en")
+        {ui->text_prenomf->setText("the non string first name !");}
+        else
+        {
+            ui->text_prenomf->setText("le prenom non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::controleDeSaisieFournisseur()
+{
+    bool result = true;
+    bool number = true;
+
+    bool number1 = true;
+
+    ui->cx_idf->text().toInt(&number);
+    ui->cx_tel->text().toInt(&number1);
+    //id
+    if(ui->cx_idf->text() == ""){
+        ui->remarque_idf->setText("*");
+        if(lng=="en")
+
+        { ui->text_idf->setText(" empty id!");}
+        else
+        { ui->text_idf->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idf->setText("*");
+            if(lng=="en")
+            {   ui->text_idf->setText("id F non numeric!");}
+            else
+            {ui->text_idf->setText("id F non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idf->setText("");
+            ui->text_idf->setText("");
+        }
+
+
+    //nom
+    if(ui->cx_nomf->text() == ""){
+        ui->remarque_nomf->setText("*");
+        if(lng=="en")
+        { ui->text_nomf->setText("empty name!");}
+        else
+        {ui->text_nomf->setText("nom vide!");}
+        result = false;
+    }
+    else if (testnomf(ui->cx_nomf->text()))
+    {
+        ui->remarque_nomf->setText("");
+        ui->text_nomf->setText("");
+    }
+    //prenom
+    if(ui->cx_prenomf->text() == ""){
+        ui->remarque_prenomf->setText("*");
+        if(lng=="en")
+        { ui->text_prenomf->setText("first name empty!");}
+        else {ui->text_prenomf->setText("prenom vide!");}
+        result = false;
+    }
+    else if (testprenomf(ui->cx_prenomf->text())){
+        ui->remarque_prenomf->setText("");
+        ui->text_prenomf->setText("");
+    }
+    //age
+    if( ui->age->value() <20 ){
+        ui->remarque_age->setText("*");
+        if (lng=="en")
+        { ui->text_age->setText("age must be> 20 years old ");}
+        else
+        { ui->text_age->setText("age doit etre > 20 ans ");}
+        result = false;
+    }
+    else{
+        ui->remarque_age->setText("");
+        ui->text_age->setText("");
+    }
+    //num
+    if(ui->cx_tel->text() == ""){
+        ui->remarque_num->setText("*");
+        if(lng=="en")
+        {  ui->text_num->setText("empty number!");}
+        else
+        {  ui->text_num->setText("numéro vide!");}
+        result = false;
+    }else if (ui->cx_tel->text().length()!=8)
+    {
+        ui->remarque_num->setText("*");
+        if(lng=="en")
+        { ui->text_num->setText("number size > 8!");}
+        else
+        {
+            ui->text_num->setText("taille du numero > 8 !");
+        }
+        result = false;
+    }
+    else
+        if (!number1  ){
+            ui->remarque_num->setText("*");
+            if(lng=="en")
+            { ui->text_num->setText("num non numérique!");}
+            else
+            {ui->text_num->setText(" num non numeric!");   }
+            result = false;}
+        else{
+            ui->remarque_num->setText("");
+            ui->text_num->setText("");
+        }
+    //mail
+    if(ui->cx_mailf->text() == ""){
+        ui->remarque_mail->setText("*");
+        if(lng=="en")
+        { ui->text_mail->setText("mail vide!");}
+        else
+        {
+            ui->text_mail->setText("empty mail!");
+        }
+        result = false;
+    }
+    else if (! sy.testmail(ui->cx_mailf->text()))
+    {
+        ui->remarque_mail->setText("*");
+        if(lng=="en")
+        { ui->text_mail->setText("invalid email!");}
+        else
+        {
+            ui->text_mail->setText("mail non valide!");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_mail->setText("");
+        ui->text_mail->setText("");
+    }
+    //sexe
+    if (ui->femme->isChecked()||ui->homme->isChecked())
+    {
+        ui->remarque_sexe->setText("");
+        ui->text_sexe->setText("");
+
+    }
+
+    else
+    { ui->remarque_sexe->setText("*");
+        if(lng=="en")
+        {   ui->text_sexe->setText("chosen sex!");}
+        else
+        {
+            ui->text_sexe->setText("choisie sexe !");
+        }
+        result = false;
+
+    }
+    return result;
+}
 //ajouter fournissuer
 void Menu::on_pushButton_41_clicked()
 {
@@ -2017,7 +2769,7 @@ void Menu::on_pushButton_41_clicked()
         QString IDFOURNISSEUR = ui->cx_idf->text();
         QString NOMFOURNISSEUR = ui->cx_nomf->text();
         QString PRENOMFOURNISSEUR = ui->cx_prenomf->text();
-        int NUMTEL = ui->cx_tel->text().toInt();
+        QString NUMTEL = ui->cx_tel->text();
         QString SEXE;
         int AGE= ui->age->text().toInt();
         if (ui->femme->isChecked())
@@ -2025,57 +2777,85 @@ void Menu::on_pushButton_41_clicked()
         if (ui->homme->isChecked())
         {SEXE="homme";}
         QString MAIL = ui->cx_mailf->text();
+
         gestion_fournisseur_materiaux f(IDFOURNISSEUR,NOMFOURNISSEUR,PRENOMFOURNISSEUR,NUMTEL,AGE,SEXE, MAIL);
-        bool test=f.ajouter_fournisseur();
-        if(test)
+        if(controleDeSaisieFournisseur()&&testnomf(NOMFOURNISSEUR)&&testprenomf(PRENOMFOURNISSEUR))
         {
-            if(speek==1)
+
+            bool test=f.ajouter_fournisseur();
+            if(test)
             {
-                if (lng=="en")
+                ui->comboBox_idf->setModel(tmpf.afficher_Flist());
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.ajouterfen(NOMFOURNISSEUR);
-                    ui->label_31->setText("Add supplier");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.ajouterfen(NOMFOURNISSEUR);
+                        ui->label_31->setText("Add supplier");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.ajouterffr(NOMFOURNISSEUR);
+                        ui->label_31->setText("Ajouter Fournisseur");
+                    }
+
+                }else {  sa.stop();}
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueFourniseur.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString res1= QString::number(AGE);
+                //QString res2= QString::number(NUMTEL);
+                QString message2="\nFournisseur a été ajoutée sous :\nIdF :"+IDFOURNISSEUR+"\nnomF:"+NOMFOURNISSEUR+"\nprenomF: "+PRENOMFOURNISSEUR+"\nNumTel: "+NUMTEL+"\nage: "+res1+"\nsexe:"+SEXE+"\nmail:"+MAIL+ "";
+                cout << message2;
+                ui->afficher_fournisseur->setModel(tmpf.afficher_fournisseur());//refresh
+                initf();
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Supplier already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();
-                    sa.ajouterffr(NOMFOURNISSEUR);
-                    ui->label_31->setText("Ajouter Fournisseur");
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Fournisseur existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-
-            }else {  sa.stop();}
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueFourniseur.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString res1= QString::number(AGE);
-            QString res2= QString::number(NUMTEL);
-            QString message2="\nFournisseur a été ajoutée sous :\nIdF :"+IDFOURNISSEUR+"\nnomF:"+NOMFOURNISSEUR+"\nprenomF: "+PRENOMFOURNISSEUR+"\nNumTel: "+res2+"\nage: "+res1+"\nsexe:"+SEXE+"\nmail:"+MAIL+ "";
-            cout << message2;
-            ui->afficher_fournisseur->setModel(tmpf.afficher_fournisseur());//refresh
-            initf();
-        }
-        else{
-
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-
-            msgBox.setText("Fournisseur existe deja  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
-
+            }
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //supprimer fournissuer
@@ -2116,23 +2896,48 @@ void Menu::on_pushButton_37_clicked()
         }
         else
         {
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
+            if(lng=="en")
+            {
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
 
-            msgBox.setText("verifier le cin  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+                msgBox.setText("check idf  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verifier le idf  !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //afficher fournissuer
@@ -2176,7 +2981,7 @@ void Menu::on_pushButton_34_clicked()
         QString IDFOURNISSEUR = ui->cx_idf->text();
         QString NOMFOURNISSEUR = ui->cx_nomf->text();
         QString PRENOMFOURNISSEUR = ui->cx_prenomf->text();
-        int NUMTEL = ui->cx_tel->text().toInt();
+        QString NUMTEL = ui->cx_tel->text();
         int AGE= ui->age->text().toInt();
         QString SEXE;
         if (ui->femme->isChecked())
@@ -2185,51 +2990,79 @@ void Menu::on_pushButton_34_clicked()
         {SEXE="homme";}
         QString MAIL = ui->cx_mailf->text();
         gestion_fournisseur_materiaux F(IDFOURNISSEUR,NOMFOURNISSEUR,PRENOMFOURNISSEUR,NUMTEL,AGE,SEXE, MAIL);
-        bool test=tmpf.modifier_fournisseur(F);
-        if(test)
+        if(controleDeSaisieFournisseur()&&testnomf(NOMFOURNISSEUR)&&testprenomf(PRENOMFOURNISSEUR))
         {
-            ui->afficher_fournisseur->setModel(tmpf.afficher_fournisseur());//refresh
-            ui->listView->setModel(tmpf.afficher_Listemail());
-            ui->listView2->setModel(tmpf.afficher_Listtel());
-
-            if(speek==1)
+            bool test=tmpf.modifier_fournisseur(F);
+            if(test)
             {
-                if (lng=="en")
+                ui->afficher_fournisseur->setModel(tmpf.afficher_fournisseur());//refresh
+                ui->listView->setModel(tmpf.afficher_Listemail());
+                ui->listView2->setModel(tmpf.afficher_Listtel());
+
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.modifierfen();
-                    ui->label_31->setText("Edit supplier");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifierfen();
+                        ui->label_31->setText("Edit supplier");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.modifierffr();
+                        ui->label_31->setText("Modifier Fournisseur");
+                    }
+
+                }else {  sa.stop();}
+                initf();
+            }
+            else
+            {
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+
+                    msgBox.setText("Invalid supplier  !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();
-                    sa.modifierffr();
-                    ui->label_31->setText("Modifier Fournisseur");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+
+                    msgBox.setText("Fournisseur non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
-
-            }else {  sa.stop();}
-            initf();
-        }
-        else
-        {
-
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-
-            msgBox.setText("Fournisseur non valide  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+            }
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //Trier Croissant d'IdFournisseur
@@ -2406,18 +3239,15 @@ void Menu::on_pushButton_30_clicked()
     else {
         ui->afficher_fournisseur->setModel(tmpf.rechercher(q)) ;
 
-        if(speek==1)
+        if (lng=="en")
         {
-            if (lng=="en")
-            {
-                ui->label_31->setText("Search");
-            }
-            else
-            {
-                ui->label_31->setText("Chercher");
-            }
+            ui->label_31->setText("Search");
+        }
+        else
+        {
+            ui->label_31->setText("Chercher");
+        }
 
-        }else {  sa.stop();}
     }
 }
 //Statistique fournissuer
@@ -2472,26 +3302,29 @@ void Menu::on_afficher_fournisseur_activated(const QModelIndex &index)
             if (qry.value(5).toString()=="homme")
             {ui->homme->setChecked(true);}
             ui->cx_mailf->setText(qry.value(6).toString());
-            if(speek==1)
+            if(controleDeSaisieFournisseur()&&testnomf(ui->cx_nomf->text())&&testprenomf(ui->cx_prenomf->text()))
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clickedenf();
-                    ui->label_31->setText("Selected supplier");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.clickedfrf();
-                    ui->label_31->setText("Fournisseur Sélectionnée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clickedenf();
+                        ui->label_31->setText("Selected supplier");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.clickedfrf();
+                        ui->label_31->setText("Fournisseur Sélectionnée");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
+            }
         }
     }
 }
-//Afficher fournisseur
+//Afficher mail  fournisseur
 void Menu::on_pushButton_35_clicked()
 {
     if (cl==1)
@@ -2506,14 +3339,14 @@ void Menu::on_pushButton_35_clicked()
         if (lng=="en")
         {
             sa.languageSelecteden();
-            sa.afficherfen();
-            ui->label_31->setText("Show Supplier ");
+            sa.affichermailfournisseuren();
+            ui->label_31->setText("Show Mail Supplier ");
         }
         else
         {
             sa.languageSelectedfr();
-            sa.afficherffr();
-            ui->label_31->setText("Afficher Fournisseur ");
+            sa.affichermailfournisseurfr();
+            ui->label_31->setText("Afficher Mail Fournisseur ");
         }
 
     }else {  sa.stop();}
@@ -2552,23 +3385,25 @@ void Menu::on_listView_activated(const QModelIndex &index)
 
             ui->cx_mailf->setText(qry.value(6).toString());
         }
-
-        if(speek==1)
+        if(controleDeSaisieFournisseur()&&testnomf(ui->cx_nomf->text())&&testprenomf(ui->cx_prenomf->text()))
         {
-            if (lng=="en")
+            if(speek==1)
             {
-                sa.languageSelecteden();
-                sa.clickedmailen();
-                ui->label_31->setText("Mail Selected  ");
-            }
-            else
-            {
-                sa.languageSelectedfr();
-                sa.clickedmailfr();
-                ui->label_31->setText("Mail Selectionnée");
-            }
+                if (lng=="en")
+                {
+                    sa.languageSelecteden();
+                    sa.clickedmailen();
+                    ui->label_31->setText("Mail Selected  ");
+                }
+                else
+                {
+                    sa.languageSelectedfr();
+                    sa.clickedmailfr();
+                    ui->label_31->setText("Mail Selectionnée");
+                }
 
-        }else {  sa.stop();}
+            }else {  sa.stop();}
+        }
     }
 }
 //X liste mail
@@ -2636,22 +3471,25 @@ void Menu::on_listView2_activated(const QModelIndex &index)
             if (qry.value(5).toString()=="homme")
             {ui->homme->setChecked(true);}
             ui->cx_mailf->setText(qry.value(6).toString());
-            if(speek==1)
+            if(controleDeSaisieFournisseur()&&testnomf(ui->cx_nomf->text())&&testprenomf(ui->cx_prenomf->text()))
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clickedtelen();
-                    ui->label_31->setText("Phone number Selected  ");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.clickedtelfr();
-                    ui->label_31->setText("Numéro de télèphone Selectionnée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clickedtelen();
+                        ui->label_31->setText("Phone number Selected  ");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.clickedtelfr();
+                        ui->label_31->setText("Numéro de télèphone Selectionnée");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -2690,6 +3528,22 @@ void Menu::on_pushButton_45_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
+
+
     ui->stackedWidget->setCurrentIndex(0);
 }
 //categorie materiel vers menu
@@ -2699,6 +3553,20 @@ void Menu::on_pushButton_46_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //affectation vers menu
@@ -2708,6 +3576,20 @@ void Menu::on_pushButton_47_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //materiel vers menu
@@ -2717,6 +3599,20 @@ void Menu::on_pushButton_48_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //bouton affectation
@@ -2820,6 +3716,9 @@ void Menu::on_pushButton_15_clicked()
     { click->play();}
     else
     { click->stop();}
+    tmpmat.supprimer_materiel0();
+
+    ui->afficher_materiel->setModel(tmpmat.afficher_materiel());
     ui->stackedWidget->setCurrentIndex(3);
 
     if(speek==1)
@@ -2837,6 +3736,57 @@ void Menu::on_pushButton_15_clicked()
     }else {  sa.stop();}
 }
 //categorie plante
+bool Menu::controleDeSaisieCategoeriePlante(){
+    bool result = true;
+    bool number = true;
+
+    ui->cx_idcategorieplante->text().toInt(&number);
+
+    if(ui->cx_idcategorieplante->text() == ""){
+        ui->remarque_idCM->setText("*");
+        if (lng=="en")
+        {ui->text_CP->setText("id empty!");}
+        else {ui->text_CP->setText("id vide!");}
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idCM->setText("*");
+            if (lng=="en")
+            { ui->text_CP->setText("id CP not numeric!"); }
+            else {ui->text_CP->setText("id CP non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idCM->setText("");
+            ui->text_CP->setText("");
+        }
+
+    if(ui->cx_nomcategorieplante->text() == ""){
+        ui->remarque_nomCP->setText("*");
+        if (lng=="en")
+        { ui->text_nomCP->setText("empty name!");}
+        else {ui->text_nomCP->setText("nom vide!");}
+        result = false;
+    }
+    else{
+        ui->remarque_nomCP->setText("");
+        ui->text_nomCP->setText("");
+    }
+
+    return result;
+}
+//test nom
+bool Menu::testnomCP(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nomCP->setText("*");
+        ui->text_nomCP->setText("le nom non string !");
+        result = false;
+    }
+
+    return result;
+}
 //ajouter categorie plante
 void Menu::on_pushButton_54_clicked()
 {
@@ -2850,57 +3800,88 @@ void Menu::on_pushButton_54_clicked()
         IDCATEGORIEPLANTE=ui->cx_idcategorieplante->text();
         NOMCATEGORIEPLANTE=ui->cx_nomcategorieplante->text();
         gestion_categorie_plante C(IDCATEGORIEPLANTE,NOMCATEGORIEPLANTE);
-        bool test=C.ajouter_Categorie();
-        if(test)
+        if(controleDeSaisieCategoeriePlante()&&testnomCP(ui->cx_nomcategorieplante->text()))
         {
 
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueEspecePlante.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nCatégorie Plante a été ajoutée sous:\nidCP :"+IDCATEGORIEPLANTE+"\nnomCP : "+NOMCATEGORIEPLANTE+"";
-            cout << message2;
-
-            if(speek==1)
+            bool test=C.ajouter_Categorie();
+            if(test)
             {
-                if (lng=="en")
+
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueEspecePlante.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nCatégorie Plante a été ajoutée sous:\nidCP :"+IDCATEGORIEPLANTE+"\nnomCP : "+NOMCATEGORIEPLANTE+"";
+                cout << message2;
+                initcp();
+                ui->comboBox_categorie_2->setModel(tmpcatp.afficher_Clist());
+                ui->comboBox_CP->setModel(tmppp.afficher_pplist());
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.ajoutercategoriepalnteen();
-                    ui->label_48->setText("Add Category plant.");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.ajoutercategoriepalnteen();
+                        ui->label_48->setText("Add Category plant.");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.ajoutercategoriepalntefr();
+                        ui->label_48->setText("ajouter Catégorie Plante");
+                    }
+
+                }else
+                {  sa.stop();}
+
+                ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());
+
+            }
+            else
+            {
+
+
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");//I ajout
+
+                    msgBox.setText("Category already exists!.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-                else {
-                    sa.languageSelectedfr();
-                    sa.ajoutercategoriepalntefr();
-                    ui->label_48->setText("ajouter Catégorie Plante");
+                else
+                {QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Catégorie existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
-
-            }else
-            {  sa.stop();}
-            initcp();
-            ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());
-
-        }
-        else
-        {
-
-
-            QMessageBox msgBox;
-            QPixmap pix("A:/LOGO.png");
-
-            msgBox.setText("Catégorie existe deja  !.\n"
-                           "Click Cancel to exit.");
-            msgBox.setIconPixmap(pix);
-            msgBox.exec();
+            }
         }
     }
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //bouton categorie plante
@@ -2952,12 +3933,13 @@ void Menu::on_pushButton_44_clicked()
 //afficher categorie plantes
 void Menu::on_pushButton_53_clicked()
 {
+
     if (cl==1)
     { click->play();}
     else
     { click->stop();}
     ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());
-
+    initcp();
     if(speek==1)
     {
         if (lng=="en")
@@ -2988,8 +3970,9 @@ void Menu::on_pushButton_51_clicked()
         bool test=tmpcatp.supprimer_Categorie(idC);
         if(test)
         {
-            ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());
             initcp();
+            ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());
+
             if(speek==1)
             {
                 if (lng=="en")
@@ -3007,18 +3990,46 @@ void Menu::on_pushButton_51_clicked()
             }else {  sa.stop();}
         }
         else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer Catégorie"),
-                                  QObject::tr("verifier l'id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-       //bech tbadlou
+        {if (lng=="en")
+            {QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("check the idcp  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("verifier le idcp !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
     }
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //click categorie plante
@@ -3036,22 +4047,25 @@ void Menu::on_affiche_categorieplante_activated(const QModelIndex &index)
             ui->cx_idcategorieplante->setDisabled(1);
             ui->cx_idcategorieplante->setText(qry.value(0).toString());
             ui->cx_nomcategorieplante->setText(qry.value(1).toString());
-            if(speek==1)
+            if(controleDeSaisieCategoeriePlante()&&testnomCP(ui->cx_nomcategorieplante->text()))
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clickedencp();
-                    ui->label_48->setText("Selected category plant");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.clickedfrcp();
-                    ui->label_48->setText("Catégorie palnte Sélectionnée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clickedencp();
+                        ui->label_48->setText("Selected category plant");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.clickedfrcp();
+                        ui->label_48->setText("Catégorie palnte Sélectionnée");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -3067,45 +4081,77 @@ void Menu::on_pushButton_55_clicked()
         QString IDCATEGORIEPLANTE = ui->cx_idcategorieplante->text();
         QString NOMCATEGORIEPLANTE= ui->cx_nomcategorieplante->text();
         gestion_categorie_plante C(IDCATEGORIEPLANTE,NOMCATEGORIEPLANTE);
-        bool test=tmpcatp.modifier_Categorie(C);
-        if(test)
+        if(controleDeSaisieCategoeriePlante()&&testnomCP(ui->cx_nomcategorieplante->text()))
         {
+            bool test=tmpcatp.modifier_Categorie(C);
+            if(test)
+            {initcp();
 
-            ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());//refresh
+                ui->affiche_categorieplante->setModel(tmpcatp.afficher_Categorie());//refresh
 
-            ui->cx_idcategorieplante->setEnabled(1);
-            initcp();
+                ui->cx_idcategorieplante->setEnabled(1);
 
-            if(speek==1)
+
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifiercategorieplanteen();
+                        ui->label_48->setText("Edit  category plant .");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.modifiercategorieplantefr();
+                        ui->label_48->setText("Modifier catégorie plante .");
+                    }
+
+                }else {  sa.stop();}
+            }
+            else
             {
                 if (lng=="en")
                 {
-                    sa.languageSelecteden();
-                    sa.modifiercategorieplanteen();
-                    ui->label_48->setText("Edit  category plant .");
-                }
-                else {
-                    sa.languageSelectedfr();
-                    sa.modifiercategorieplantefr();
-                    ui->label_48->setText("Modifier catégorie plante .");
-                }
+                    QMessageBox msgBox;
+                    QPixmap pix("A:/LOGO.png");
 
-            }else {  sa.stop();}
-        }
-        else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier Catégorie"),
-                                  QObject::tr("Catégorie non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-            //bech tbadlou
+                    msgBox.setText("Plant category already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {QMessageBox msgBox;
+                    QPixmap pix("A:/LOGO.png");
+
+                    msgBox.setText("Catégorie plante existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+            }
         }
     }
-    else {  QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+    else {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 
@@ -3142,7 +4188,7 @@ void Menu::on_radioButton_19_clicked()
     else
     { click->stop();}
     ui->affiche_categorieplante->setModel(tmpcatp.afficher_idDecroissant());//refresh
-    //ui->label_3->setText("Trier Décroissant du IdCatégorie");
+    ui->label_48->setText("Trier Décroissant du IdCatégorie");
 
     if(speek==1)
     {
@@ -3150,12 +4196,12 @@ void Menu::on_radioButton_19_clicked()
         {
             sa.languageSelecteden();
             sa.idDecroissanten();
-           // ui->label_3->setText("Sort descending by id Category .");
+            ui->label_48->setText("Sort descending by id Category .");
         }
         else {
             sa.languageSelectedfr();
             sa.idDecroissantfr();
-            //ui->label_3->setText("Trie Decroissant du IdCatégorie .");
+            ui->label_48->setText("Trie Decroissant du IdCatégorie .");
         }
 
     }else {  sa.stop();}
@@ -3169,7 +4215,7 @@ void Menu::on_radioButton_20_clicked()
     { click->stop();}
     ui->affiche_categorieplante->setModel(tmpcatp.afficher_nomCroissant());//refresh
 
-    // ui->label_3->setText("Trier A-Z");
+    ui->label_48->setText("Trier A-Z");
 
     if(speek==1)
     {
@@ -3177,12 +4223,12 @@ void Menu::on_radioButton_20_clicked()
         {
             sa.languageSelecteden();
             sa.tricatCroissantena();
-           // ui->label_3->setText("Sort A-Z .");
+            ui->label_48->setText("Sort A-Z .");
         }
         else {
             sa.languageSelectedfr();
             sa.tricatCroissantfra();
-            //ui->label_3->setText("Trie A-Z .");
+            ui->label_48->setText("Trie A-Z .");
         }
 
     }else {  sa.stop();}
@@ -3196,7 +4242,7 @@ void Menu::on_radioButton_21_clicked()
     else
     { click->stop();}
     ui->affiche_categorieplante->setModel(tmpcatp.afficher_nomDecroissant());//refresh
-    //ui->label_3->setText("Trier Z-A");
+    ui->label_48->setText("Trier Z-A");
 
     if(speek==1)
     {
@@ -3204,12 +4250,12 @@ void Menu::on_radioButton_21_clicked()
         {
             sa.languageSelecteden();
             sa.tricatdeCroissantena();
-            //ui->label_3->setText("Sort Z-A .");
+            ui->label_48->setText("Sort Z-A .");
         }
         else {
             sa.languageSelectedfr();
             sa.tricatdeCroissantfra();
-           // ui->label_3->setText("Trie Z-A .");
+            // ui->label_3->setText("Trie Z-A .");
         }
 
     }else {  sa.stop();}
@@ -3232,11 +4278,11 @@ void Menu::on_lineEdit_recherchecategorieplante_textChanged(const QString &arg1)
         {
             if (lng=="en")
             {
-                //ui->label_5->setText("Research");
+                ui->label_48->setText("Research");
             }
             else
             {
-               // ui->label_5->setText("Recherche");
+                ui->label_48->setText("Recherche");
             }
 
         }else {  sa.stop();}
@@ -3249,9 +4295,125 @@ void Menu::on_pushButton_56_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //plante
+bool Menu::controleDeSaisiePlante()
+{
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_idp->text().toInt(&number);
+
+    //id
+    if(ui->cx_idp->text() == ""){
+        ui->remarque_idp->setText("*");
+        if(lng=="en")
+
+        { ui->text_idp->setText(" empty id!");}
+        else
+        { ui->text_idp->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idp->setText("*");
+            if(lng=="en")
+            {   ui->text_idp->setText("id P non numeric!");}
+            else
+            {ui->text_idp->setText("id P non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idp->setText("");
+            ui->text_idp->setText("");
+        }
+    //secteur
+    if (ui->Button_1->isChecked()||ui->Button_2->isChecked()||ui->Button_3->isChecked()||ui->Button_4->isChecked())
+    {
+        ui->remarque_secteur->setText("");
+        ui->text_secteur->setText("");
+
+    }
+
+    else
+    { ui->remarque_secteur->setText("*");
+        if(lng=="en")
+        {   ui->text_secteur->setText("chosen secteur!");}
+        else
+        {
+            ui->text_secteur->setText("choisie secteur !");
+        }
+        result = false;
+    }
+    //chemin
+    if(ui->chemin_2->text() == "")
+    {
+        ui->remarque_imageplante->setText("*");
+        if(lng=="en")
+        { ui->text_imageplante->setText("choose an image!");}
+        else
+        {
+            ui->text_imageplante->setText("il faut choisir une image !");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_imageplante->setText("");
+        ui->text_imageplante->setText("");
+    }
+
+
+
+
+    //quantite
+    if( ui->Quantite->value() == 0 ){
+        ui->remarque_quantite->setText("*");
+        if (lng=="en")
+        { ui->text_quantite->setText("quantite must be > 0 ");}
+        else
+        { ui->text_quantite->setText("quantite doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_quantite->setText("");
+        ui->text_quantite->setText("");
+    }
+    //etat
+    if (ui->Mauvaise->isChecked()||ui->Bonne->isChecked())
+    {
+        ui->remarque_etat->setText("");
+        ui->text_etat->setText("");
+
+    }
+
+    else
+    { ui->remarque_etat->setText("*");
+        if(lng=="en")
+        {   ui->text_etat->setText("chosen status!");}
+        else
+        {
+            ui->text_etat->setText("choisie etat !");
+        }
+        result = false;
+
+    }
+    return result;
+}
 //plante vers menu
 void Menu::on_pushButton_57_clicked()
 {
@@ -3259,6 +4421,20 @@ void Menu::on_pushButton_57_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //bouton plante
@@ -3284,7 +4460,7 @@ void Menu::on_pushButton_49_clicked()
 
     }else {  sa.stop();}
 }
-//bouton photo categorie palnte
+//bouton photo categorie plante
 void Menu::on_pushButton_50_clicked()
 {
     if (cl==1)
@@ -3338,51 +4514,83 @@ void Menu::on_pushButton_67_clicked()
         QString IMG =ui->chemin_2->text();//LABEL CHEMIN
         QString IDBP=ui->comboBox_IDBP->currentText();
         gestion_plante P(IDPLANTE,SECTEUR,QUANTITE,ETAT,IDCATEGORIEPLANTE,IMG,CIN,IDBP);
-        bool test=P.ajouter_plante();
-        if(test)
+        if (controleDeSaisiePlante())
         {
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriquePlante.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nPlante a été ajoutée sous :\nidP:"+IDPLANTE+"\nSecteur: "+SECTEUR+"\nQuantite:  "+QUANTITE+"\nEtat: "+ETAT+"\nidCP :"+IDCATEGORIEPLANTE+"\n CheminPhoto: "+IMG+"\nCIN : "+CIN ;
-            cout << message2;
-            ui->afficher_plante->setModel(tmppl.afficher_plante());//refresh
-
-            initp();
-
-            if(speek==1)
+            bool test=P.ajouter_plante();
+            if(test)
             {
-                if (lng=="en")
-                {   sa.languageSelecteden();
-                    sa.ajouterplanteen();
-                    ui->label_57->setText("Add plant .");
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriquePlante.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nPlante a été ajoutée sous :\nidP:"+IDPLANTE+"\nSecteur: "+SECTEUR+"\nQuantite:  "+QUANTITE+"\nEtat: "+ETAT+"\nidCP :"+IDCATEGORIEPLANTE+"\n CheminPhoto: "+IMG+"\nCIN : "+CIN ;
+                cout << message2;
+                ui->afficher_plante->setModel(tmppl.afficher_plante());//refresh
+
+                initp();
+
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {   sa.languageSelecteden();
+                        sa.ajouterplanteen();
+                        ui->label_57->setText("Add plant .");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.ajouterplantefr();
+                        ui->label_57->setText("Ajouter plante .");
+                    }
+
+                }else {  sa.stop();}
+
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");//I ajout
+
+                    msgBox.setText(" Plant already exists!.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-                else {
-                    sa.languageSelectedfr();
-                    sa.ajouterplantefr();
-                    ui->label_57->setText("Ajouter plante .");
+                else
+                {QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Plante existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
 
-            }else {  sa.stop();}
-
-        }
-        else{
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter Plante"),
-                                  QObject::tr("Plante existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-
-            //bech tbadlou
+            }
         }
     }
+
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //ajouter photo
@@ -3498,22 +4706,25 @@ void Menu::on_afficher_plante_activated(const QModelIndex &index)
             ui->photo_2->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
             ui->comboBox_cin_2->setCurrentText(qry.value(6).toString());
             ui->comboBox_IDBP->setCurrentText(qry.value(7).toString());
-            if(speek==1)
+            if (controleDeSaisiePlante())
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.clickedenp();
-                    ui->label_57->setText("Selected plant");
-                }
-                else
-                {
-                    sa.languageSelectedfr();
-                    sa.clickedfrp();
-                    ui->label_57->setText("Plante Sélectionnée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.clickedenp();
+                        ui->label_57->setText("Selected plant");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.clickedfrp();
+                        ui->label_57->setText("Plante Sélectionnée");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -3551,19 +4762,48 @@ void Menu::on_pushButton_63_clicked()
             }else {  sa.stop();}
         }
         else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer Plante"),
-                                  QObject::tr("verifier le id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-    //bech tbadlou
+        {
+            if (lng=="en")
+            {QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("check the idP  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("verifier le idP !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier plante
@@ -3598,45 +4838,78 @@ void Menu::on_pushButton_66_clicked()
 
 
         gestion_plante P(IDPLANTE,SECTEUR,QUANTITE,ETAT,IDCATEGORIEPLANTE,IMG,CIN,IDBP);
-        bool test=tmppl.modifier_plante(P);
-        if(test)
+        if (controleDeSaisiePlante())
         {
-
-            ui->afficher_plante->setModel(tmppl.afficher_plante());//refresh
-            initp();
-
-            if(speek==1)
+            bool test=tmppl.modifier_plante(P);
+            if(test)
             {
-                if (lng=="en")
-                {
-                    sa.languageSelecteden();
-                    sa.modifierplanteen();
-                    ui->label_57->setText("Edit plant .");
-                }
-                else {
-                    sa.languageSelectedfr();
-                    sa.modifierplantefr();
-                    ui->label_57->setText("Modifier plante .");
-                }
 
-            }else {  sa.stop();}
+                ui->afficher_plante->setModel(tmppl.afficher_plante());//refresh
+                initp();
+
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifierplanteen();
+                        ui->label_57->setText("Edit plant .");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.modifierplantefr();
+                        ui->label_57->setText("Modifier plante .");
+                    }
+
+                }else {  sa.stop();}
+            }
         }
         else
         {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier plante"),
-                                  QObject::tr("plante non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-        //bech tbadlou
+
+            if (lng=="en")
+            {
+                QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("invalid plant !.\n"
+                               " Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("plante non valide  !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+
+            }
+
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //afficher plante
@@ -3752,7 +5025,7 @@ void Menu::on_radioButton_28_clicked()
     { click->play();}
     else
     { click->stop();}
-    ui->afficher_plante->setModel(tmppl.afficher_SecteurDecroissant());//refresh
+    ui->afficher_plante->setModel(tmppl.afficher_SecteurCroissant());//refresh
 
 
     if(speek==1)
@@ -3760,13 +5033,13 @@ void Menu::on_radioButton_28_clicked()
         if (lng=="en")
         {
             sa.languageSelecteden();
-            sa.tripdeCroissantena();
-            ui->label_57->setText("Sort Z-A .");
+            sa.tripCroissantfra();
+            ui->label_57->setText("Sort ascending by sector .");
         }
         else {
             sa.languageSelectedfr();
-            sa.tripdeCroissantfra();
-            ui->label_8->setText("Tri Z-A .");
+            sa.tripCroissantfra();
+            ui->label_57->setText("Tri croissant par secteur .");
         }
 
     }else {  sa.stop();}
@@ -3778,20 +5051,20 @@ void Menu::on_radioButton_24_clicked()
     { click->play();}
     else
     { click->stop();}
-    ui->afficher_plante->setModel(tmppl.afficher_SecteurCroissant());//refresh
+    ui->afficher_plante->setModel(tmppl.afficher_SecteurDecroissant());//refresh
 
 
     if(speek==1)
     {
         if (lng=="en")
         { sa.languageSelecteden();
-            sa.tripCroissantena();
-            ui->label_57->setText("Sort A-Z .");
+            sa.tripdeCroissantena();
+            ui->label_57->setText("Sort descending by sector .");
         }
         else {
             sa.languageSelectedfr();
-            sa.tripCroissantfra();
-            ui->label_57->setText("Tri A-Z .");
+            sa.tripdeCroissantena();
+            ui->label_57->setText("Tri decroissant par secteur .");
         }
 
     }else {  sa.stop();}
@@ -3863,12 +5136,12 @@ void Menu::on_recherche_2_textChanged(const QString &arg1)
         {
             if (lng=="en")
             {
-                // ui->label_5->setText("Research");
+                ui->label_57->setText("Research");
             }
             else
             {
 
-                //ui->label_5->setText("Recherche");
+                ui->label_57->setText("Recherche");
             }
 
         }else {  sa.stop();}
@@ -3894,9 +5167,9 @@ int Menu::on_pushButton_65_clicked()
 
 
 
-    QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
-    if ( query.exec() )
+    QSqlQuery   qry ;
+    qry=tmpmat.selectdate();
+    if ( qry.exec() )
     {
 
         QString S= QDate::currentDate().toString();
@@ -3919,20 +5192,20 @@ int Menu::on_pushButton_65_clicked()
     }
 
     QString idP,Secteur,Etat,Quantite, idcp , url ,photo,cin,image;
-    QSqlQuery   qry ;
+    QSqlQuery   qrry ;
     int i =50;
     int k=0;
     //badel i table w les attribues
-    qDebug() << qry.prepare("select * from  PLANTES order by IDPLANTE ");
+    qrry=tmppl.selectplante();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
 
 
-    if ( qry.exec() )
+    if ( qrry.exec() )
     {
 
-        while(qry.next())
+        while(qrry.next())
         {
 
             if ( k % 13 ==0)
@@ -3966,23 +5239,23 @@ int Menu::on_pushButton_65_clicked()
             painter.setPen(penblack);
             int j=0;
 
-            idP = qry.value(0).toString();
-            painter.drawText(j*20,i, idP);
+            idP = qrry.value(0).toString();
+            painter.drawText(j*10,i, idP);
             j++;
 
-            Secteur=qry.value(1).toString();
+            Secteur=qrry.value(1).toString();
             painter.drawText(j*40,i, Secteur);
             j++;
-            Etat=qry.value(2).toString();
+            Etat=qrry.value(2).toString();
             painter.drawText(j*50,i, Etat);
             j++;
-            Quantite=qry.value(3).toString();
-            painter.drawText(j*49,i,Quantite);
+            Quantite=qrry.value(3).toString();
+            painter.drawText(j*53,i,Quantite);
             j++;
-            idcp=qry.value(4).toString();
+            idcp=qrry.value(4).toString();
             painter.drawText(j*55,i,idcp);
             j++;
-            url=qry.value(5).toString();
+            url=qrry.value(5).toString();
             painter.drawText(j*56,i, url);
             j++;
 
@@ -3992,7 +5265,7 @@ int Menu::on_pushButton_65_clicked()
             QImage chemin(url);
             painter.drawPixmap(j*88,i,50,50,QPixmap::fromImage(QImage(chemin)));
             j++;
-            cin=qry.value(6).toString();
+            cin=qrry.value(6).toString();
             painter.drawText(j*90,i, cin);
             j++;
             /*idf=qry.value(8).toString();
@@ -4037,7 +5310,158 @@ void Menu::on_pushButton_62_clicked()
     sp->show();
     //speek
 }
+//ines
 //besoin animaux
+bool Menu::testnutrition(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nutrition->setText("*");
+        if (lng=="en")
+        { ui->text_nutrition->setText("non string nutrition !");}
+        else {
+            ui->text_nutrition->setText("nutrition non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::testabri(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_abri->setText("*");
+        if(lng=="en")
+        {ui->text_abri->setText("abri non string  !");}
+        else
+        {
+            ui->text_abri->setText("l'abri non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::testvac(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_vaccin->setText("*");
+        if(lng=="en")
+        {ui->text_vaccin->setText("vaccin non string  !");}
+        else
+        {
+            ui->text_vaccin->setText("vaccin non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::controleDeSaisieBesoinAnimal()
+{
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_idb->text().toInt(&number);
+    //id
+    if(ui->cx_idb->text() == ""){
+        ui->remarque_idba->setText("*");
+        if(lng=="en")
+
+        { ui->text_idba->setText(" empty id!");}
+        else
+        { ui->text_idba->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idba->setText("*");
+            if(lng=="en")
+            {   ui->text_idba->setText("id BA non numeric!");}
+            else
+            {ui->text_idba->setText("id BA non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idba->setText("");
+            ui->text_idba->setText("");
+        }
+
+
+    //nutrition
+    if(ui->cx_nutrition->text() == ""){
+        ui->remarque_nutrition->setText("*");
+        if(lng=="en")
+        { ui->text_nutrition->setText("empty nutrition!");}
+        else
+        {ui->text_nutrition->setText("nutrition vide!");}
+        result = false;
+    }
+    else if (testnutrition(ui->cx_nutrition->text()))
+    {
+        ui->remarque_nutrition->setText("");
+        ui->text_nutrition->setText("");
+    }
+    //abri
+    if(ui->cx_abri->text() == ""){
+        ui->remarque_abri->setText("*");
+        if(lng=="en")
+        { ui->text_abri->setText("abri empty!");}
+        else {ui->text_abri->setText("abri vide!");}
+        result = false;
+    }
+    else if (testabri(ui->cx_abri->text())){
+        ui->remarque_abri->setText("");
+        ui->text_abri->setText("");
+    }
+    //vac
+    if(ui->cx_vaco->text() == ""){
+        ui->remarque_vaccin->setText("*");
+        if(lng=="en")
+        { ui->text_vaccin->setText("vaccin empty!");}
+        else {ui->text_vaccin->setText("vaccin vide!");}
+        result = false;
+    }
+    else if (testvac(ui->cx_vaco->text())){
+        ui->remarque_vaccin->setText("");
+        ui->text_vaccin->setText("");
+    }
+    //eau
+    if( ui->cx_eau->value() == 0 ){
+        ui->remarque_eau->setText("*");
+        if (lng=="en")
+        { ui->text_eau->setText("water must be > 0");}
+        else
+        { ui->text_eau->setText("eau doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_eau->setText("");
+        ui->text_eau->setText("");
+    }
+    if(ui->chemin_3->text() == "")
+    {
+        ui->remarque_imageba->setText("*");
+        if(lng=="en")
+        { ui->text_imageba->setText("choose an image!");}
+        else
+        {
+            ui->text_imageba->setText("il faut choisir une image !");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_imageba->setText("");
+        ui->text_imageba->setText("");
+    }
+
+    return result;
+}
 //ajouter besoin animal
 void Menu::on_pushButton_79_clicked()
 {
@@ -4053,57 +5477,88 @@ void Menu::on_pushButton_79_clicked()
         QString ABRIANIMAUX= ui->cx_abri->text();
         QString VACOANIMAUX=ui->cx_vaco->text();
         QString IMAGEANIMAUX =ui->chemin_3->text();//LABEL CHEMIN
+        if(controleDeSaisieBesoinAnimal()&&testnutrition(NUTRITIONANIMAUX)&&testabri(ABRIANIMAUX)&&testvac(VACOANIMAUX))
+        {
+            gestion_besoinanimaux P(IDBESOINANIMAUX,EAUANIMAUX,NUTRITIONANIMAUX,ABRIANIMAUX,VACOANIMAUX,IMAGEANIMAUX);
 
-        gestion_besoinanimaux P(IDBESOINANIMAUX,EAUANIMAUX,NUTRITIONANIMAUX,ABRIANIMAUX,VACOANIMAUX,IMAGEANIMAUX);
 
-
-        bool test=P.ajouter_besoinanimaux();
-        if(test)
-        {   //ui->label_8->setText("Ajouter Besoin animaux");
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueBesoinAnimaux.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QString res1= QString::number(IDBESOINANIMAUX);
-            QString res2= QString::number(EAUANIMAUX);
-            QTextStream cout(&file);
-            QString message2="\nBesoin Animala été ajouter sous  :"+res1+" "+res2+" "+NUTRITIONANIMAUX+" "+ABRIANIMAUX+" "+VACOANIMAUX+" "+IMAGEANIMAUX ;
-            cout << message2;
-            ui->afficher_besoinanimaux->setModel(tmpba.afficher_besoinanimaux());//refresh
-
-            if(speek==1)
+            bool test=P.ajouter_besoinanimaux();
+            if(test)
             {
-                if (lng=="en")
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueBesoinAnimaux.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QString res1= QString::number(IDBESOINANIMAUX);
+                QString res2= QString::number(EAUANIMAUX);
+                QTextStream cout(&file);
+                QString message2="\nBesoin Animala été ajouter sous  :"+res1+" "+res2+" "+NUTRITIONANIMAUX+" "+ABRIANIMAUX+" "+VACOANIMAUX+" "+IMAGEANIMAUX ;
+                cout << message2;
+                ui->afficher_besoinanimaux->setModel(tmpba.afficher_besoinanimaux());//refresh
+                ui->comboBox_idba->setModel(tmpa.afficher_IDBAlist());
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.ajouterbesoineen();
-                    ui->label_78->setText("Add need animal.");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Add need animal");
+                        ui->label_78->setText("Add need animal.");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("Ajouter besoins animaux");
+                        ui->label_78->setText("Ajouter besoins animaux.");
+                    }
+                }else {  sa.stop();}
+
+                initba();
+
+
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");//I ajout
+
+                    msgBox.setText("need animal exists!.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-                else {
-                    sa.languageSelectedfr();
-                    sa.afficherbesoinefr();
-                    ui->label_78->setText("Ajouter besoins animaux.");
+                else
+                {QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Besoins animal deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
-            }else {  sa.stop();}
 
-            initba();
-
-
-        }
-        else{
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter animaux"),
-                                  QObject::tr("animaux existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-
+            }
         }
     }
 
     else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //Affiche besoin animal
@@ -4138,6 +5593,20 @@ void Menu::on_pushButton_71_clicked()
     { click->play();}
     else
     { click->stop();}
+    if (speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Need Animals");
+
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Besoin Animal");
+        }
+    }else {sa.stop();}
     ui->stackedWidget->setCurrentIndex(7);
 }
 //besoin animal vers menu
@@ -4146,6 +5615,20 @@ void Menu::on_pushButton_81_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //ajouter image
@@ -4235,7 +5718,7 @@ void Menu::on_afficher_besoinanimaux_activated(const QModelIndex &index)
 
             ui->cx_idb->setDisabled(1);
             ui->cx_idb->setText(qry.value(0).toString());
-            ui->cx_eau->setText(qry.value(1).toString());
+            ui->cx_eau->setValue(qry.value(1).toInt());
             ui->cx_nutrition->setText(qry.value(2).toString());
             ui->cx_abri->setText(qry.value(3).toString());
             ui->cx_vaco->setText(qry.value(4).toString());
@@ -4244,9 +5727,28 @@ void Menu::on_afficher_besoinanimaux_activated(const QModelIndex &index)
             int w =ui->photo_3->width();
             int h =ui->photo_3->height();
             ui->photo_3->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+            if(controleDeSaisieBesoinAnimal()&&testnutrition(ui->cx_nutrition->text())&&testabri(ui->cx_abri->text())&&testvac(ui->cx_vaco->text()))
+            {
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("nedd animals has been selected ");
+                        ui->label_78->setText("nedd animals has been selected ");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("besoin animal a été selectionée ");
+                        ui->label_78->setText("besoin animal Sélectionnée");
+                    }
 
+                }else {  sa.stop();}
+            }
         }
     }
+
 }
 //supprimer besoin animal
 void Menu::on_pushButton_80_clicked()
@@ -4281,19 +5783,48 @@ void Menu::on_pushButton_80_clicked()
             }else {  sa.stop();}
 
         }
-        else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer animaux"),
-                                  QObject::tr("verifier le id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+        else{
+            if (lng=="en")
+            {QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("check the idBA  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("verifier le idBA !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier besoin animal
@@ -4311,50 +5842,81 @@ void Menu::on_pushButton_72_clicked()
         QString VACOANIMAUX = ui->cx_vaco->text();
         QString IMAGEANIMAUX= ui->chemin_3->text();//LABEL CHEMIN
 
-
-
-        gestion_besoinanimaux P(IDBESOINANIMAUX,EAUANIMAUX,NUTRITIONANIMAUX,ABRIANIMAUX,VACOANIMAUX,IMAGEANIMAUX);
-        bool test=tmpba.modifier_besoinanimaux(P);
-        if(test)
+        if(controleDeSaisieBesoinAnimal()&&testnutrition(NUTRITIONANIMAUX)&&testabri(ABRIANIMAUX)&&testvac(VACOANIMAUX))
         {
 
-            ui->afficher_besoinanimaux->setModel(tmpba.afficher_besoinanimaux());//refresh
-
-
-            if(speek==1)
+            gestion_besoinanimaux P(IDBESOINANIMAUX,EAUANIMAUX,NUTRITIONANIMAUX,ABRIANIMAUX,VACOANIMAUX,IMAGEANIMAUX);
+            bool test=tmpba.modifier_besoinanimaux(P);
+            if(test)
             {
-                if (lng=="en")
+
+                ui->afficher_besoinanimaux->setModel(tmpba.afficher_besoinanimaux());//refresh
+
+
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.modifierbesoinanimeen();
-                    ui->label_78->setText("modify animal needs.");
-                }
-                else {
-                    sa.languageSelectedfr();
-                    sa.modifierbesoinanimefr();
-                    ui->label_78->setText("modifier besoins animaux.");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifierbesoinanimeen();
+                        ui->label_78->setText("Edit animal needs.");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.modifierbesoinanimefr();
+                        ui->label_78->setText("modifier besoins animaux.");
+                    }
 
-            }else {  sa.stop();}
+                }else {  sa.stop();}
 
-            initba();
+                initba();
+
+            }
+            else
+            {
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+
+                    msgBox.setText("Invalid need animal !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+
+                    msgBox.setText("Besoin animals non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+            }
+        }}
+    else
+    {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
 
         }
         else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier animaux"),
-                                  QObject::tr("animaux non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-        }
-    }
-    else
-    {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //afficher image besoin animal
@@ -4390,7 +5952,16 @@ void Menu::on_radioButton_32_clicked()
     else
     { click->stop();}
     ui->afficher_besoinanimaux->setModel(tmpba.afficher_NutCroissant());
-    ui->label_78->setText("Tri A-Z Nutrition Animaux ");
+    if( lng=="en")
+    {
+        sa.languageSelecteden();
+        sa.mahrous_say("Sort A-Z Animal Nutrition ");
+        ui->label_78->setText("Sort A-Z Animal Nutrition ");}
+    else {
+        sa.languageSelectedfr();
+        sa.mahrous_say("Trie A-Z Nutrition Animaux  ");
+        ui->label_78->setText("Trie A-Z Nutrition Animaux ");
+    }
 }
 //Tri Z-A par Nutrition Animaux
 void Menu::on_radioButton_34_clicked()
@@ -4399,7 +5970,15 @@ void Menu::on_radioButton_34_clicked()
     else
     { click->stop();}
     ui->afficher_besoinanimaux->setModel(tmpba.afficher_NutDecroissant());
-    ui->label_78->setText("Tri Z-A par Nutrition Animaux ");
+    if(lng=="en")
+    {  sa.languageSelecteden();
+        sa.mahrous_say("Sort A-Z Animal Nutrition ");
+        ui->label_78->setText("Sort Z-A by Animal Nutrition");}
+    else
+    { sa.languageSelectedfr();
+        sa.mahrous_say("Sort A-Z Animal Nutrition ");
+        ui->label_78->setText("Trie Z-A par Nutrition Animaux ");
+    }
 }
 //Tri Croissant de quantite d'eau
 void Menu::on_radioButton_33_clicked()
@@ -4408,7 +5987,15 @@ void Menu::on_radioButton_33_clicked()
     else
     { click->stop();}
     ui->afficher_besoinanimaux->setModel(tmpba.afficher_EauCroissant());//refresh
-    ui->label_78->setText("Tri Croissant de quantite d'eau");
+    if(lng=="en")
+    { sa.languageSelecteden();
+        sa.mahrous_say("Sort Increasing amount of water ");
+        ui->label_78->setText("Sort Increasing amount of water");}
+    else
+    { sa.languageSelectedfr();
+        sa.mahrous_say("Trie Croissant de quantite d'eau");
+        ui->label_78->setText("Trie Croissant de quantite d'eau");
+    }
 }
 //Tri Décroissant de Qauntite d'eau
 void Menu::on_radioButton_29_clicked()
@@ -4417,7 +6004,15 @@ void Menu::on_radioButton_29_clicked()
     else
     { click->stop();}
     ui->afficher_besoinanimaux->setModel(tmpba.afficher_EauDecroissant());//refresh
-    ui->label_78->setText("Tri Décroissant de Qauntite d'eau");
+    if (lng=="en")
+    { sa.languageSelecteden();
+        sa.mahrous_say("Descending Sort of Water Qauntite ");
+        ui->label_78->setText("Descending Sort of Water Qauntite");}
+    else
+    { sa.languageSelectedfr();
+        sa.mahrous_say("Trie Décroissant de Qauntite d'eau ");
+        ui->label_78->setText("Trie Décroissant de Qauntite d'eau");
+    }
 }
 //Tri Croissant IDBesoin
 void Menu::on_radioButton_30_clicked()
@@ -4426,8 +6021,15 @@ void Menu::on_radioButton_30_clicked()
     else
     { click->stop();}
     ui->afficher_besoinanimaux->setModel(tmpba.afficher_idCroissant());//refresh
-
-    ui->label_78->setText("Tri Croissant IDBesoin");
+    if(lng=="en")
+    {  sa.languageSelecteden();
+        sa.mahrous_say("Sorting Crescent IDNeed");
+        ui->label_78->setText("Sorting Crescent IDNeed");}
+    else
+    { sa.languageSelectedfr();
+        sa.mahrous_say("Trie Croissant IDBesoin ");
+        ui->label_78->setText("Trie Croissant IDBesoin");
+    }
 }
 //Tri Decroisant IDBesoin
 void Menu::on_radioButton_31_clicked()
@@ -4436,8 +6038,15 @@ void Menu::on_radioButton_31_clicked()
     else
     { click->stop();}
     ui->afficher_besoinanimaux->setModel(tmpba.afficher_idDecroissant());//refresh
-
-    ui->label_78->setText("Tri Decroisant IDBesoin");
+    if(lng=="en")
+    { sa.languageSelecteden();
+        sa.mahrous_say("Trie Decroisant IDBesoin ");
+        ui->label_78->setText("Trie Decroisant IDBesoin");}
+    else
+    { sa.languageSelectedfr();
+        sa.mahrous_say("Trie Decroisant IDBesoin");
+        ui->label_78->setText("Trie Decroisant IDBesoin");
+    }
 }
 //recherche besoin animal
 void Menu::on_recherche_3_textChanged(const QString &arg1)
@@ -4447,11 +6056,25 @@ void Menu::on_recherche_3_textChanged(const QString &arg1)
     if (q=="")
     {
         ui->afficher_besoinanimaux->setModel(tmpba.afficher_besoinanimaux()) ;
-        ui->label_78->setText("Liste des besoin animaux ");
+        if(lng=="en")
+        { sa.languageSelecteden();
+            sa.mahrous_say("List of animal needs");
+            ui->label_78->setText("List of animal needs ");}
+        else
+        { sa.languageSelectedfr();
+            sa.mahrous_say("Liste des besoin animaux");
+            ui->label_78->setText("Liste des besoin animaux ");
+        }
     }
     else {
         ui->afficher_besoinanimaux->setModel(tmpba.rechercher(q)) ;
-        ui->label_78->setText("Chercher");
+        if (lng=="en")
+        {ui->label_78->setText("Search");}
+        else
+        {
+            ui->label_78->setText("Chercher");
+        }
+
     }
 }
 //pdf besoin animal
@@ -4469,12 +6092,8 @@ int Menu::on_pushButton_77_clicked()
         qWarning("failed to open file, is it writable?");
         //return 1;
     }
-
-
-
-
     QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
+    query=tmpmat.selectdate();
     if ( query.exec() )
     {
 
@@ -4498,20 +6117,20 @@ int Menu::on_pushButton_77_clicked()
     }
 
     QString idB,eau,nuttrition,ABRI, VAC, url ,photo,image;
-    QSqlQuery   qry ;
+    QSqlQuery   qrry ;
     int i =50;
     int k=0;
     //badel i table w les attribues
-    qDebug() << qry.prepare("select * from  BESOINSANIMAUX  order by IDBESOINANIMAUX ");
+    qrry=tmpba.selectbesoinanimal();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
 
 
-    if ( qry.exec() )
+    if ( qrry.exec() )
     {
 
-        while(qry.next())
+        while(qrry.next())
         {
 
             if ( k % 13 ==0)
@@ -4547,23 +6166,23 @@ painter.drawText (650,10,"");*/
             painter.setPen(penblack);
             int j=0;
 
-            idB = qry.value(0).toString();
+            idB = qrry.value(0).toString();
             painter.drawText(j*20,i, idB);
             j++;
 
-            eau=qry.value(1).toString();
+            eau=qrry.value(1).toString();
             painter.drawText(j*40,i, eau);
             j++;
-            nuttrition=qry.value(2).toString();
+            nuttrition=qrry.value(2).toString();
             painter.drawText(j*50,i,nuttrition);
             j++;
-            ABRI=qry.value(3).toString();
+            ABRI=qrry.value(3).toString();
             painter.drawText(j*49,i,ABRI);
             j++;
-            VAC=qry.value(4).toString();
+            VAC=qrry.value(4).toString();
             painter.drawText(j*55,i,VAC);
             j++;
-            url=qry.value(5).toString();
+            url=qrry.value(5).toString();
             painter.drawText(j*56,i, url);
             j++;
 
@@ -4586,7 +6205,6 @@ painter.drawText (650,10,"");*/
         }
     }
 
-    // ui->label_8->setText("Creation PDF");
     if(speek==1)
     {
         if (lng=="en")
@@ -4620,15 +6238,138 @@ void Menu::on_pushButton_68_clicked()
     { click->play();}
     else
     { click->stop();}
+    if (speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Need Animals");
+
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Besoin Animal");
+        }
+    }else {sa.stop();}
     ui->stackedWidget->setCurrentIndex(7);
 }
 //production animal
+bool Menu::testproduit(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_produit->setText("*");
+        if(lng=="en")
+        {ui->text_produit->setText("product non string  !");}
+        else
+        {
+            ui->text_produit->setText("produit non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::controleDeSaisieProductionAnimal()
+{
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_idpa->text().toInt(&number);
+    //id
+    if(ui->cx_idpa->text() == ""){
+        ui->remarque_idpa->setText("*");
+        if(lng=="en")
+
+        { ui->text_idpa->setText(" empty id!");}
+        else
+        { ui->text_idpa->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idpa->setText("*");
+            if(lng=="en")
+            {   ui->text_idpa->setText("id PA non numeric!");}
+            else
+            {ui->text_idpa->setText("id PA non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idpa->setText("");
+            ui->text_idpa->setText("");
+        }
+
+
+    //produit
+    if(ui->cx_ppa->text() == ""){
+        ui->remarque_produit->setText("*");
+        if(lng=="en")
+        { ui->text_produit->setText("empty product!");}
+        else
+        {ui->text_produit->setText("produit vide!");}
+        result = false;
+    }
+    else if (testproduit(ui->cx_ppa->text()))
+    {
+        ui->remarque_produit->setText("");
+        ui->text_produit->setText("");
+    }
+
+
+    //prix
+    if( ui->cx_prix->value() == 0 ){
+        ui->remarque_prixpa->setText("*");
+        if (lng=="en")
+        { ui->text_prixpa->setText("prix must be > 0");}
+        else
+        { ui->text_prixpa->setText("prix doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_prixpa->setText("");
+        ui->text_prixpa->setText("");
+    }
+    if(ui->chemin_4->text() == "")
+    {
+        ui->remarque_imagepa->setText("*");
+        if(lng=="en")
+        { ui->text_imagepa->setText("choose an image!");}
+        else
+        {
+            ui->text_imagepa->setText("il faut choisir une image !");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_imagepa->setText("");
+        ui->text_imagepa->setText("");
+    }
+
+    return result;
+}
 //bouton production animal
 void Menu::on_pushButton_70_clicked()
 { if (cl==1)
     { click->play();}
     else
     { click->stop();}
+    if (speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say(" Animal Production");
+
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Production Animal");
+        }
+    }else {sa.stop();}
     ui->stackedWidget->setCurrentIndex(8);
 }
 //bouton photo production animal
@@ -4637,6 +6378,20 @@ void Menu::on_pushButton_69_clicked()
     { click->play();}
     else
     { click->stop();}
+    if (speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say(" Animal Production");
+
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Production Animal");
+        }
+    }else {sa.stop();}
     ui->stackedWidget->setCurrentIndex(8);
 }
 //ajouter production animal
@@ -4652,52 +6407,84 @@ void Menu::on_pushButton_92_clicked()
         QString PRODUITPRODUCTIONANIMAUX = ui->cx_ppa->text();
         int PRIXPRODUCTIONANIMAUX= ui->cx_prix->text().toInt();
         QString IMAGEPRODUCTIONANIMAUX =ui->chemin_4->text();//LABEL CHEMIN
-
-        gestion_productionanimaux P(IDPRODUCTIONANIMAUX,IDESPECE,PRODUITPRODUCTIONANIMAUX,PRIXPRODUCTIONANIMAUX,IMAGEPRODUCTIONANIMAUX);
-
-        bool test=P.ajouter_productionanimaux();
-        if(test)
+        if(controleDeSaisieProductionAnimal()&&testproduit(PRODUITPRODUCTIONANIMAUX))
         {
-            //ui->label_8->setText("Ajouter productionanimaux");
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\Historiqueproductionanimaux.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString res1= QString::number(IDPRODUCTIONANIMAUX);
-            QString message2="\n L'historique  à ajouter :" +res1+" "+IDESPECE+" "+PRODUITPRODUCTIONANIMAUX+"  "+PRIXPRODUCTIONANIMAUX+" "+IMAGEPRODUCTIONANIMAUX ;
-            cout << message2;
-            ui->afficher_productionanimaux->setModel(tmppa.afficher_productionanimaux());//refresh
-            initpa();
-            if(speek==1)
+            gestion_productionanimaux P(IDPRODUCTIONANIMAUX,IDESPECE,PRODUITPRODUCTIONANIMAUX,PRIXPRODUCTIONANIMAUX,IMAGEPRODUCTIONANIMAUX);
+
+            bool test=P.ajouter_productionanimaux();
+            if(test)
             {
-                if (lng=="en")
-                { sa.languageSelecteden();
-                    sa.ajouterproductionanimalen(ui->cx_ppa->text());
+
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\Historiqueproductionanimaux.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString res1= QString::number(IDPRODUCTIONANIMAUX);
+                QString message2="\n L'historique  à ajouter :" +res1+" "+IDESPECE+" "+PRODUITPRODUCTIONANIMAUX+"  "+PRIXPRODUCTIONANIMAUX+" "+IMAGEPRODUCTIONANIMAUX ;
+                cout << message2;
+                ui->afficher_productionanimaux->setModel(tmppa.afficher_productionanimaux());//refresh
+                initpa();
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    { sa.languageSelecteden();
+                        sa.ajouterproductionanimalen(ui->cx_ppa->text());
+                        ui->label_82->setText("Add product animal ");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.ajouterproductionanimalfr(ui->cx_ppa->text());
+                        ui->label_82->setText("production animal ajouter");
+                    }
+
+                }else {  sa.stop();}
+
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");//I ajout
+
+                    msgBox.setText("product animal exists!.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Production animal deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
 
                 }
-                else {
-                    sa.languageSelectedfr();
-                    sa.ajouterproductionanimalfr(ui->cx_ppa->text());
-                    // ui->label_78->setText("Afficher la liste des besoins animaux.");
-                }
 
-            }else {  sa.stop();}
-
-        }
-        else{
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter productionanimaux"),
-                                  QObject::tr("productionanimaux existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-
+            }
         }
     }
-    else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+    else {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //afficher production animal
@@ -4716,12 +6503,12 @@ void Menu::on_pushButton_88_clicked()
         {
             sa.languageSelecteden();
             sa.afficherprodanimen();
-            ui->label_78->setText("Show list of animal products .");
+            ui->label_82->setText("Show list of animal products .");
         }
         else {
             sa.languageSelecteden();
             sa.afficherprodanimfr();
-            ui->label_78->setText("Afficher la liste des produits animaux.");
+            ui->label_82->setText("Afficher la liste des produits animaux.");
         }
 
     }else {  sa.stop();}
@@ -4743,12 +6530,31 @@ void Menu::on_afficher_productionanimaux_activated(const QModelIndex &index)
             ui->cx_idpa->setText(qry.value(0).toString());
             ui->comboBox_idespece->setCurrentText(qry.value(1).toString());
             ui->cx_ppa->setText(qry.value(2).toString());
-            ui->cx_prix->setText(qry.value(3).toString());
+            ui->cx_prix->setValue(qry.value(3).toInt());
             ui->chemin_4->setText(qry.value(4).toString());
             QPixmap pix(ui->chemin_4->text());
             int w =ui->photo_4->width();
             int h =ui->photo_4->height();
             ui->photo_4->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+            if(controleDeSaisieProductionAnimal()&&testproduit(ui->cx_ppa->text()))
+            {
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("product animals has been selected ");
+                        ui->label_82->setText("product animals has been selected ");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("production animal a été selectionée ");
+                        ui->label_82->setText("production animal Sélectionnée");
+                    }
+
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -4771,30 +6577,61 @@ void Menu::on_pushButton_85_clicked()
                 {
                     sa.languageSelecteden();
                     sa.supprimerprodanimen();
-                    ui->label_78->setText("delete list of animal products .");
+                    ui->label_82->setText("delete list of animal products .");
                 }
                 else {
                     sa.languageSelecteden();
                     sa.supprimerprodanimfr();
-                    ui->label_78->setText("supprimer la liste des produits animaux.");
+                    ui->label_82->setText("supprimer la liste des produits animaux.");
                 }
 
             }else {  sa.stop();}
 
             initpa();
         }
-        else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer productionanimaux"),
-                                  QObject::tr("verifier le id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-    }
-    else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        else{
+            if (lng=="en")
+            {QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+                msgBox.setText("check the idPA  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QMessageBox msgBox;
+                QPixmap pix("A:/LOGO.png");
+
+                msgBox.setText("verifier le idPA !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
+    }
+
+    else
+    {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifierproduction animal
@@ -4810,51 +6647,82 @@ void Menu::on_pushButton_91_clicked()
         int IDESPECE = ui->comboBox_idespece->currentText().toInt();
         QString PRODUITPRODUCTIONANIMAUX = ui->cx_ppa->text();
         int PRIXPRODUCTIONANIMAUX= ui->cx_prix->text().toInt();
-        QString IMAGEPRODUCTIONANIMAUX= ui->chemin->text();//LABEL CHEMIN
+        QString IMAGEPRODUCTIONANIMAUX= ui->chemin_4->text();//LABEL CHEMIN
 
 
-
-        gestion_productionanimaux P(IDPRODUCTIONANIMAUX,IDESPECE,PRODUITPRODUCTIONANIMAUX,PRIXPRODUCTIONANIMAUX,IMAGEPRODUCTIONANIMAUX);
-        bool test=tmppa.modifier_productionanimaux(P);
-        if(test)
+        if(controleDeSaisieProductionAnimal()&&testproduit(PRODUITPRODUCTIONANIMAUX))
         {
-
-            ui->afficher_productionanimaux->setModel(tmppa.afficher_productionanimaux());//refresh
-
-
-            if(speek==1)
+            gestion_productionanimaux P(IDPRODUCTIONANIMAUX,IDESPECE,PRODUITPRODUCTIONANIMAUX,PRIXPRODUCTIONANIMAUX,IMAGEPRODUCTIONANIMAUX);
+            bool test=tmppa.modifier_productionanimaux(P);
+            if(test)
             {
-                if (lng=="en")
-                {
-                    sa.languageSelecteden();
-                    sa.modifierprodanimen();
-                    ui->label_78->setText("modify list of animal products .");
-                }
-                else {
-                    sa.languageSelectedfr();
-                    sa.modifierprodanimfr();
-                    ui->label_78->setText("modifier la liste des produits animaux.");
-                }
 
-            }else {  sa.stop();}
-            //sm.speak();//speek modifier
-            initpa();
-        }
-        else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier animaux"),
-                                  QObject::tr("animaux non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-        }
-    }
+                ui->afficher_productionanimaux->setModel(tmppa.afficher_productionanimaux());//refresh
+
+
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifierprodanimen();
+                        ui->label_82->setText("modify  animal products .");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.modifierprodanimfr();
+                        ui->label_82->setText("modifier produits animaux.");
+                    }
+
+                }else {  sa.stop();}
+                //sm.speak();//speek modifier
+                initpa();
+            }
+            else
+            {
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+
+                    msgBox.setText("Invalid product animal !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+
+                    msgBox.setText("Production animals non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+            }
+        }}
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //ajouter image
@@ -4879,12 +6747,12 @@ void Menu::on_pushButton_89_clicked()
                 {
                     sa.languageSelecteden();
                     sa.ajouterimageen();
-                    ui->label_78->setText("Add picture .");
+                    ui->label_82->setText("Add picture .");
                 }
                 else {
                     sa.languageSelectedfr();
                     sa.ajouterimagefr();
-                    ui->label_78->setText("Ajouter photo .");
+                    ui->label_82->setText("Ajouter photo .");
                 }
 
             }else {  sa.stop();}
@@ -4914,13 +6782,13 @@ void Menu::on_pushButton_87_clicked()
                 {
                     sa.languageSelecteden();
                     sa.modifierimageen();
-                    ui->label_78->setText("Edit picture .");
+                    ui->label_82->setText("Edit picture .");
 
                 }
                 else {
                     sa.languageSelectedfr();
                     sa.modifierimagefr();
-                    ui->label_78->setText("Modifier photo.");
+                    ui->label_82->setText("Modifier photo.");
                 }
 
             }else {  sa.stop();}
@@ -4943,13 +6811,13 @@ void Menu::on_pushButton_93_clicked()
         {
             sa.languageSelecteden();
             sa.afficherimageen();
-            ui->label_57->setText("Show picture");
+            ui->label_82->setText("Show picture");
         }
         else
         {
             sa.languageSelectedfr();
             sa.afficherimagefr();
-            ui->label_57->setText("Afficher image");
+            ui->label_82->setText("Afficher image");
         }
 
     }else {  sa.stop();}
@@ -4962,8 +6830,16 @@ void Menu::on_radioButton_36_clicked()
     else
     { click->stop();}
     ui->afficher_productionanimaux->setModel(tmppa.afficher_ProduitCroissant());//refresh
+    if(lng=="en")
+    {   sa.languageSelecteden();
+        sa.mahrous_say("Increasing product sort ");
+        ui->label_82->setText(" Increasing product sort");}
+    else
+    {sa.languageSelectedfr();
+        sa.mahrous_say("Trie croissant du produit");
+        ui->label_82->setText("Trie croissant du produit");
+    }
 
-    //ui->label_8->setText("Tri Croissant d'age");
 }
 //trie produit decroissant
 void Menu::on_radioButton_37_clicked()
@@ -4972,7 +6848,15 @@ void Menu::on_radioButton_37_clicked()
     else
     { click->stop();}
     ui->afficher_productionanimaux->setModel(tmppa.afficher_ProduitDecroissant());//refresh
-    //ui->label_8->setText("Tri Croissant d'age");
+    if(lng=="en")
+    {   sa.languageSelecteden();
+        sa.mahrous_say("Descending product sort ");
+        ui->label_82->setText(" Descending product sort");}
+    else
+    {sa.languageSelectedfr();
+        sa.mahrous_say("Trie decroissant du produit");
+        ui->label_82->setText("Trie decroissant du produit");
+    }
 }
 //trie id croissant
 void Menu::on_radioButton_38_clicked()
@@ -4981,7 +6865,15 @@ void Menu::on_radioButton_38_clicked()
     else
     { click->stop();}
     ui->afficher_productionanimaux->setModel(tmppa.afficher_IdCroissant());//refresh
-    //ui->label_8->setText("Tri Croissant d'age");
+    if(lng=="en")
+    {   sa.languageSelecteden();
+        sa.mahrous_say("Sort increasing d' ID");
+        ui->label_82->setText(" Sort increasing d' ID");}
+    else
+    {sa.languageSelectedfr();
+        sa.mahrous_say("Trie decroissant  d'ID");
+        ui->label_82->setText("Trie croissant d'ID");
+    }
 }
 //trie id decroissant
 void Menu::on_radioButton_35_clicked()
@@ -4990,7 +6882,15 @@ void Menu::on_radioButton_35_clicked()
     else
     { click->stop();}
     ui->afficher_productionanimaux->setModel(tmppa.afficher_IdDecroissant());//refresh
-    //ui->label_8->setText("Tri Croissant d'age");
+    if(lng=="en")
+    {   sa.languageSelecteden();
+        sa.mahrous_say("Descending sort of ID");
+        ui->label_82->setText(" Descending sort of ID");}
+    else
+    {sa.languageSelectedfr();
+        sa.mahrous_say("Trie decroissant d'ID");
+        ui->label_82->setText("Trie decroissant d'ID");
+    }
 }
 //recherche production animal
 void Menu::on_recherche_4_textChanged(const QString &arg1)
@@ -5000,11 +6900,25 @@ void Menu::on_recherche_4_textChanged(const QString &arg1)
     if (q=="")
     {
         ui->afficher_productionanimaux->setModel(tmppa.afficher_productionanimaux()) ;
+        if(lng=="en")
+        {   sa.languageSelecteden();
+            sa.mahrous_say("List of product animals ");
+            ui->label_82->setText("List of product animals ");}
+        else
+        {sa.languageSelectedfr();
+            sa.mahrous_say("Liste des produits animale");
+            ui->label_82->setText("Liste des produits animale");
+        }
 
     }
     else {
         ui->afficher_productionanimaux->setModel(tmppa.rechercher(q)) ;
-        // ui->label_5->setText("Chercher");
+        if(lng=="en")
+        {ui->label_82->setText("Search");}
+        else
+        {
+            ui->label_82->setText("chercher");
+        }
     }
 }
 //creation pdf
@@ -5027,7 +6941,7 @@ int Menu::on_pushButton_90_clicked()
 
 
     QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
+    query=tmpmat.selectdate();
     if ( query.exec() )
     {
 
@@ -5040,7 +6954,7 @@ int Menu::on_pushButton_90_clicked()
         painter.setPen(penred);
 
         painter.drawText(200,500," La liste des ");
-        painter.drawText(200,650,"  productionAnimaux.");
+        painter.drawText(50,650,"productionAnimaux.");
         painter.setFont(QFont("Arial",30));
         painter.setPen(Qt::black);
         painter.drawText(50,100,"Bienvenu");
@@ -5054,8 +6968,7 @@ int Menu::on_pushButton_90_clicked()
     QSqlQuery   qry ;
     int i =50;
     int k=0;
-    //badel i table w les attribues
-    qDebug() << qry.prepare("select * from  PRODUCTIONANIMAUX order by IDPRODUCTIONANIMAUX ");
+    qry=tmppa.selectproductionanimal();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
@@ -5140,13 +7053,13 @@ painter.drawText (650,10,"");*/
         {
             sa.languageSelecteden();
             sa.creationpdfen();
-            //ui->label_57->setText("PDF creation");
+            ui->label_82->setText("PDF creation");
         }
         else
         {
             sa.languageSelectedfr();
             sa.creationpdffr();
-            // ui->label_57->setText("Création PDF");
+            ui->label_82->setText("Création PDF");
         }
 
     }else {  sa.stop();}
@@ -5168,10 +7081,26 @@ void Menu::on_pushButton_83_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //espece animal
+//yessine
 //bouton espece animal
+
 void Menu::on_pushButton_94_clicked()
 { if (cl==1)
     { click->play();}
@@ -5217,6 +7146,58 @@ void Menu::on_pushButton_97_clicked()
 
     }else {  sa.stop();}
 }
+//controle de saisie
+bool Menu::controleDeSaisieEspeceAnimal(){
+    bool result = true;
+    bool number = true;
+
+    ui->cx_idespeceanimal->text().toInt(&number);
+
+    if(ui->cx_idespeceanimal->text() == ""){
+        ui->remarque_idEa->setText("*");
+        if (lng=="en")
+        {ui->text_idEa->setText("id empty!");}
+        else {ui->text_idEa->setText("id vide!");}
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idEa->setText("*");
+            if (lng=="en")
+            { ui->text_idEa->setText("id CP not numeric!"); }
+            else {ui->text_idEa->setText("id CP non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idEa->setText("");
+            ui->text_idEa->setText("");
+        }
+
+    if(ui->cx_nomespeceanimal->text() == ""){
+        ui->remarque_nomEa->setText("*");
+        if (lng=="en")
+        { ui->text_nomEa->setText("empty name!");}
+        else {ui->text_nomEa->setText("nom vide!");}
+        result = false;
+    }
+    else{
+        ui->remarque_nomEa->setText("");
+        ui->text_nomEa->setText("");
+    }
+
+    return result;
+}
+//test nom
+bool Menu::testnomEA(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nomEa->setText("*");
+        ui->text_nomEa->setText("le nom non string !");
+        result = false;
+    }
+
+    return result;
+}
 //ajouter espece animal
 void Menu::on_pushButton_101_clicked()
 {
@@ -5231,50 +7212,87 @@ void Menu::on_pushButton_101_clicked()
         IDESPECE=ui->cx_idespeceanimal->text();
         NOMESPECE=ui->cx_nomespeceanimal->text();
         gestion_especeanimal C(IDESPECE,NOMESPECE);
-        bool test=C.ajouter_especeanimal();
-        if(test)
+        if(controleDeSaisieEspeceAnimal()&&testnomEA(ui->cx_nomespeceanimal->text()))
         {
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueEspeceAnimal.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nEspece Animale a été ajoutée sous :\nidEA :"+IDESPECE+"\nnom : "+NOMESPECE+"";
-            cout << message2;
-            initea();
-            if(speek==1)
+
+
+            bool test=C.ajouter_especeanimal();
+            if(test)
             {
-                if (lng=="en")
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueEspeceAnimal.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nEspece Animale a été ajoutée sous :\nidEA :"+IDESPECE+"\nnom : "+NOMESPECE+"";
+                cout << message2;
+                ui->comboBox_idespece_2->setModel(tmpea.afficher_Clist());
+                ui->comboBox_idespece->setModel(tmpea.afficher_Clist());
+                initea();
+                if(speek==1)
                 {
-                    sa.languageSelecteden();//fixe
-                    sa.ajouterespaceanimalen(ui->cx_nomespeceanimal->text());
-                    ui->label_93->setText("Add species animal");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();//fixe
+                        sa.ajouterespaceanimalen(ui->cx_nomespeceanimal->text());
+                        ui->label_93->setText("Add species animal");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();//fixe
+                        sa.ajouterespaceanimalfr(ui->cx_nomespeceanimal->text());
+                        ui->label_93->setText("ajouter espece animal");
+                    }
+
+                }else {  sa.stop();}
+                ui->afficher_especeanimal->setModel(tmpea.afficher_especeanimal());
+
+            }
+
+            else
+            {
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Animal species already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();//fixe
-                    sa.ajouterespaceanimalfr(ui->cx_nomespeceanimal->text());
-                    ui->label_93->setText("ajouter espece animal");
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+
+                    msgBox.setText("Espece animal existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-
-            }else {  sa.stop();}
-            ui->afficher_especeanimal->setModel(tmpea.afficher_especeanimal());
-
-        }
-        else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter Catégorie "),
-                                  QObject::tr("Catégorie existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+            }
         }
     }
     else {
 
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
 
 
     }
@@ -5295,23 +7313,25 @@ void Menu::on_afficher_especeanimal_activated(const QModelIndex &index)
             ui->cx_idespeceanimal->setDisabled(1);
             ui->cx_idespeceanimal->setText(qry.value(0).toString());
             ui->cx_nomespeceanimal->setText(qry.value(1).toString());
-            if(speek==1)
+            if(controleDeSaisieEspeceAnimal()&&testnomEA(ui->cx_nomespeceanimal->text()))
             {
-                if (lng=="en")
+                if(speek==1)
                 {
-                    sa.languageSelecteden();//fixe
-                    sa.selectedespaceanimalen();
-                    ui->label_93->setText("Species animal selected");
-                }
-                else
-                {
-                    sa.languageSelectedfr();//fixe
-                    sa.selectedespaceanimalfr();
-                    ui->label_93->setText("Espece animal selectionée");
-                }
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();//fixe
+                        sa.selectedespaceanimalen();
+                        ui->label_93->setText("Species animal selected");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();//fixe
+                        sa.selectedespaceanimalfr();
+                        ui->label_93->setText("Espece animal selectionée");
+                    }
 
-            }else {  sa.stop();}
-
+                }else {  sa.stop();}
+            }
         }
     }
 
@@ -5323,6 +7343,7 @@ void Menu::on_pushButton_102_clicked()
     else
     { click->stop();}
     ui->afficher_especeanimal->setModel(tmpea.afficher_especeanimal());//refresh
+    initea();
     if(speek==1)
     {
         if (lng=="en")
@@ -5366,26 +7387,54 @@ void Menu::on_pushButton_99_clicked()
                 else
                 {
                     sa.languageSelectedfr();//fixe
-                    sa.afficherespaceanimalfr();
+                    sa.supprimerespaceanimalfr();
                     ui->label_93->setText("Supprimer espéces animal ");
                 }
 
             }else {  sa.stop();}
         }
         else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer Catégorie"),
-                                  QObject::tr("verifier l'id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-    }
+        {  QMessageBox msgBox;
+            if (lng=="en")
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verify id  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verifier l'id !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }}
     else
     {
 
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier espece animal
@@ -5399,46 +7448,77 @@ void Menu::on_pushButton_100_clicked()
         QString IDESPECE = ui->cx_idespeceanimal->text();
         QString NOMESPECE= ui->cx_nomespeceanimal->text();
         gestion_especeanimal C(IDESPECE,NOMESPECE);
-        bool test=tmpea.modifier_especeanimal(C);
-        if(test)
+        if(controleDeSaisieEspeceAnimal()&&testnomEA(ui->cx_nomespeceanimal->text()))
         {
-            ui->afficher_especeanimal->setModel(tmpea.afficher_especeanimal());//refresh
-            ui->cx_idespeceanimal->setEnabled(1);
-            initea();
-            if(speek==1)
+
+            bool test=tmpea.modifier_especeanimal(C);
+            if(test)
             {
-                if (lng=="en")
+                ui->afficher_especeanimal->setModel(tmpea.afficher_especeanimal());//refresh
+                ui->cx_idespeceanimal->setEnabled(1);
+                initea();
+                if(speek==1)
                 {
-                    sa.languageSelecteden();//fixe
-                    sa.modifierespaceanimalen();
-                    ui->label_93->setText("Edit species animal");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();//fixe
+                        sa.modifierespaceanimalen();
+                        ui->label_93->setText("Edit species animal");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();//fixe
+                        sa.modifierespaceanimalfr();
+                        ui->label_93->setText("Modifier espéces animal ");
+                    }
+
+                }else {  sa.stop();}
+
+            }
+            else
+            {
+                if(lng=="en")
+                {
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid Animal species  !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
-                {
-                    sa.languageSelectedfr();//fixe
-                    sa.afficherespaceanimalfr();
-                    ui->label_93->setText("Modifier espéces animal ");
+                { QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Espece animale non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
-
-            }else {  sa.stop();}
-
-        }
-        else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier Catégorie"),
-                                  QObject::tr("Catégorie non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+            }
         }
     }
     else
     {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //recherche animal
@@ -5450,9 +7530,23 @@ void Menu::on_lineEdit_recherche_2_textChanged(const QString &arg1)
     if (q=="")
     {
         ui->afficher_especeanimal->setModel(tmpea.afficher_especeanimal());//refresh
+        if(lng=="en")
+        {
+            ui->label_93->setText("List of animal species");
+        }else
+        {
+            ui->label_93->setText("Liste des especes animal");
+        }
     }
     else {
         ui->afficher_especeanimal->setModel(tmpea.rechercher(q)) ;
+        if(lng=="en")
+        {
+            ui->label_93->setText("Research");
+        }else
+        {
+            ui->label_93->setText("Recherche");
+        }
     }
 }
 //trie id croissant
@@ -5462,6 +7556,13 @@ void Menu::on_radioButton_39_clicked()
     else
     { click->stop();}
     ui->afficher_especeanimal->setModel(tmpea.afficher_idCroissant());//refresh
+    if(lng=="en")
+    { ui->label_93->setText("Sort ascending from IdCategory");}
+    else
+    {
+        ui->label_93->setText("Trier croissant du IdCatégorie");
+    }
+
 }
 //trie id decroissant
 void Menu::on_radioButton_42_clicked()
@@ -5470,7 +7571,12 @@ void Menu::on_radioButton_42_clicked()
     else
     { click->stop();}
     ui->afficher_especeanimal->setModel(tmpea.afficher_idDecroissant());//refresh
-    // ui->label_3->setText("Trier Décroissant du IdCatégorie");
+    if(lng=="en")
+    { ui->label_93->setText("Sort Descending from IdCategory");}
+    else
+    {
+        ui->label_93->setText("Trier Décroissant du IdCatégorie");
+    }
 }
 //trie nom decroissant
 void Menu::on_radioButton_41_clicked()
@@ -5479,7 +7585,12 @@ void Menu::on_radioButton_41_clicked()
     else
     { click->stop();}
     ui->afficher_especeanimal->setModel(tmpea.afficher_nomDecroissant());//refresh
-    // ui->label_3->setText("Trier Z-A");
+    if(lng=="en")
+    { ui->label_93->setText("Sort Z-A");}
+    else
+    {
+        ui->label_93->setText("Trier Z-A");
+    }
 }
 //trie nom croissant
 void Menu::on_radioButton_40_clicked()
@@ -5488,8 +7599,12 @@ void Menu::on_radioButton_40_clicked()
     else
     { click->stop();}
     ui->afficher_especeanimal->setModel(tmpea.afficher_nomCroissant());//refresh
-
-    // ui->label_3->setText("Trier A-Z");
+    if(lng=="en")
+    {  ui->label_93->setText("Sort A-Z");}
+    else
+    {
+        ui->label_93->setText("Trier A-Z");
+    }
 }
 //animal
 //bouton animal
@@ -5537,6 +7652,109 @@ void Menu::on_pushButton_95_clicked()
 
     }else {  sa.stop();}
 }
+//controle de saisie animal
+bool Menu::controleDeSaisieAnimal()
+{
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_ida->text().toInt(&number);
+
+    //id
+    if(ui->cx_ida->text() == ""){
+        ui->remarque_idA->setText("*");
+        if(lng=="en")
+
+        { ui->text_idA->setText(" empty id!");}
+        else
+        { ui->text_idA->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idA->setText("*");
+            if(lng=="en")
+            {   ui->text_idA->setText("id A non numeric!");}
+            else
+            {ui->text_idA->setText("id A non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idA->setText("");
+            ui->text_idA->setText("");
+        }
+    //sexe
+    if (ui->femme_2->isChecked()||ui->homme_2->isChecked())
+    {
+        ui->remarque_sexeA->setText("");
+        ui->text_sexeA->setText("");
+
+    }
+
+    else
+    { ui->remarque_sexeA->setText("*");
+        if(lng=="en")
+        {   ui->text_sexeA->setText("chosen Sex!");}
+        else
+        {
+            ui->text_sexeA->setText("choisie sexe !");
+        }
+        result = false;
+    }
+    //chemin
+    if(ui->chemin_5->text() == "")
+    {
+        ui->remarque_imageA->setText("*");
+        if(lng=="en")
+        { ui->text_imageA->setText("choose an image!");}
+        else
+        {
+            ui->text_imageA->setText("il faut choisir une image !");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_imageA->setText("");
+        ui->text_imageA->setText("");
+    }
+
+
+
+
+    //age
+    if( ui->age_2->value() == 0 ){
+        ui->remarque_ageA->setText("*");
+        if (lng=="en")
+        { ui->text_ageA->setText("age must be > 0 ");}
+        else
+        { ui->text_ageA->setText("age doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_ageA->setText("");
+        ui->text_ageA->setText("");
+    }
+    //etat
+    if (ui->Blesse->isChecked()||ui->Bonne_2->isChecked()||ui->Malade->isChecked())
+    {
+        ui->remarque_etatA->setText("");
+        ui->text_etatA->setText("");
+
+    }
+
+    else
+    { ui->remarque_etatA->setText("*");
+        if(lng=="en")
+        {   ui->text_etatA->setText("chosen status!");}
+        else
+        {
+            ui->text_etatA->setText("choisie etat !");
+        }
+        result = false;
+
+    }
+    return result;
+}
 //ajouter animal
 void Menu::on_pushButton_112_clicked()
 { if (cl==1)
@@ -5550,9 +7768,9 @@ void Menu::on_pushButton_112_clicked()
         int IDESPECE = ui->comboBox_idespece_2->currentText().toInt();
         QString SEXEANIMAUX ;
         if (ui->femme_2->isChecked())
-        {SEXEANIMAUX="femme";}
+        {SEXEANIMAUX="Femelle";}
         if (ui->homme_2->isChecked())
-        { SEXEANIMAUX="homme";}
+        { SEXEANIMAUX="Male";}
         QString ETATANIMAUX;
         if (ui->Blesse->isChecked())
         { ETATANIMAUX="Blesse";}
@@ -5563,53 +7781,84 @@ void Menu::on_pushButton_112_clicked()
         QString CIN=ui->comboBox_cin_3->currentText();
         QString IMAGEANIMAUX =ui->chemin_5->text();//LABEL CHEMIN
         QString IDBA=ui->comboBox_idba->currentText();
-        gestion_animaux P(IDANIMAUX,IDESPECE,AGEANIMAUX,SEXEANIMAUX,ETATANIMAUX,IMAGEANIMAUX,CIN,IDBA);
-        bool test=P.ajouter_animaux();
-        if(test)
+        if( controleDeSaisieAnimal())
         {
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\Historiqueanimaux.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\n L'historique des Personnels à ajouter :"+IDANIMAUX+" "+IDESPECE+" "+AGEANIMAUX+"  "+SEXEANIMAUX+" "+ETATANIMAUX+" "+IMAGEANIMAUX+" "+CIN+" "+IDBA ;
-            cout << message2;
-            ui->afficher_animaux->setModel(tmpa.afficher_animaux());//refresh
-            if(speek==1)
+            gestion_animaux P(IDANIMAUX,IDESPECE,AGEANIMAUX,SEXEANIMAUX,ETATANIMAUX,IMAGEANIMAUX,CIN,IDBA);
+            bool test=P.ajouter_animaux();
+            if(test)
             {
-                if (lng=="en")
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\Historiqueanimaux.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\n L'historique des Personnels à ajouter :"+IDANIMAUX+" "+IDESPECE+" "+AGEANIMAUX+"  "+SEXEANIMAUX+" "+ETATANIMAUX+" "+IMAGEANIMAUX+" "+CIN+" "+IDBA ;
+                cout << message2;
+                ui->afficher_animaux->setModel(tmpa.afficher_animaux());//refresh
+                if(speek==1)
                 {
-                    sa.languageSelecteden();//fixe
-                    sa.ajouteranimalen();
-                    ui->label_110->setText("Add animal");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();//fixe
+                        sa.ajouteranimalen();
+                        ui->label_110->setText("Add animal");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();//fixe
+                        sa.ajouteranimalfr();
+                        ui->label_110->setText("Ajouter animal ");
+                    }
+
+                }else {  sa.stop();}
+
+                inita();
+
+
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Animal already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();//fixe
-                    sa.ajouteranimalfr();
-                    ui->label_110->setText("Ajouter animal ");
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Animal existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
 
-            }else {  sa.stop();}
-
-            inita();
-
-
-        }
-        else{
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter animaux"),
-                                  QObject::tr("animaux existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-
+            }
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //selected
@@ -5629,9 +7878,9 @@ void Menu::on_afficher_animaux_activated(const QModelIndex &index)
             ui->comboBox_idespece_2->setCurrentText(qry.value(1).toString());
             ui->age_2->setValue(qry.value(2).toInt());
             //ui->cx_sexe->setText(qry.value(3).toString());
-            if (qry.value(3).toString()=="femme")
+            if (qry.value(3).toString()=="Femelle")
             {ui->femme_2->setChecked(true);}
-            if (qry.value(3).toString()=="homme")
+            if (qry.value(3).toString()=="Male")
             {ui->homme_2->setChecked(true);}
             if (qry.value(4).toString()=="Blesse")
             { ui->Blesse->setChecked(true);}
@@ -5768,18 +8017,47 @@ void Menu::on_pushButton_106_clicked()
             }else {  sa.stop();}
         }
         else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer animaux"),
-                                  QObject::tr("verifier le id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+        { QMessageBox msgBox;
+            if (lng=="en")
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verify id  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verifier l'id !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier animal
@@ -5795,9 +8073,9 @@ void Menu::on_pushButton_114_clicked()
         int AGEANIMAUX= ui->age_2->text().toInt();
         QString SEXEANIMAUX ;
         if (ui->femme_2->isChecked())
-        {SEXEANIMAUX="femme"; }
+        {SEXEANIMAUX="Femelle"; }
         if (ui->homme_2->isChecked())
-        { SEXEANIMAUX="homme";}
+        { SEXEANIMAUX="Male";}
         QString ETATANIMAUX;
         if (ui->Blesse->isChecked())
         {ETATANIMAUX="Blesse"; }
@@ -5808,43 +8086,74 @@ void Menu::on_pushButton_114_clicked()
         QString CIN = ui->comboBox_cin_3->currentText();
         QString IMAGEANIMAUX= ui->chemin_5->text();//LABEL CHEMIN
         QString IDBA = ui->comboBox_idba->currentText();
-        gestion_animaux P(IDANIMAUX,IDESPECE,AGEANIMAUX,SEXEANIMAUX,ETATANIMAUX,IMAGEANIMAUX,CIN,IDBA);
-        bool test=tmpa.modifier_animaux(P);
-        if(test)
+        if(controleDeSaisieAnimal())
         {
-            ui->afficher_animaux->setModel(tmpa.afficher_animaux());//refresh
-            inita();
-            if(speek==1)
+            gestion_animaux P(IDANIMAUX,IDESPECE,AGEANIMAUX,SEXEANIMAUX,ETATANIMAUX,IMAGEANIMAUX,CIN,IDBA);
+            bool test=tmpa.modifier_animaux(P);
+            if(test)
             {
-                if (lng=="en")
+                ui->afficher_animaux->setModel(tmpa.afficher_animaux());//refresh
+                inita();
+                if(speek==1)
                 {
-                    sa.languageSelecteden();
-                    sa.modifieranimalen();
-                    ui->label_110->setText("Edit animal");
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.modifieranimalen();
+                        ui->label_110->setText("Edit animal");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.modifieranimalfr();
+                        ui->label_110->setText("Modifier animal");
+                    }
+
+                }else {  sa.stop();}
+            }
+            else
+            {
+                if(lng=="en")
+                {
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid Animal   !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
-                {
-                    sa.languageSelectedfr();
-                    sa.modifieranimalfr();
-                    ui->label_110->setText("Modifier animal");
+                { QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Animale non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
                 }
 
-            }else {  sa.stop();}
+            }
+        }}
+    else {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
         }
         else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier animaux"),
-                                  QObject::tr("animaux non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
-        }
-    }
-    else {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //afficher animal
@@ -5888,13 +8197,13 @@ void Menu::on_pushButton_108_clicked()
         {
             sa.languageSelecteden();
             sa.afficherimageen();
-            ui->label_57->setText("Show picture");
+            ui->label_110->setText("Show picture");
         }
         else
         {
             sa.languageSelectedfr();
             sa.afficherimagefr();
-            ui->label_57->setText("Afficher image");
+            ui->label_110->setText("Afficher image");
         }
 
     }else {  sa.stop();}
@@ -5906,7 +8215,12 @@ void Menu::on_radioButton_45_clicked()
     else
     { click->stop();}
     ui->afficher_animaux->setModel(tmpa.afficher_idCroissant());//refresh
-    // ui->label_8->setText("Tri ID");
+    if(lng=="en")
+    {ui->label_110->setText("Sort ID ascending");}
+    else
+    {
+        ui->label_110->setText("Trie ID croissant");
+    }
 }
 //trie id decroissant
 void Menu::on_radioButton_48_clicked()
@@ -5915,7 +8229,13 @@ void Menu::on_radioButton_48_clicked()
     else
     { click->stop();}
     ui->afficher_animaux->setModel(tmpa.afficher_idDecroissant());//refresh
-    //ui->label_8->setText("Tri ID DESC");
+    if(lng=="en")
+    {ui->label_110->setText("Sort descending ID");}
+    else
+    {
+        ui->label_110->setText("Trie ID decroissant");
+    }
+
 }
 //trie age croissant
 void Menu::on_radioButton_46_clicked()
@@ -5924,7 +8244,12 @@ void Menu::on_radioButton_46_clicked()
     else
     { click->stop();}
     ui->afficher_animaux->setModel(tmpa.afficher_AgeCroissant());//refresh
-    //ui->label_8->setText("Tri Croissant d'age");
+    if(lng=="en")
+    {ui->label_110->setText("Sort Ascending Age");}
+    else
+    {
+        ui->label_110->setText("Trie Croissant d'age");
+    }
 }
 //trie age decroisaant
 void Menu::on_radioButton_47_clicked()
@@ -5933,7 +8258,12 @@ void Menu::on_radioButton_47_clicked()
     else
     { click->stop();}
     ui->afficher_animaux->setModel(tmpa.afficher_AgeDecroissant());//refresh
-    //ui->label_8->setText("Tri Décroissant d'age");
+    if(lng=="en")
+    { ui->label_110->setText("Sort Descending age");}
+    else
+    {
+        ui->label_110->setText("Trie Décroissant d'age");
+    }
 }
 //trie id espece animal croissant
 void Menu::on_radioButton_43_clicked()
@@ -5942,7 +8272,12 @@ void Menu::on_radioButton_43_clicked()
     else
     { click->stop();}
     ui->afficher_animaux->setModel(tmpa.afficher_IdECroissant());//refresh
-    //ui->label_8->setText("Tri Croissant par idE ");
+    if(lng=="en")
+    { ui->label_110->setText("Sort Sort by IdE");}
+    else
+    {
+        ui->label_110->setText("Trie Croissant par idE ");
+    }
 }
 //trie id espece animal decroissant
 void Menu::on_radioButton_44_clicked()
@@ -5951,7 +8286,12 @@ void Menu::on_radioButton_44_clicked()
     else
     { click->stop();}
     ui->afficher_animaux->setModel(tmpa.afficher_IdEDecroissant());//refresh
-    //ui->label_8->setText("Tri Decroissant par idE ");
+    if(lng=="en")
+    {ui->label_110->setText("Sort Descending by idE");}
+    else
+    {
+        ui->label_110->setText("Trie Decroissant par idE ");
+    }
 }
 //recherche animal
 void Menu::on_recherche_5_textChanged(const QString &arg1)
@@ -5961,10 +8301,21 @@ void Menu::on_recherche_5_textChanged(const QString &arg1)
     if (q=="")
     {
         ui->afficher_animaux->setModel(tmpa.afficher_animaux());//refresh
+        if(lng=="en")
+        {  ui->label_110->setText("List of animals");}
+        else
+        {
+            ui->label_110->setText("Liste des animal");
+        }
     }
     else {
         ui->afficher_animaux->setModel(tmpa.rechercher(q)) ;
-        // ui->label_5->setText("Chercher");
+        if(lng=="en")
+        {  ui->label_110->setText("Search");}
+        else
+        {
+            ui->label_110->setText("Chercher");
+        }
     }
 }
 //creation pdf animal
@@ -5987,7 +8338,7 @@ int Menu::on_pushButton_115_clicked()
 
 
     QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
+    query= tmpmat.selectdate();
     if ( query.exec() )
     {
 
@@ -6011,20 +8362,20 @@ int Menu::on_pushButton_115_clicked()
     }
 
     QString idA,idE,Age,sexe, etat, url ,photo,cin,image;
-    QSqlQuery   qry ;
+    QSqlQuery   qrry ;
     int i =50;
     int k=0;
     //badel i table w les attribues
-    qDebug() << qry.prepare("select * from  ANIMAUX order by IDANIMAUX ");
+    qrry=tmpa.selectanimal();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
 
 
-    if ( qry.exec() )
+    if ( qrry.exec() )
     {
 
-        while(qry.next())
+        while(qrry.next())
         {
 
             if ( k % 13 ==0)
@@ -6060,23 +8411,23 @@ painter.drawText (650,10,"");*/
             painter.setPen(penblack);
             int j=0;
 
-            idA = qry.value(0).toString();
+            idA = qrry.value(0).toString();
             painter.drawText(j*20,i, idA);
             j++;
 
-            idE=qry.value(1).toString();
+            idE=qrry.value(1).toString();
             painter.drawText(j*40,i, idE);
             j++;
-            Age=qry.value(2).toString();
+            Age=qrry.value(2).toString();
             painter.drawText(j*50,i,Age);
             j++;
-            sexe=qry.value(3).toString();
+            sexe=qrry.value(3).toString();
             painter.drawText(j*49,i,sexe);
             j++;
-            etat=qry.value(4).toString();
+            etat=qrry.value(4).toString();
             painter.drawText(j*55,i,etat);
             j++;
-            url=qry.value(5).toString();
+            url=qrry.value(5).toString();
             painter.drawText(j*56,i, url);
             j++;
 
@@ -6086,7 +8437,7 @@ painter.drawText (650,10,"");*/
             QImage chemin(url);
             painter.drawPixmap(j*88,i,50,50,QPixmap::fromImage(QImage(chemin)));
             j++;
-            cin=qry.value(6).toString();
+            cin=qrry.value(6).toString();
             painter.drawText(j*90,i, cin);
             j++;
             /*idf=qry.value(8).toString();
@@ -6106,13 +8457,13 @@ painter.drawText (650,10,"");*/
         {
             sa.languageSelecteden();
             sa.creationpdfen();
-            // ui->label_22->setText("PDF creation");
+            ui->label_110->setText("PDF creation");
         }
         else
         {
             sa.languageSelectedfr();
             sa.creationpdffr();
-            // ui->label_22->setText("Création PDF");
+            ui->label_110->setText("Création PDF");
         }
 
     }else {  sa.stop();}
@@ -6128,7 +8479,7 @@ void Menu::on_pushButton_110_clicked()
     { click->stop();}
     stata=new Stat_animaux (this);
     stata->show();
-    // ui->label_8->setText("Statistique Animaux ");
+    ui->label_110->setText("Statistique Animaux ");
 }
 //Besoin Plante
 //photo besoin plante
@@ -6178,6 +8529,132 @@ void Menu::on_pushButton_117_clicked()
 
     }else {  sa.stop();}
 }
+//besoin vers menu
+void Menu::on_pushButton_118_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
+    ui->stackedWidget->setCurrentIndex(0);
+}
+//production plante vers menu
+void Menu::on_pushButton_125_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
+    ui->stackedWidget->setCurrentIndex(0);
+}
+//controle de saisie
+bool Menu::testnutp(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_nutp->setText("*");
+        if(lng=="en")
+        {ui->text_nutp->setText("nutrition  non string  !");}
+        else
+        {
+            ui->text_nutp->setText("nutrition non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::controleDeSaisieBesoinPlante()
+{
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_idbp->text().toInt(&number);
+    //id
+    if(ui->cx_idbp->text() == ""){
+        ui->remarque_idbp->setText("*");
+        if(lng=="en")
+
+        { ui->text_idbp->setText(" empty id!");}
+        else
+        { ui->text_idbp->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idbp->setText("*");
+            if(lng=="en")
+            {   ui->text_idbp->setText("id BP non numeric!");}
+            else
+            {ui->text_idbp->setText("id BP non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idbp->setText("");
+            ui->text_idbp->setText("");
+        }
+
+
+    //nutrition
+    if(ui->cx_nutp->text() == ""){
+        ui->remarque_nutp->setText("*");
+        if(lng=="en")
+        { ui->text_nutp->setText("empty nutrition!");}
+        else
+        {ui->text_nutp->setText("nutrition vide!");}
+        result = false;
+    }
+    else if (testnutp(ui->cx_nutp->text()))
+    {
+        ui->remarque_nutp->setText("");
+        ui->text_nutp->setText("");
+    }
+
+
+    //eau
+    if( ui->Eau->value() == 0 ){
+        ui->remarque_eaup->setText("*");
+        if (lng=="en")
+        { ui->text_eaup->setText("water must be > 0");}
+        else
+        { ui->text_eaup->setText("eau doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_eaup->setText("");
+        ui->text_eaup->setText("");
+    }
+
+
+    return result;
+}
 //ajouter besoin plante
 void Menu::on_pushButton_120_clicked()
 { if (cl==1)
@@ -6187,57 +8664,89 @@ void Menu::on_pushButton_120_clicked()
     if (securite==0)
     {
         QString idB,np;
-        int ep;
+        int ep = ui->Eau->text().toInt();
         idB=ui->cx_idbp->text();
         np=ui->cx_nutp->text();
-
-
-        gestion_besoin_plante B(idB,ep,np);
-
-        bool test=B.ajouter_besoin_plante();
-        if(test)
+        if(controleDeSaisieBesoinPlante()&&testnutp(ui->cx_nutp->text()))
         {
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueBesoinPlantes.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nBesoin Plante a été ajoutée sous:\nIdBP:"+idB+"\nNutrition:"+np+"\neau:"+ep ;
-            cout << message2;
-            ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());//refresh
 
-            initbp();
+            gestion_besoin_plante B(idB,ep,np);
 
-            if(speek==1)
+            bool test=B.ajouter_besoin_plante();
+            if(test)
             {
-                if (lng=="en")
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueBesoinPlantes.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nBesoin Plante a été ajoutée sous:\nIdBP:"+idB+"\nNutrition:"+np+"\neau:"+ep ;
+                cout << message2;
+                ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());//refresh
+
+                initbp();
+                ui->comboBox_IDBP->setModel(tmppl.afficher_IDBPlist());
+                if(speek==1)
                 {
-                    sa.languageSelecteden();//fixe
-                    sa.ajouterbesoinplanteen();
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();//fixe
+                        sa.ajouterbesoinplanteen();
+                        ui->label_117->setText("Add nedd plant .");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();//fixe
+                        sa.ajouterbesoinplantefr();
+                        ui->label_117->setText("Ajouter besoin plante .");
+                    }
+
+                }else {  sa.stop();}
+
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Need plant already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
                 else
                 {
-                    sa.languageSelectedfr();//fixe
-                    sa.ajouterbesoinplantefr();
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Besoin plante existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
                 }
-
-            }else {  sa.stop();}
-
-        }
-        else{
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter Matériel"),
-                                  QObject::tr("Matériel existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+            }
         }
     }
     else
     {
 
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //afficher bsoin plante
@@ -6247,9 +8756,24 @@ void Menu::on_pushButton_124_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());
-    // ui->label_5->setText("Afficher Besoin Plante");
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("List of need plant ");
+            ui->label_117->setText("List of need plant");
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Liste des besoins plantes ");
+            ui->label_117->setText("Liste des besoins plantes");
+        }
+
+    }else {  sa.stop();}
     initbp();
-    // init ();
+
 }
 //cliked besoin plante
 void Menu::on_afficher_besoin_palnte_activated(const QModelIndex &index)
@@ -6268,6 +8792,25 @@ void Menu::on_afficher_besoin_palnte_activated(const QModelIndex &index)
             ui->Eau->setValue(qry.value(1).toInt());
             ui->cx_nutp->setText(qry.value(2).toString());
             ui->label_5->setText("Besoin Plante Selectionée");
+            if(controleDeSaisieBesoinPlante()&&testnutp(ui->cx_nutp->text()))
+            {
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Selected Nedd plant");
+                        ui->label_117->setText("Selected Nedd plant");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("Besoin plante Sélectionée");
+                        ui->label_117->setText("Besoin plante Sélectionée");
+                    }
+
+                }else {  sa.stop();}
+            }
         }
     }
 }
@@ -6284,26 +8827,69 @@ void Menu::on_pushButton_122_clicked()
         bool test=tmpbp.supprimer_besoin_plante(idB);
         if(test)
         {    ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());
+            if(speek==1)
+            {
+                if( lng=="en")
+                {
+                    sa.languageSelecteden();
+                    sa.mahrous_say("Remove Need Plant");
+                    ui->label_117->setText("Remove Need Plant");
+                }
+                else
+                {
+                    sa.languageSelectedfr();
+                    sa.mahrous_say("Supprimer Besoin Plante");
+                    ui->label_117->setText("Supprimer Besoin Plante");
+                }
+            }else
+            { sa.stop(); }
 
-            ui->label_5->setText("Supprimer Besoin Plante");
             ui->cx_idbp->setEnabled(1);
-            //ss.speak();//speak supprimer
+
             initbp();
         }
         else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer Catégorie"),
-                                  QObject::tr("verifier l'id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+        {QMessageBox msgBox;
+            if (lng=="en")
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verify id  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verifier l'id !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
     }
     else
     {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier besoin plante
@@ -6320,33 +8906,79 @@ void Menu::on_pushButton_123_clicked()
         np=ui->cx_nutp->text();
 
         ep=ui->Eau->text().toInt();
-        gestion_besoin_plante B(idB,ep,np);
-
-        bool test=tmpbp.modifier_besoin_plante(B);
-        if(test)
+        if(controleDeSaisieBesoinPlante()&&testnutp(ui->cx_nutp->text()))
         {
+            gestion_besoin_plante B(idB,ep,np);
 
-            ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());//refresh
+            bool test=tmpbp.modifier_besoin_plante(B);
+            if(test)
+            {
 
+                ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());//refresh
+                if(speek==1)
+                {
+                    if( lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Edit Need Plant");
+                        ui->label_117->setText("Edit Need Plant");
+                    }
+                    else
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Supprimer Besoin Plante");
+                        ui->label_117->setText("Supprimer Besoin Plante");
+                    }
+                }else
+                { sa.stop(); }
 
-            initbp();
+                initbp();
+            }
+            else
+            {
+                if(lng=="en")
+                {
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid Animal   !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                { QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Animale non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+
+            }
+        }
+
+    }
+    else {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
         }
         else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier Matériel"),
-                                  QObject::tr("Matériel non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
         }
-    }
-    else
-    {
-
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
-
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
     }
 }
 //trie id croissant besoin plante
@@ -6356,7 +8988,14 @@ void Menu::on_radioButton_51_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_idCroissant());
-    // ui->label_5->setText("Tri Croissant par idBP ");
+    if(lng=="en")
+    {
+        ui->label_117->setText("Sort ascending by idBP ");}
+    else
+    {
+
+        ui->label_117->setText("Trie Croissant by idBP ");
+    }
 }
 //trie id decroissant besoin plante
 void Menu::on_radioButton_52_clicked()
@@ -6365,7 +9004,14 @@ void Menu::on_radioButton_52_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_idDecroissant());
-    // ui->label_5->setText("Tri Decroissant par idBP ");
+    if(lng=="en")
+    {
+        ui->label_117->setText("Sort descending by idBP ");}
+    else
+    {
+
+        ui->label_117->setText("Trie Déroissant by idBP ");
+    }
 }
 //Tri Croissant par Quantite de Nutrition
 void Menu::on_radioButton_50_clicked()
@@ -6374,7 +9020,12 @@ void Menu::on_radioButton_50_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_NutCroissant());
-    // ui->label_5->setText("Tri Croissant par Quantite de Nutrition ");
+    if (lng=="en")
+    { ui->label_117->setText("Sort increasing by Quantity of Nutrition ");}
+    else
+    {ui->label_117->setText("Trie Croissant par Quantite de Nutrition ");
+
+    }
 }
 //Tri Decroissant par Quantite de Nutrition
 void Menu::on_radioButton_54_clicked()
@@ -6383,7 +9034,12 @@ void Menu::on_radioButton_54_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_NutDecroissant());
-    // ui->label_5->setText("Tri Decroissant par Quantite de Nutrition ");
+    if (lng=="en")
+    { ui->label_117->setText("Sort Descending by Quantity of Nutrition ");}
+    else
+    {ui->label_117->setText("Trie Decroissant par Quantite de Nutrition ");
+
+    }
 }
 //Tri Croissant par Quantite D'eau
 void Menu::on_radioButton_49_clicked()
@@ -6392,7 +9048,13 @@ void Menu::on_radioButton_49_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_EauCroissant());
-    //ui->label_5->setText("Tri Croissant par Quantite D'eau ");
+    if(lng=="en")
+    { ui->label_117->setText("Sort Ascending by Amount of Water ");}
+    else
+    {ui->label_117->setText("Trie Croissant par Quantite D'eau ");
+
+    }
+
 }
 //Tri Decroissant par Quantite D'eau
 void Menu::on_radioButton_53_clicked()
@@ -6401,7 +9063,13 @@ void Menu::on_radioButton_53_clicked()
     else
     { click->stop();}
     ui->afficher_besoin_palnte->setModel(tmpbp.afficher_EauDecroissant());
-    //ui->label_5->setText("Tri Decroissant par Quantite D'eau ");
+    if(lng=="en")
+    { ui->label_117->setText("Sort Descending by Amount of Water ");}
+    else
+    {ui->label_117->setText("Trie Decroissant par Quantite D'eau ");
+
+    }
+
 }
 //recherche besoin plante
 void Menu::on_recherche_6_textChanged(const QString &arg1)
@@ -6411,9 +9079,33 @@ void Menu::on_recherche_6_textChanged(const QString &arg1)
     if (q=="")
     {
         ui->afficher_besoin_palnte->setModel(tmpbp.afficher_besoin_plante());//refresh
+        if(speek==1)
+        {
+            if (lng=="en")
+            {
+                sa.languageSelecteden();
+                sa.mahrous_say("List of need plant ");
+                ui->label_117->setText("List of need plant");
+            }
+            else
+            {
+                sa.languageSelectedfr();
+                sa.mahrous_say("Liste des besoins plantes ");
+                ui->label_117->setText("Liste des besoins plantes");
+            }
+
+        }else {  sa.stop();}
     }
     else {
         ui->afficher_besoin_palnte->setModel(tmpbp.rechercher(q)) ;
+        if(lng=="en")
+        {
+            ui->label_117->setText("Research");
+        }
+        else
+        {
+            ui->label_117->setText("Recherche");
+        }
     }
 }
 //stat besoin plante
@@ -6432,6 +9124,17 @@ void Menu::on_pushButton_126_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(lng=="en")
+    {
+        sa.languageSelecteden();
+        sa.mahrous_say("plant production");
+    }
+    else
+    {
+        sa.languageSelectedfr();
+        sa.mahrous_say("production plante");
+    }
+
     ui->stackedWidget->setCurrentIndex(12);
 }
 //bouton photo production plante
@@ -6440,7 +9143,98 @@ void Menu::on_pushButton_127_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(lng=="en")
+    {
+        sa.languageSelecteden();
+        sa.mahrous_say("plant production");
+    }
+    else
+    {
+        sa.languageSelectedfr();
+        sa.mahrous_say("production plante");
+    }
     ui->stackedWidget->setCurrentIndex(12);
+}
+bool Menu::testproduitp(QString q)
+{ bool result = true;
+
+    if (!sy.teststring(q))
+    {
+        ui->remarque_produitp->setText("*");
+        if(lng=="en")
+        {ui->text_produitp->setText("produit  non string  !");}
+        else
+        {
+            ui->text_produitp->setText("produit non string !");
+        }
+        result = false;
+    }
+
+    return result;
+}
+bool Menu::controleDeSaisieProductionPlante()
+{
+    bool result = true;
+    bool number = true;
+
+
+
+    ui->cx_pp->text().toInt(&number);
+    //id
+    if(ui->cx_pp->text() == ""){
+        ui->remarque_idpp->setText("*");
+        if(lng=="en")
+
+        { ui->text_idpp->setText(" empty id!");}
+        else
+        { ui->text_idpp->setText("id vide!"); }
+        result = false;
+    }else
+        if(!number){
+            ui->remarque_idpp->setText("*");
+            if(lng=="en")
+            {   ui->text_idpp->setText("id PP non numeric!");}
+            else
+            {ui->text_idpp->setText("id PP non numérique!");}
+            result = false;}
+        else{
+            ui->remarque_idpp->setText("");
+            ui->text_idpp->setText("");
+        }
+
+
+    //produit
+    if(ui->cx_produitp->text() == ""){
+        ui->remarque_produitp->setText("*");
+        if(lng=="en")
+        { ui->text_produitp->setText("empty produit!");}
+        else
+        {ui->text_produitp->setText("produit vide!");}
+        result = false;
+    }
+    else if (testproduitp(ui->cx_produitp->text()))
+    {
+        ui->remarque_produitp->setText("");
+        ui->text_produitp->setText("");
+    }
+
+
+    //prix
+    if( ui->cx_prix_2->value() == 0 ){
+        ui->remarque_prixp->setText("*");
+        if (lng=="en")
+        { ui->text_prixp->setText("price must be > 0");}
+        else
+        { ui->text_prixp->setText("prix doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_prixp->setText("");
+        ui->text_prixp->setText("");
+    }
+
+
+    return result;
 }
 //ajouter production plante
 void Menu::on_pushButton_131_clicked()
@@ -6455,43 +9249,92 @@ void Menu::on_pushButton_131_clicked()
 
         QString PRODUITPLANTE= ui->cx_produitp->text();
         int PRIXPRODUITPLANTE = ui->cx_prix_2->text().toInt();
+        if(controleDeSaisieProductionPlante()&&testproduitp(ui->cx_produitp->text()))
+        {
+            gestion_produit_plante PP(IDPRODUCTIONPLANTE,IDCATEGORIEPLANTE,PRODUITPLANTE,PRIXPRODUITPLANTE);
 
-        gestion_produit_plante PP(IDPRODUCTIONPLANTE,IDCATEGORIEPLANTE,PRODUITPLANTE,PRIXPRODUITPLANTE);
-
-        bool test=PP.ajouter_produit_plante();
-        if(test)
-        {   //ui->label_8->setText("Ajouter Matériel");
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueProduitPlantes.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QString res1= QString::number(IDPRODUCTIONPLANTE);
-            QString res2= QString::number(PRIXPRODUITPLANTE);
-            //QString res3= QString::number(PRIXPRODUITPLANTE);
-
-            QTextStream cout(&file);
-            QString message2="\n L'historique des Personnels à ajouter :"+res1+" "+IDCATEGORIEPLANTE+" "+PRODUITPLANTE+" "+PRIXPRODUITPLANTE ;
-            cout << message2;
+            bool test=PP.ajouter_produit_plante();
+            if(test)
+            {
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueProduitPlantes.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QString res1= QString::number(IDPRODUCTIONPLANTE);
+                QString res2= QString::number(PRIXPRODUITPLANTE);
 
 
-            initpp();
+                QTextStream cout(&file);
+                QString message2="\n L'historique des Personnels à ajouter :"+res1+" "+IDCATEGORIEPLANTE+" "+PRODUITPLANTE+" "+PRIXPRODUITPLANTE ;
+                cout << message2;
 
-            ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());
-        }
-        else{
-            QMessageBox::critical(nullptr, QObject::tr("Ajouter Matériel"),
-                                  QObject::tr("Matériel existe deja  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+
+                initpp();
+
+                ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();//fixe
+                        sa.mahrous_say("Add product plant");
+                        ui->label_128->setText("Add product plant .");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();//fixe
+                        sa.mahrous_say("Ajouter production plante ");
+                        ui->label_128->setText("Ajouter production plante .");
+                    }
+
+                }else {  sa.stop();}
+
+            }
+            else{
+                if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Product plant already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Production plante existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+            }
         }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
+
 }
 //afficher produit plnate
 void Menu::on_pushButton_130_clicked()
@@ -6500,14 +9343,31 @@ void Menu::on_pushButton_130_clicked()
     else
     { click->stop();}
     ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());//refresh
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("List of product plant ");
+            ui->label_128->setText("List of product plant");
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Liste des productions plantes ");
+            ui->label_128->setText("Liste des productions plantes");
+        }
+
+    }else {  sa.stop();}
+    initpp();
 }
 //clicked produit plnate
 void Menu::on_afficher_produitplante_activated(const QModelIndex &index)
 {
     QString val=ui->afficher_produitplante->model()->data(index).toString();
     QSqlQuery qry ;
+    qry=tmppp.tableclicked(val);
 
-    qry.prepare("Select * from PRODUCTIONPLANTE where IDPRODUCTIONPLANTE='"+val+"' ");
 
     if (qry.exec())
     {
@@ -6518,7 +9378,26 @@ void Menu::on_afficher_produitplante_activated(const QModelIndex &index)
             ui->cx_pp->setText(qry.value(0).toString());
             ui->comboBox_CP->setCurrentText(qry.value(1).toString());
             ui->cx_produitp->setText(qry.value(2).toString());
-            ui->cx_prix_2->setText(qry.value(3).toString());
+            ui->cx_prix_2->setValue(qry.value(3).toInt());
+            if(controleDeSaisieProductionPlante()&&testproduitp(ui->cx_produitp->text()))
+            {
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Selected Product plant");
+                        ui->label_117->setText("Selected  Product plant");
+                    }
+                    else
+                    {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("Production plante Sélectionée");
+                        ui->label_117->setText("Production plante Sélectionée");
+                    }
+
+                }else {  sa.stop();}
+            }
 
         }
     }
@@ -6536,22 +9415,66 @@ void Menu::on_pushButton_132_clicked()
         bool test=tmppp.supprimer_produit_plante(idP);
         if(test)
         {    ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());//refresh
-
+            if(speek==1)
+            {
+                if( lng=="en")
+                {
+                    sa.languageSelecteden();
+                    sa.mahrous_say("Remove Product Plant");
+                    ui->label_117->setText("Remove Product Plant");
+                }
+                else
+                {
+                    sa.languageSelectedfr();
+                    sa.mahrous_say("Supprimer Production Plante");
+                    ui->label_117->setText("Supprimer Production Plante");
+                }
+            }else
+            { sa.stop(); }
             initpp();
         }
         else
-            QMessageBox::critical(nullptr, QObject::tr("Supprimer productionanimaux"),
-                                  QObject::tr("verifier le id  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+        {QMessageBox msgBox;
+            if (lng=="en")
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verify id  !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+                QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                msgBox.setText("verifier l'id !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+        }
     }
     else
     {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //modifier produit plante
@@ -6567,31 +9490,77 @@ void Menu::on_pushButton_128_clicked()
 
         QString PRODUITPLANTE= ui->cx_produitp->text();
         int PRIXPRODUITPLANTE = ui->cx_prix_2->text().toInt();
-
-        gestion_produit_plante P(IDPRODUCTIONPLANTE,IDCATEGORIEPLANTE,PRODUITPLANTE,PRIXPRODUITPLANTE);
-        bool test=tmppp.modifier_produit_palnte(P);
-        if(test)
+        if(controleDeSaisieProductionPlante()&&testproduitp(ui->cx_produitp->text()))
         {
+            gestion_produit_plante P(IDPRODUCTIONPLANTE,IDCATEGORIEPLANTE,PRODUITPLANTE,PRIXPRODUITPLANTE);
+            bool test=tmppp.modifier_produit_palnte(P);
+            if(test)
+            {
 
-            ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());//refresh
+                ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante());//refresh
+                if(speek==1)
+                {
+                    if( lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Edit Product Plant");
+                        ui->label_128->setText("Edit Product Plant");
+                    }
+                    else
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Modifier production Plante");
+                        ui->label_128->setText("Modifier production Plante");
+                    }
+                }else
+                { sa.stop(); }
 
-            initpp();
-        }
-        else
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Modifier animaux"),
-                                  QObject::tr("animaux non valide  !.\n"
-                                              "Click Cancel to exit."), QMessageBox::Cancel);
+                initpp();
+            }
+            else
+                if(lng=="en")
+                {
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid  Product Plant !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                { QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Production plante non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+
         }
     }
-    else
-    {
-        QMessageBox msgBox;
-        QPixmap pix("A:/integration/integration final/danger.png");
 
-        msgBox.setText("Il faut ouvrir cadenas .");
-        msgBox.setIconPixmap(pix);
-        msgBox.exec();
+
+    else {
+        if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
     }
 }
 //trie prix croissant
@@ -6601,6 +9570,14 @@ void Menu::on_radioButton_56_clicked()
     else
     { click->stop();}
     ui->afficher_produitplante->setModel(tmppp.afficher_PrixCroissant());//refresh
+    if(lng=="en")
+    {
+        ui->label_128->setText("Ascending price sort");
+    }
+    else
+    {
+        ui->label_128->setText("Trie croissant du prix");
+    }
 }
 //trie prix decroissant
 void Menu::on_radioButton_58_clicked()
@@ -6609,6 +9586,14 @@ void Menu::on_radioButton_58_clicked()
     else
     { click->stop();}
     ui->afficher_produitplante->setModel(tmppp.afficher_PrixDecroissant());//refresh
+    if(lng=="en")
+    {
+        ui->label_128->setText("Sort decreasing price");
+    }
+    else
+    {
+        ui->label_128->setText("Trie decroissant du prix");
+    }
 }
 //trie id croissant
 void Menu::on_radioButton_57_clicked()
@@ -6617,6 +9602,14 @@ void Menu::on_radioButton_57_clicked()
     else
     { click->stop();}
     ui->afficher_produitplante->setModel(tmppp.afficher_idCroissant());//refresh
+    if(lng=="en")
+    {
+        ui->label_128->setText("Growing sort of Id");
+    }
+    else
+    {
+        ui->label_128->setText("Trie croissant d'Id");
+    }
 }
 //trie id decroissant
 void Menu::on_radioButton_55_clicked()
@@ -6625,6 +9618,14 @@ void Menu::on_radioButton_55_clicked()
     else
     { click->stop();}
     ui->afficher_produitplante->setModel(tmppp.afficher_idDecroissant());//refresh
+    if(lng=="en")
+    {
+        ui->label_128->setText("Descending sort of Id");
+    }
+    else
+    {
+        ui->label_128->setText("Trie decroissant d'Id");
+    }
 }
 //recherche produitnplante
 void Menu::on_Recherche_2_textChanged(const QString &arg1)
@@ -6633,10 +9634,34 @@ void Menu::on_Recherche_2_textChanged(const QString &arg1)
     if (q=="")
     {
         ui->afficher_produitplante->setModel(tmppp.afficher_produit_plante()) ;
+        if(speek==1)
+        {
+            if (lng=="en")
+            {
+                sa.languageSelecteden();
+                sa.mahrous_say("List of product plant ");
+                ui->label_128->setText("List of product plant");
+            }
+            else
+            {
+                sa.languageSelectedfr();
+                sa.mahrous_say("Liste des productions plantes ");
+                ui->label_128->setText("Liste des productions plantes");
+            }
+
+        }else {  sa.stop();}
 
     }
     else {
         ui->afficher_produitplante->setModel(tmppp.rechercher(q)) ;
+        if(lng=="en")
+        {
+            ui->label_128->setText("research");
+        }
+        else
+        {
+            ui->label_128->setText("recherche");
+        }
 
     }
 }
@@ -6669,7 +9694,7 @@ int Menu::on_pushButton_134_clicked()
 
 
     QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
+    query=tmpmat.selectdate();
     if ( query.exec() )
     {
 
@@ -6696,8 +9721,8 @@ int Menu::on_pushButton_134_clicked()
     QSqlQuery   qry ;
     int i =50;
     int k=0;
-    //badel i table w les attribues
-    qDebug() << qry.prepare("select * from BESOINSPLANTES order by  IDBESOINSPLANTE ");
+
+    qry=tmpbp.selectbesoinplante();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
@@ -6761,13 +9786,13 @@ int Menu::on_pushButton_134_clicked()
         {
             sa.languageSelecteden();
             sa.creationpdfen();
-            // ui->label_22->setText("PDF creation");
+            ui->label_117->setText("PDF creation");
         }
         else
         {
             sa.languageSelectedfr();
             sa.creationpdffr();
-            //ui->label_22->setText("Création PDF");
+            ui->label_117->setText("Création PDF");
         }
 
     }else {  sa.stop();}
@@ -6793,7 +9818,7 @@ int Menu::on_pushButton_135_clicked()
 
 
     QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
+    query=tmpmat.selectdate();
     if ( query.exec() )
     {
 
@@ -6821,7 +9846,7 @@ int Menu::on_pushButton_135_clicked()
     int i =50;
     int k=0;
     //badel i table w les attribues
-    qDebug() << qry.prepare("select * from PRODUCTIONPLANTE order by IDPRODUCTIONPLANTE ");
+    qry=tmppp.selectpeoduitplante();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
@@ -6888,13 +9913,13 @@ int Menu::on_pushButton_135_clicked()
         {
             sa.languageSelecteden();
             sa.creationpdfen();
-            // ui->label_22->setText("PDF creation");
+            ui->label_128->setText("PDF creation");
         }
         else
         {
             sa.languageSelectedfr();
             sa.creationpdffr();
-            //ui->label_22->setText("Création PDF");
+            ui->label_128->setText("Création PDF");
         }
 
     }else {  sa.stop();}
@@ -6909,6 +9934,7 @@ void Menu::on_pushButton_140_clicked()
     { click->stop();}
     qDebug () << ui->cx_nomuser->text();
     qDebug() << ui->cx_password->text();
+    qDebug() << sy.login(ui->cx_nomuser->text(),ui->cx_password->text());
     if (sy.login(ui->cx_nomuser->text(),ui->cx_password->text())=="admin")
     {
         initmenu();
@@ -7043,6 +10069,10 @@ void Menu::on_pushButton_140_clicked()
 //securite
 void Menu::on_pushButton_155_clicked()
 {
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     securite =0;
     ui->pushButton_155->hide();
     ui->pushButton_154->show();
@@ -7050,21 +10080,22 @@ void Menu::on_pushButton_155_clicked()
 //securite
 void Menu::on_pushButton_154_clicked()
 {
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     securite =1;
     ui->pushButton_155->show();
     ui->pushButton_154->hide();
 }
-//parametre login vers parametre
-void Menu::on_pushButton_139_clicked()
-{ if (cl==1)
-    { click->play();}
-    else
-    { click->stop();}
-    ui->stackedWidget->setCurrentIndex(14);
-}
+
 //load music
 void Menu::on_pushButton_141_clicked()
 {
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     //Load the file
     player->setMedia(QUrl::fromLocalFile("A:\\integration\\integration final\\2\\mahrousplusplus\\Farma.mp3"));
     player->play();
@@ -7130,14 +10161,28 @@ void Menu::on_pushButton_144_clicked()
     ui->pushButton_144->hide();
     ui->pushButton_143->show();
 }
-//parametre vers login
+//parametre vers menu
 void Menu::on_pushButton_145_clicked()
 {
     if (cl==1)
     { click->play();}
     else
     { click->stop();}
-    ui->stackedWidget->setCurrentIndex(13);
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
+    ui->stackedWidget->setCurrentIndex(0);
 }
 //menu vers login
 void Menu::on_pushButton_146_clicked()
@@ -7146,6 +10191,21 @@ void Menu::on_pushButton_146_clicked()
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("login");
+
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Connexion");
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(13);
 }
 //english selected
@@ -7182,12 +10242,17 @@ void Menu::on_pushButton_148_clicked()
     ui->pushButton_6->setText("Materials");
     ui->pushButton_12->setText("Assignment");
     ui->pushButton_39->setText("Plant category");
+    ui->pushButton_126->setText("Plant production");
     ui->pushButton_49->setText("Plant");
-    ui->pushButton_70->setText("Production animal");
+    ui->pushButton_70->setText("Animal production");
+    ui->pushButton_71->setText("Need animal ");
     ui->pushButton_117->setText("Nedd Plant");
     ui->pushButton_32->setText("Personnel");
     ui->pushButton_94->setText("Animal species");
     ui->pushButton_96->setText("Animals");
+    ui->pushButton_31->setText("Departement");
+    ui->pushButton_32->setText("Staff");
+
     //interface Categorie Materiel
     ui->label->setText("Id category:");
     ui->label_2->setText("Name category :");
@@ -7276,10 +10341,13 @@ void Menu::on_pushButton_148_clicked()
     ui->pushButton_55->setText("Edit plant category");
     ui->pushButton_54->setText("Add plant category");
     ui->label_49->setText("Sort by :");
+    ui->label_49->setStyleSheet("QLabel{color:#0000ff;}");
     ui->radioButton_22->setText("Id plant category ↑");
     ui->radioButton_19->setText("Id plant category ↓");
     ui->radioButton_20->setText("Name:A-Z");
     ui->radioButton_21->setText("Name:Z-A");
+    ui->label_204->setText("Research :");
+    ui->label_204->setStyleSheet("QLabel{color:#0000ff;}");
     //plante
     ui->label_56->setText("Id plant :");
     ui->label_53->setText("Sector :");
@@ -7298,7 +10366,6 @@ void Menu::on_pushButton_148_clicked()
     ui->pushButton_66->setText("Edit plant");
     ui->pushButton_63->setText("Remove plant");
     ui->pushButton_67->setText("Add plant");
-    ui->pushButton_60->setText("Show plant");
     ui->radioButton_27->setText("Id plant ↑");
     ui->radioButton_26->setText("Id plant ↓");
     ui->radioButton_28->setText("State:A-Z");
@@ -7306,8 +10373,54 @@ void Menu::on_pushButton_148_clicked()
     ui->radioButton_25->setText("Quantity ↑");
     ui->radioButton_23->setText("Quantity ↓");
     ui->label_65->setText("Sort by :");
+    ui->label_65->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_205->setText("Research :");
+    ui->label_205->setStyleSheet("QLabel{color:#0000ff;}");
     //production animal
-    //besoin animal(bouton)
+    ui->label_88->setText("Id production :");
+    ui->label_89->setText("Product :");
+    ui->label_87->setText("Price :");
+    ui->label_84->setText("Id animal species :");
+    ui->label_85->setText("Picture :");
+    ui->radioButton_36->setText("Product ↑");
+    ui->radioButton_37->setText("Product ↓");
+    ui->radioButton_38->setText("Id P ↑");
+    ui->radioButton_35->setText("Id P ↓");
+    ui->label_209->setText("Research :");
+    ui->label_209->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_82->setText("No action ...");
+    ui->pushButton_85->setText("Remove animal production ");
+    ui->pushButton_91->setText("Edit animal production");
+    ui->pushButton_92->setText("Add animal production");
+    ui->pushButton_93->setText("Show picture ");
+    ui->pushButton_87->setText("Edit picture ");
+    ui->pushButton_89->setText("Add picture");
+    ui->label_86->setText("Sort by :");
+    ui->label_86->setStyleSheet("QLabel{color:#0000ff;}");
+    //besoin animal
+    ui->label_79->setText("Id need :");
+    ui->label_75->setText("Water :");
+    ui->label_71->setText("Nutrition :");
+    ui->label_74->setText("Shelter :");
+    ui->label_80->setText("Vaccine :");
+    ui->label_68->setText("Picture :");
+    ui->radioButton_30->setText("Id needs ↑");
+    ui->radioButton_31->setText("Id needs ↓");
+    ui->radioButton_33->setText("Water ↑");
+    ui->radioButton_29->setText("Water ↓");
+    ui->radioButton_32->setText("Nutrition A-Z");
+    ui->radioButton_34->setText("Nutrition Z-A");
+    ui->label_207->setText("Research :");
+    ui->label_207->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_78->setText("No action ...");
+    ui->pushButton_80->setText("Remove animal needs ");
+    ui->pushButton_72->setText("Edit animal needs");
+    ui->pushButton_79->setText("Add animal needs");
+    ui->pushButton_82->setText("Show picture ");
+    ui->pushButton_78->setText("Edit picture");
+    ui->pushButton_74->setText("Add picture");
+    ui->label_72->setText("Sort by :");
+    ui->label_72->setStyleSheet("QLabel{color:#0000ff;}");
     //animal
     ui->label_104->setText("ID Animal :");
     ui->label_105->setText("Age Animal :");
@@ -7322,7 +10435,7 @@ void Menu::on_pushButton_148_clicked()
     ui->label_108->setText("Id Need :");
     ui->label_100->setText("Picture :");
     ui->label_110->setText("No Action ...");
-    ui->pushButton_111->setText("Show picture");
+    ui->pushButton_111->setText("Add picture");
     ui->pushButton_113->setText("Edit picture");
     ui->pushButton_108->setText("Show picture");
     ui->label_102->setText("Sort by :");
@@ -7351,7 +10464,62 @@ void Menu::on_pushButton_148_clicked()
     ui->label_213->setText("Research :");
     ui->label_213->setStyleSheet("QLabel{color:#0000ff;}");
     //besoin plante
-    ui->label_116->setText("Id nedd plant");
+    ui->label_116->setText("Id nedd plant :");
+
+    ui->label_118->setText("Plant water  :");
+    ui->label_119->setText("Plant nutrition :");
+    ui->radioButton_51->setText("Id need plant ↑");
+    ui->radioButton_50->setText("Nuttrition ↑");
+    ui->radioButton_49->setText("Water ↑ ");
+    ui->radioButton_52->setText("Id need plant ↓");
+    ui->radioButton_54->setText("Nutrition ↓");
+    ui->radioButton_53->setText("Water ↓");
+    ui->label_215->setText("Research :");
+    ui->label_215->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_120->setText("Sort by :");
+    ui->label_120->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->pushButton_123->setText("Edit need plant");
+    ui->pushButton_122->setText("Delete need plant");
+
+    ui->pushButton_120->setText("Add need plant");
+    ui->pushButton_124->setText("show need plant");
+    ui->label_117->setText("No action ...");
+    //fonction
+    ui->label_145->setText("Sort by :");
+    ui->label_145->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->trieridcroi_2->setText("Dep ID ↑");
+    ui->trieriddecroi_2->setText("Dep ID ↓");
+    ui->radioButton_59->setText("Salary ↑");
+    ui->radioButton_60->setText("Salary ↓");
+    ui->trierAZ_2->setText("Name: A-Z");
+    ui->trierZA_2->setText("Name: Z-A");
+    ui->label_219->setText("Search:");
+    ui->label_219->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->SupprimerCategorieMateriel_2->setText("Delete Department");
+    ui->ModifierCategorieMaeriel_2->setText("Modify Department");
+    ui->AjouterCategorieMateriel_2->setText("Add Department");
+    ui->label_149->setText("Dep ID: ");
+    ui->label_147->setText("Dep Name: ");
+    ui->label_146->setText("Salary: ");
+    ui->label_144->setText("Description: ");
+    //Production plante
+    ui->label_125->setText("Id plant production :");
+    ui->label_126->setText("Id category plant :");
+    ui->label_124->setText("Plant product :");
+    ui->label_123->setText("Price :");
+    ui->label_127->setText("Sort by :");
+    ui->label_127->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->radioButton_57->setText("Id category plant ↑");
+    ui->radioButton_55->setText("Id category plant ↓");
+    ui->radioButton_56->setText("Price ↑");
+    ui->radioButton_58->setText("Price ↓");
+    ui->label_216->setText("Research :");
+    ui->label_216->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_128->setText("No action ...");
+    ui->pushButton_132->setText("Remove produciton plant");
+    ui->pushButton_128->setText("Edit produciton plant");
+    ui->pushButton_130->setText("Show produciton plant");
+    ui->pushButton_131->setText("Add produciton plant");
     //interface personnel
 
 }
@@ -7388,10 +10556,15 @@ void Menu::on_pushButton_147_clicked()
     ui->pushButton_6->setText("Materiel");
     ui->pushButton_12->setText("Affectation");
     ui->pushButton_39->setText("Catégorie Plante");
+    ui->pushButton_70->setText("Production animal");
+    ui->pushButton_126->setText("Production plante");
+    ui->pushButton_71->setText("Besoin animal ");
     ui->pushButton_49->setText("Plante");
     ui->pushButton_117->setText("Besoin Plante");
     ui->pushButton_94->setText("Espéce Animal");
     ui->pushButton_96->setText("Animaux");
+    ui->pushButton_31->setText("Fonction");
+    ui->pushButton_32->setText("Personnel");
     //interface Categorie Materiel
     ui->label->setText("Id catégorie:");
     ui->label_2->setText("Nom catégorie :");
@@ -7477,6 +10650,9 @@ void Menu::on_pushButton_147_clicked()
     ui->pushButton_55->setText("Modifier catégorie plante");
     ui->pushButton_54->setText("Ajouter catégorie plante");
     ui->label_49->setText("Trier selon:");
+    ui->label_49->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_204->setText("Recherche:");
+    ui->label_204->setStyleSheet("QLabel{color:#0000ff;}");
     ui->radioButton_22->setText("Id catégorie plante ↑");
     ui->radioButton_19->setText("Id catégorie plante ↓");
     ui->radioButton_20->setText("Nom:A-Z");
@@ -7499,7 +10675,6 @@ void Menu::on_pushButton_147_clicked()
     ui->pushButton_66->setText("Modifier plante");
     ui->pushButton_63->setText("Supprimer plante");
     ui->pushButton_67->setText("Ajouter plante");
-    ui->pushButton_60->setText("Afficher plante");
     ui->radioButton_27->setText("Id plante ↑");
     ui->radioButton_26->setText("Id plante ↓");
     ui->radioButton_28->setText("Etat:A-Z");
@@ -7507,8 +10682,54 @@ void Menu::on_pushButton_147_clicked()
     ui->radioButton_25->setText("Quantite ↑");
     ui->radioButton_23->setText("Quantite ↓");
     ui->label_65->setText("Trier selon :");
-    //production animal (bouton)
-    //besoin animal (bouton)
+    ui->label_65->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_205->setText("Trier selon :");
+    ui->label_205->setStyleSheet("QLabel{color:#0000ff;}");
+    //production animal
+    ui->label_88->setText("Id production");
+    ui->label_89->setText("Produit");
+    ui->label_87->setText("Prix");
+    ui->label_84->setText("Id espece animale");
+    ui->label_85->setText("Image");
+    ui->radioButton_36->setText("Produit ↑");
+    ui->radioButton_37->setText("Produit ↓");
+    ui->radioButton_38->setText("Id P ↑");
+    ui->radioButton_35->setText("Id P ↓");
+    ui->label_209->setText("Recherche :");
+    ui->label_209->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_82->setText("Pas d'action ...");
+    ui->pushButton_85->setText("Supprimer production animale ");
+    ui->pushButton_91->setText("Modifier production animale");
+    ui->pushButton_92->setText("Ajouter production animale");
+    ui->pushButton_93->setText("Afficher image ");
+    ui->pushButton_87->setText("Modifier image ");
+    ui->pushButton_89->setText("Ajouter image");
+    ui->label_86->setText("Trier selon  :");
+    ui->label_86->setStyleSheet("QLabel{color:#0000ff;}");
+    //besoin animal
+    ui->label_79->setText("Id besoin");
+    ui->label_75->setText("Eau");
+    ui->label_71->setText("Nutrition");
+    ui->label_74->setText("Abri");
+    ui->label_80->setText("Vaccin");
+    ui->label_68->setText("Image");
+    ui->radioButton_30->setText("Id besoins ↑");
+    ui->radioButton_31->setText("Id besoins ↓");
+    ui->radioButton_33->setText("Eau ↑");
+    ui->radioButton_29->setText("Eau ↓");
+    ui->radioButton_32->setText("Nutrition A-Z");
+    ui->radioButton_34->setText("Nutrition Z-A");
+    ui->label_207->setText("Recherche :");
+    ui->label_207->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_78->setText("Pas d'action ...");
+    ui->pushButton_80->setText("Supprimer besoin ");
+    ui->pushButton_72->setText("Modifier besoin");
+    ui->pushButton_79->setText("Ajouter besoin");
+    ui->pushButton_82->setText("Afficher image ");
+    ui->pushButton_78->setText("Modifier image ");
+    ui->pushButton_74->setText("Ajouter image");
+    ui->label_72->setText("Trier selon :");
+    ui->label_72->setStyleSheet("QLabel{color:#0000ff;}");
     //animal
     ui->label_104->setText("ID Animal :");
     ui->label_105->setText("Age Animal :");
@@ -7539,7 +10760,6 @@ void Menu::on_pushButton_147_clicked()
     ui->pushButton_112->setText("Ajouter animal");
     ui->pushButton_114->setText("Modifier animal");
     ui->pushButton_106->setText("Supprimer animal");
-
     //espece animal
     ui->label_94->setText("Id Espéce :");
     ui->label_92->setText("Nom Espéce :");
@@ -7553,7 +10773,62 @@ void Menu::on_pushButton_147_clicked()
     ui->label_213->setText("Recherche :");
     ui->label_213->setStyleSheet("QLabel{color:#0000ff;}");
     //besoin plante
-    ui->label_116->setText("Id besoin plante");
+    ui->label_116->setText("Id besoin plante :");
+    ui->label_118->setText("Eau plante :");
+    ui->label_119->setText("Nuttrition plante :");
+    ui->radioButton_51->setText("Id besoin plante ↑");
+    ui->radioButton_50->setText("Nuttrition ↑");
+    ui->radioButton_49->setText("Eau ↑ ");
+    ui->radioButton_52->setText("Id besoin plane ↓");
+    ui->radioButton_54->setText("Nutrition ↓");
+    ui->radioButton_53->setText("Eau ↓");
+    ui->label_215->setText("Rechreche :");
+    ui->label_215->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_120->setText("Trier selon :");
+    ui->label_120->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->pushButton_123->setText("Modifier besoin plante");
+    ui->pushButton_122->setText("Supprimer besoin plante");
+    ui->pushButton_120->setText("Ajouter besoin plante");
+    ui->pushButton_124->setText("Afficher besoin plante");
+    ui->label_117->setText("Pas d'action");
+    //Production plante
+    ui->label_125->setText("Id production plante :");
+    ui->label_126->setText("Id categorie plante");
+    ui->label_124->setText("Produit plante");
+    ui->label_123->setText("Prix");
+    ui->label_127->setText("Trier selon");
+    ui->label_127->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->radioButton_57->setText("Id production plante ↑");
+    ui->radioButton_55->setText("Id production plante ↓");
+    ui->radioButton_56->setText("Prix ↑");
+    ui->radioButton_58->setText("Prix ↓");
+    ui->label_216->setText("Recherche :");
+    ui->label_216->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->label_128->setText("Pas d'action ...");
+    ui->pushButton_132->setText("Supprimer produciton plante");
+    ui->pushButton_128->setText("Modifier production plante");
+    ui->pushButton_130->setText("Afficher production plante");
+    ui->pushButton_131->setText("Ajouter production plante");
+    //fonction
+    ui->label_145->setText("Trier Selon");
+    ui->label_145->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->trieridcroi_2->setText("ID Fonction ↑");
+    ui->trieriddecroi_2->setText("ID Fonction ↓");
+    ui->radioButton_59->setText("Salaire ↑");
+    ui->radioButton_60->setText("Salaire ↓");
+    ui->trierAZ_2->setText("Nom: A-Z");
+    ui->trierZA_2->setText("Nom: Z-A");
+    ui->label_219->setText("Recherche:");
+    ui->label_219->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->SupprimerCategorieMateriel_2->setText("Supprimer Fonction");
+    ui->ModifierCategorieMaeriel_2->setText("Modifier Fonction");
+    ui->AjouterCategorieMateriel_2->setText("Ajouter Fonction");
+    ui->label_149->setText("ID Fonction: ");
+    ui->label_147->setText("Nom Fonction: ");
+    ui->label_146->setText("Salaire: ");
+    ui->label_144->setText("Description: ");
+
+
 }
 //speek
 void Menu::on_pushButton_149_clicked()
@@ -7581,60 +10856,71 @@ void Menu::on_pushButton_150_clicked()
     ui->pushButton_149->show();
     ui->pushButton_150->hide();
 }
-//pa&rametre menu vers paramtre
+// menu vers paramtre
 void Menu::on_pushButton_151_clicked()
 {
     if (cl==1)
     { click->play();}
     else
     { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("settings");
+
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.mahrous_say("paramétre");
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(14);
 }
 //fonction
 //controle de saisie
 bool Menu::controleDeSaisiefonction()
 {
+
     bool result = true;
     bool number = true;
     ui->cx_salaire->text().toInt(&number);
 
-    qDebug() << ui->cx_idFonction->text() << ui->cx_nomFonction->text() << ui->cx_salaire->text() << ui->cx_description->text() << number << endl;
+    //qDebug() << ui->cx_idFonction->text() << ui->cx_nomFonction->text() << ui->cx_salaire->text() << ui->cx_description->text() << number << endl;
 
     if(ui->cx_idFonction->text() == ""){
-        ui->remarque_id->setText("*");
+        ui->remarque_id_5->setText("*");
         ui->text_id->setText("id vide!");
         result = false;
     }
     else{
-        ui->remarque_id->setText("");
+        ui->remarque_id_5->setText("");
         ui->text_id->setText("");
     }
 
     if(ui->cx_nomFonction->text() == ""){
-        ui->remarque_nom->setText("*");
+        ui->remarque_nom_5->setText("*");
         ui->text_nom->setText("nom vide!");
         result = false;
     }
     else{
-        ui->remarque_nom->setText("");
+        ui->remarque_nom_5->setText("");
         ui->text_nom->setText("");
     }
 
-    if(ui->cx_salaire->text() == ""){
+    if(ui->cx_salaire->value() == 0){
         ui->remarque_salaire->setText("*");
         ui->text_salaire->setText("salaire vide!");
         result = false;
     }
-    else
-        if(!number){
-            ui->remarque_salaire->setText("*");
-            ui->text_salaire->setText("salaire non numérique!");
-            result = false;
-        }
-        else{
-            ui->remarque_salaire->setText("");
-            ui->text_salaire->setText("");
-        }
+
+    else{
+        ui->remarque_salaire->setText("");
+        ui->text_salaire->setText("");
+    }
 
     if(ui->cx_description->text() == ""){
         ui->remarque_desc->setText("*");
@@ -7653,17 +10939,16 @@ void Menu::on_affichage_activated(const QModelIndex &index)
 {
     QString val=ui->affichage->model()->data(index).toString();
     QSqlQuery query;
-    query.prepare("select * from fonctions where idFonction = '"+val+"';");
+    query=rhf.tableclicked(val);
     if (query.exec())
     {
         while (query.next())
         {
 
-            ui->cx_idFonction->setStyleSheet("color: grey;");
-            ui->cx_idFonction->setReadOnly(true);
+            ui->cx_idFonction->setDisabled(1);
             ui->cx_idFonction->setText(query.value(0).toString());
             ui->cx_nomFonction->setText(query.value(1).toString());
-            ui->cx_salaire->setText(query.value(2).toString());
+            ui->cx_salaire->setValue(query.value(2).toInt());
             ui->cx_description->setText(query.value(3).toString());
         }
     }
@@ -7671,12 +10956,13 @@ void Menu::on_affichage_activated(const QModelIndex &index)
 }
 //ajouter fonction
 void Menu::on_AjouterCategorieMateriel_2_clicked()
-{
-    if(ui->cx_idFonction->isReadOnly()){
-        ui->cx_idFonction->setStyleSheet("color:black;");
-        ui->cx_idFonction->setReadOnly(false);
-    }
-    else{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(securite==0)
+    {
+
         if(controleDeSaisiefonction()){
             rh_fonctions_ops fOps(ui->cx_idFonction->text(),ui->cx_nomFonction->text(),ui->cx_salaire->text().toInt(),ui->cx_description->text());
             fOps.ajouterFonction();
@@ -7687,40 +10973,245 @@ void Menu::on_AjouterCategorieMateriel_2_clicked()
             QString message2="\nFonction a été ajoutée sous :\n idF :"+ui->cx_idFonction->text()+" \n nomF : "+ui->cx_nomFonction->text()+" \n Salaire : "+ui->cx_salaire->text().toInt()+"\n Salaire : "+ui->cx_description->text()+"";
             cout << message2;
             ui->affichage->setModel(fOps.afficherFonctions(1));
+            initfonction();
             ui->status->setText("Ajoutée!");
-            //sa.speak();
+            if(speek==1)
+            {
+                if (lng=="en")
+                {
+                    sa.languageSelecteden();
+                    sa.mahrous_say("department added");
+                }
+                else {
+                    sa.languageSelectedfr();
+                    sa.mahrous_say("fonction ajoutée");
+                }
+
+            }else {  sa.stop();}
+        }
+        else
+            if(lng=="en")
+            {
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                msgBox.setText("Departement already exists !.\n"
+                               "Click Cancel to exit.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+            }
+            else
+            {
+
+                QMessageBox msgBox;
+                QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                msgBox.setText("Fonctions existe deja  !.\n"
+                               "Cliquez sur Annuler pour quitter.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+
+            }
+    }
+    else
+    { if (lng=="en")
+        {QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Security must be disabled.");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
+        }
+        else
+        { QMessageBox msgBox;
+            QPixmap pix("A:/integration/integration final/danger.png");
+
+            msgBox.setText("Il faut désactiver la sécurite .");
+            msgBox.setIconPixmap(pix);
+            msgBox.exec();
+
         }
     }
 }
+
 //modifier fonction
 void Menu::on_ModifierCategorieMaeriel_2_clicked()
-{
-    if(!ui->cx_idFonction->isReadOnly()){
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(ui->cx_idFonction->text()==""){
         ui->status->setText("Veuillez sélectionner d'abord...");
+        if(speek==1)
+        {
+            if (lng=="en")
+            {
+                sa.languageSelecteden();
+                sa.mahrous_say("Choose a department first");
+            }
+            else {
+                sa.languageSelectedfr();
+                sa.mahrous_say("Veuillez selectionner une fonction");
+            }
+
+        }else {  sa.stop();}
     }
     else{
-        if(controleDeSaisiefonction()){
-            rh_fonctions_ops fOps(ui->cx_idFonction->text(),ui->cx_nomFonction->text(),ui->cx_salaire->text().toInt(),ui->cx_description->text());
-            fOps.modifFonction();
-            ui->affichage->setModel(fOps.afficherFonctions(1));
-            ui->status->setText("Modifiée!");
-            //sm.speak();
+        if(securite==0)
+        {
+
+
+            if(controleDeSaisiefonction()){
+                rh_fonctions_ops fOps(ui->cx_idFonction->text(),ui->cx_nomFonction->text(),ui->cx_salaire->text().toInt(),ui->cx_description->text());
+                fOps.modifFonction();
+                ui->affichage->setModel(fOps.afficherFonctions(1));
+                ui->status->setText("Modifiée!");
+                initfonction();
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Department updated");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("Fonction modifiée");
+                    }
+
+                }else {  sa.stop();}
+            }
+            else
+                if(lng=="en")
+                {
+
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Invalid Department   !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                { QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/question.png");//?
+                    msgBox.setText("Fonction non valide  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+
+                }
+        }
+        else
+        { if (lng=="en")
+            {QMessageBox msgBox;
+                QPixmap pix("A:/integration/integration final/danger.png");
+
+                msgBox.setText("Security must be disabled.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+
+            }
+            else
+            { QMessageBox msgBox;
+                QPixmap pix("A:/integration/integration final/danger.png");
+
+                msgBox.setText("Il faut désactiver la sécurite .");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+
+            }
+
         }
     }
 }
 //supprimer fonction
 void Menu::on_SupprimerCategorieMateriel_2_clicked()
-{
-    if(!ui->cx_idFonction->isReadOnly()){
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(ui->cx_idFonction->text()==""){
         ui->status->setText("Veuillez sélectionner d'abord...");
+        if(speek==1)
+        {
+            if (lng=="en")
+            {
+                sa.languageSelecteden();
+                sa.mahrous_say("Choose a department first");
+            }
+            else {
+                sa.languageSelectedfr();
+                sa.mahrous_say("Veuillez selectionner une fonction");
+            }
+
+        }else {  sa.stop();}
     }
     else{
-        if(controleDeSaisiefonction()){
-            rh_fonctions_ops fOps(ui->cx_idFonction->text(),ui->cx_nomFonction->text(),ui->cx_salaire->text().toInt(),ui->cx_description->text());
-            fOps.suppFonction();
-            ui->affichage->setModel(fOps.afficherFonctions(1));
-            ui->status->setText("Supprimée!");
-            //ss.speak();
+        if(securite==0)
+        {
+            if(controleDeSaisiefonction()){
+                rh_fonctions_ops fOps(ui->cx_idFonction->text(),ui->cx_nomFonction->text(),ui->cx_salaire->text().toInt(),ui->cx_description->text());
+                fOps.suppFonction();
+                ui->affichage->setModel(fOps.afficherFonctions(1));
+                ui->status->setText("Supprimée!");
+                initfonction();
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("Department deleted");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("Fonction supprimé");
+                    }
+
+                }else {  sa.stop();}
+            }else
+
+            {QMessageBox msgBox;
+                if (lng=="en")
+                {
+                    QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                    msgBox.setText("verify id  !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {
+                    QPixmap pix("C:/Users/ASUS/Downloads/close (1).png");//X
+
+                    msgBox.setText("verifier l'id !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+            }
+
+        }
+        else
+        { if (lng=="en")
+            {QMessageBox msgBox;
+                QPixmap pix("A:/integration/integration final/danger.png");
+
+                msgBox.setText("Security must be disabled.");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+
+            }
+            else
+            { QMessageBox msgBox;
+                QPixmap pix("A:/integration/integration final/danger.png");
+
+                msgBox.setText("Il faut désactiver la sécurite .");
+                msgBox.setIconPixmap(pix);
+                msgBox.exec();
+
+            }
+
         }
     }
 }
@@ -7733,21 +11224,21 @@ bool Menu::controleDeSaisiepersonnel(){
 
     if(ui->cx_nom->text() == ""){
         ui->remarque_nom->setText("*");
-        ui->text_nom->setText("nom vide!");
+        ui->text_nomf->setText("nom vide!");
         result = false;
     }
     else{
         ui->remarque_nom->setText("");
-        ui->text_nom->setText("");
+        ui->text_nomf->setText("");
     }
 
     if(ui->cx_prenom->text() == ""){
-        ui->remarque_prenom->setText("*");
+        ui->remarque_prenom_2->setText("*");
         ui->text_prenom->setText("prenom vide!");
         result = false;
     }
     else{
-        ui->remarque_prenom->setText("");
+        ui->remarque_prenom_2->setText("");
         ui->text_prenom->setText("");
     }
 
@@ -7792,7 +11283,10 @@ bool Menu::controleDeSaisiepersonnel(){
 //ajouter  personnel
 void Menu::on_AjouterPersonnel_clicked()
 {
-
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     if (cl==1)//fi ay evenemenet mta3 click
     { click->play();}
     else
@@ -7803,11 +11297,23 @@ void Menu::on_AjouterPersonnel_clicked()
     }
     else{
         if(controleDeSaisiepersonnel()){
+
             QAbstractItemModel * model = ui->comboBox->model();
             QString idF = model->data(model->index(ui->comboBox->currentIndex(),1)).toString();
-            rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF);
+            rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF,ui->password->text(),ui->cx_age->text(),ui->cx_chemin->text());
             qDebug () << ui->cx_date->text();
             pOps.ajouterPersonnel();
+            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriquePersonnel.txt");
+            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                return;
+            QTextStream cout(&file);
+            QString message2="\nPersonnel a été ajoutée sous :\n CIN :"+ui->cx_cin->text()+" \n nom: "+ui->cx_nom->text()+" \n prenom: "+ui->cx_prenom->text()+" \n adresse: "+ui->cx_adresse->text()+" \n date: "+ui->cx_date->text()+" \n IDFonction: "+idF+" \n Password: "+ui->password->text()+" \n Age: "+ui->cx_age->text()+"\n Image: "+ui->cx_chemin->text()+"";
+            cout << message2;
+            ui->comboBox_cin->setModel(tmpmat.afficher_CINlist());
+            ui->comboBox_cin_3->setModel(tmpa.afficher_CINlist());
+            ui->comboBox_cin_2->setModel(tmppl.afficher_CINlist());
+
+
             ui->affichage_2->setModel(pOps.afficherPersonnels());
             ui->status->setText("Ajoutée!");
         }
@@ -7827,7 +11333,13 @@ void Menu::on_affichage_2_activated(const QModelIndex &index)
     ui->cx_prenom->setText(p.getPrenom());
     ui->cx_adresse->setText(p.getAdresse());
     ui->cx_date->setDate(QDate::fromString(p.getDateE().left(10),"dd/MM/yy"));
-
+    ui->cx_age->setValue(p.getage().toInt());
+    ui->cx_chemin->setText(p.getimage());
+    ui->password->setText(p.getpassword());
+    QPixmap pix(ui->cx_chemin->text());
+    int w =ui->picture->width();
+    int h =ui->picture->height();
+    ui->picture->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
     f.setId(p.getIdFonction());
     QAbstractItemModel * model = f.afficherFonctions(2);
 
@@ -7839,7 +11351,10 @@ void Menu::on_affichage_2_activated(const QModelIndex &index)
 }
 //moddifier personnel
 void Menu::on_ModifierPeronnel_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     if(!ui->cx_cin->isReadOnly()){
         ui->status->setText("Veuillez sélectionner d'abord...");
     }
@@ -7847,7 +11362,7 @@ void Menu::on_ModifierPeronnel_clicked()
         if(controleDeSaisiepersonnel()){
             QAbstractItemModel * model = ui->comboBox->model();
             QString idF = model->data(model->index(ui->comboBox->currentIndex(),1)).toString();
-            rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF);
+            rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF,ui->password->text(),ui->cx_age->text(),ui->cx_chemin->text());
             pOps.modifPersonnel();
             ui->affichage_2->setModel(pOps.afficherPersonnels());
             ui->status->setText("Modifiée!");
@@ -7856,7 +11371,10 @@ void Menu::on_ModifierPeronnel_clicked()
 }
 //supprimer personnel
 void Menu::on_SupprimerPersonnel_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     if(!ui->cx_cin->isReadOnly()){
         ui->status->setText("Veuillez sélectionner d'abord...");
     }
@@ -7864,7 +11382,7 @@ void Menu::on_SupprimerPersonnel_clicked()
         if(controleDeSaisiepersonnel()){
             QAbstractItemModel * model = ui->comboBox->model();
             QString idF = model->data(model->index(ui->comboBox->currentIndex(),1)).toString();
-            rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF);
+            rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF,ui->password->text(),ui->cx_age->text(),ui->cx_chemin->text());
             pOps.suppPersonnel();
             ui->affichage_2->setModel(pOps.afficherPersonnels());
             ui->status->setText("Supprimée!");
@@ -7873,79 +11391,259 @@ void Menu::on_SupprimerPersonnel_clicked()
 }
 //bouton fonction
 void Menu::on_pushButton_31_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->stackedWidget->setCurrentIndex(15);
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Departments");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Fonctions");
+        }
+
+    }else {  sa.stop();}
 }
 //bouton photo fonction
 void Menu::on_pushButton_136_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->stackedWidget->setCurrentIndex(15);
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Departments");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Fonctions");
+        }
+
+    }else {  sa.stop();}
 }
 //bouton personnel
 void Menu::on_pushButton_32_clicked()
 {
-
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->stackedWidget->setCurrentIndex(16);
 
     if(speek==1)
     {
         if (lng=="en")
         {
-            sa.languageSelecteden();//fixe
-            sa.personnelen();
+            sa.languageSelecteden();
+            sa.mahrous_say("Staff");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Personnels");
+        }
 
-        }
-        else
-        {
-            sa.languageSelectedfr();//fixe
-            sa.personnelfr();
-        }
     }else {  sa.stop();}
 }
 //bouton photo personnel
 void Menu::on_pushButton_137_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->stackedWidget->setCurrentIndex(16);
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Staff");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Personnels");
+        }
+
+    }else {  sa.stop();}
 }
 //fonction vers menu
 void Menu::on_pushButton_152_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //personnel vers menu
 void Menu::on_pushButton_153_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //trie id croissant
 void Menu::on_trieridcroi_2_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->affichage->setModel(rhf.afficher_idCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by ID ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon l'id");
+        }
+
+    }else {  sa.stop();}
 }
 //trie id decroissant
 void Menu::on_trieriddecroi_2_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->affichage->setModel(rhf.afficher_idDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by ID descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri décroissant selon l'id");
+        }
+
+    }else {  sa.stop();}
 }
 //trie salaire croisaant
 void Menu::on_radioButton_59_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->affichage->setModel(rhf.afficher_SalaireCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by salary ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("tri croissant selon salaire");
+        }
+
+    }else {  sa.stop();}
 }
 //trie salaire decroisaant
 void Menu::on_radioButton_60_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->affichage->setModel(rhf.afficher_SalaireDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by salary descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("tri décroissant selon salaire");
+        }
+
+    }else {  sa.stop();}
 }
 //trie nom croissant
 void Menu::on_trierAZ_2_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->affichage->setModel(rhf.afficher_NomCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by name ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("tri croissant selon nom");
+        }
+
+    }else {  sa.stop();}
 }
 //trie nom decroissant
 void Menu::on_trierZA_2_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     ui->affichage->setModel(rhf.afficher_NomDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by name descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("tri décroissant selon nom");
+        }
+
+    }else {  sa.stop();}
 }
 //recherche fonction
 void Menu::on_lineEdit_recherche_3_textChanged(const QString &arg1)
@@ -7973,7 +11671,10 @@ void Menu::on_lineEdit_recherche_3_textChanged(const QString &arg1)
 }
 //statisur fonction salaire
 void Menu::on_pushButton_156_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     stf=new stat_salaire_fonction (this);
     stf->show();
 }
@@ -7983,26 +11684,50 @@ int  Menu::on_pushButton_157_clicked()
     on_pushButton_29_clicked();
 }
 //besoin plante vers menu
-void Menu::on_pushButton_118_clicked()
-{
 
-    ui->stackedWidget->setCurrentIndex(0);
-}
 //espece animal vers menu
 void Menu::on_pushButton_98_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
 
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
-//production plante vers menu
-void Menu::on_pushButton_125_clicked()
-{
 
-    ui->stackedWidget->setCurrentIndex(0);
-}
 //animal vers menu
 void Menu::on_pushButton_105_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
     ui->stackedWidget->setCurrentIndex(0);
 }
 //pdf fonction
@@ -8133,66 +11858,511 @@ int Menu::on_pushButton_199_clicked()
 }
 //affectation vers historique
 void Menu::on_pushButton_200_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //materiel vers historique
 void Menu::on_pushButton_201_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //fournissuer vers hiqtorique
 void Menu::on_pushButton_202_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //categorie plante vers historique
 void Menu::on_pushButton_203_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //plante vers historique
 void Menu::on_pushButton_204_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //besoin animal vers historique
 void Menu::on_pushButton_205_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //produit animal vers historique
 void Menu::on_pushButton_206_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //espece animel vers historique
 void Menu::on_pushButton_207_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //animal vers historique
 void Menu::on_pushButton_208_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //besoin plante vers historique
 void Menu::on_pushButton_209_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //peoduction plante vers historique
 void Menu::on_pushButton_210_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //fronction vers  historique
 void Menu::on_pushButton_211_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
 }
 //personnels vers historique
 void Menu::on_pushButton_212_clicked()
-{
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
     on_pushButton_29_clicked();
+}
+//cheked box
+void Menu::on_checkBox_clicked(bool checked)
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(checked)
+    {
+
+        ui->cx_password->setEchoMode(QLineEdit::EchoMode(0));
+        QPixmap pix("C:/Users/ASUS/Downloads/eye (3).png");
+        int w =ui->eye->width();
+        int h =ui->eye->height();
+        ui->eye->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+    }
+    else
+    {
+        ui->cx_password->setEchoMode(QLineEdit::EchoMode(2));
+        QPixmap pix("C:/Users/ASUS/Downloads/hide.png");
+        int w =ui->eye->width();
+        int h =ui->eye->height();
+        ui->eye->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
+
+    }
+}
+
+
+//ajouter image personnel
+void Menu::on_pushButton_10_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    QString filename = QFileDialog::getOpenFileName(this,tr("choose"), "" , tr("image (*.png *.jpg *.jpeg *.bmp *.gif)"));
+    if ( QString::compare(filename, QString()) != 0 )
+    {
+        QImage image;
+        bool valid =image.load(filename);
+        if (valid)
+        {
+            ui->cx_chemin->setText(filename);
+            image =image.scaledToWidth(ui->picture->width(),Qt::SmoothTransformation);
+            ui->picture->setPixmap(QPixmap::fromImage(image));
+            if(speek==1)
+            {
+                if (lng=="en")
+                {
+                    sa.languageSelecteden();
+                    sa.ajouterimageen();
+                    // ui->label_78->setText("Add picture .");
+                }
+                else {
+                    sa.languageSelectedfr();
+                    sa.ajouterimagefr();
+                    //ui->label_78->setText("Ajouter photo .");
+                }
+
+            }else {  sa.stop();}
+        }
+
+    }
+}
+
+void Menu::on_pushButton_159_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    //  reclamations r;
+    r.ajoutreclamation(ui->lineEdit_2->text(),ui->lineEdit_3->text(),ui->plainTextEdit->toPlainText());
+}
+
+void Menu::on_comboBox_r_currentIndexChanged()
+{
+    QString whereClause = ui->comboBox_r->model()->data(ui->comboBox_r->model()->index(ui->comboBox_r->currentIndex(),1)).toString();
+    reclamations r;
+    QSqlQueryModel * model = r.loadreclamation(whereClause);
+    ui->textBrowser->setText(model->data(model->index(0,0)).toString());
+    ui->textEdit->setText(model->data(model->index(0,1)).toString());
+}
+
+void Menu::on_pushButton_36_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    reclamations r;
+    QString whereClause = ui->comboBox_r->model()->data(ui->comboBox_r->model()->index(ui->comboBox_r->currentIndex(),1)).toString();
+    r.updatereclamation(whereClause,ui->textEdit->toPlainText(),ui->checkBox_2->isChecked() ? 1 : 0);
+    //list refresh if the checkbox is checked
+    if(ui->checkBox_2->isChecked())
+        ui->comboBox_r->setModel(r.preplist());
+}
+
+void Menu::on_pushButton_160_clicked()//probleme
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->stackedWidget->setCurrentIndex(17);
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Check Complaints");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Voir les réclamations");
+        }
+
+    }else {  sa.stop();}
+}
+
+void Menu::on_pushButton_161_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->stackedWidget->setCurrentIndex(18);
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("File complaint");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Réclamer");
+        }
+
+    }else {  sa.stop();}
+}
+
+void Menu::on_pushButton_162_clicked()
+{
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void Menu::on_pushButton_163_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    if(speek==1)
+    {
+        if(lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.menuen();
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.menufr();
+        }
+
+    }else {  sa.stop();}
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void Menu::on_pushButton_164_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    QString filename = QFileDialog::getOpenFileName(this,tr("choose"), "" , tr("image (*.png *.jpg *.jpeg *.bmp *.gif)"));
+    if ( QString::compare(filename, QString()) != 0 )
+    {
+        QImage image;
+        bool valid =image.load(filename);
+        if (valid)
+        {
+            ui->cx_chemin->setText(filename);
+            image =image.scaledToWidth(ui->picture->width(),Qt::SmoothTransformation);
+            ui->picture->setPixmap(QPixmap::fromImage(image));
+            if(speek==1)
+            {
+                if (lng=="en")
+                {
+                    sa.languageSelecteden();
+                    sa.modifierimageen();
+                    // ui->label_78->setText("Add picture .");
+                }
+                else {
+                    sa.languageSelectedfr();
+                    sa.modifierimagefr();
+                    //ui->label_78->setText("Ajouter photo .");
+                }
+
+            }else {  sa.stop();}
+        }
+    }
+}
+
+void Menu::on_pushButton_165_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    photo p;
+    p.setchemin(ui->cx_chemin->text());
+    p.exec();
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.afficherimageen();
+            // ui->label_57->setText("Show picture");
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.afficherimagefr();
+            //  ui->label_57->setText("Afficher image");
+        }
+
+    }else {  sa.stop();}
+
+}
+
+
+
+int Menu::on_pushButton_166_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    QPrinter printer;
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique PDF\\Personnels.pdf");//badel i chemin win t7eb t7ot il fichier ya2melek creation
+    QPainter painter;
+
+    if (! painter.begin(&printer)) { // failed to open file
+        qWarning("failed to open file, is it writable?");
+        //return 1;
+    }
+
+
+
+
+    QSqlQuery   query ;
+    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
+    if ( query.exec() )
+    {
+
+        QString S= QDate::currentDate().toString();
+        painter.drawText(600,50, S);
+        QPen penred(Qt::red);
+
+        painter.setFont(QFont("Arial", 60));
+        penred.setWidth(1);
+        painter.setPen(penred);
+
+        painter.drawText(200,500," La liste des ");
+        painter.drawText(100,650,"  Personnels.");
+        painter.setFont(QFont("Arial",30));
+        painter.setPen(Qt::black);
+        painter.drawText(50,100,"Bienvenu");
+        painter.setPen(Qt::darkRed);
+        painter.drawText(100,200,"Mahrous ++");
+        painter.setPen(Qt::black);
+
+    }
+
+    QString cin,nom,prenom,adresse,date,idf,url,password,age, image ;
+    QSqlQuery   qry ;
+    int i =50;
+    int k=0;
+    //badel i table w les attribues
+    qDebug() << qry.prepare("select * from PERSONNELS order by  CIN ");
+
+    painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
+    painter.drawText(400,800, image);
+
+
+    if ( qry.exec() )
+    {
+
+        while(qry.next())
+        {
+
+            if ( k % 13 ==0)
+            {   i=50;
+
+                if (!printer.newPage())
+                {
+
+                    qWarning("failed");
+                    return 1;
+                }
+                painter.setFont(QFont("Arial",10));
+                QPen penblack(Qt::red);
+
+                painter.setPen(penblack);
+                painter.drawText (0,10,"CIN");
+                painter.drawText (40,10,"NOM");
+                painter.drawText (90,10,"PRENOM");
+
+            }
+
+            painter.setFont(QFont("Arial",10));
+            QPen penblack(Qt::black);
+
+            painter.setPen(penblack);
+            int j=0;
+
+            cin = qry.value(0).toString();
+            painter.drawText(j*20,i, cin);
+            j++;
+
+            nom=qry.value(1).toString();
+            painter.drawText(j*60,i,nom);
+            j++;
+            prenom=qry.value(2).toString();
+            painter.drawText(j*65,i,prenom);
+            j++;
+            prenom=qry.value(2).toString();
+            painter.drawText(j*65,i,prenom);
+            j++;
+            adresse=qry.value(3).toString();
+            painter.drawText(j*70,i,adresse);
+            j++;
+            date = qry.value(4).toString();
+            date.chop(9);
+            painter.drawText(j*70,i,date);
+            j++;
+            idf=qry.value(5).toString();
+            painter.drawText(j*71,i,idf);
+            j++;
+            password=qry.value(6).toString();
+            painter.drawText(j*68,i,password);
+            j++;
+            age=qry.value(7).toString();
+            painter.drawText(j*68,i,age);
+            j++;
+            url=qry.value(8).toString();
+            /*painter.drawText(j*56,i, url);
+                j++;*/
+
+            /*image=qry.value(7).toString();
+                painter.drawText(j*54,i, image);*/
+
+            QImage chemin(url);
+            painter.drawPixmap(j*70,i,50,50,QPixmap::fromImage(QImage(chemin)));
+            j++;
+            i+=80;
+
+            k++;
+
+
+
+        }
+    }
+
+
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.creationpdfen();
+            // ui->label_22->setText("PDF creation");
+        }
+        else
+        {
+            sa.languageSelectedfr();
+            sa.creationpdffr();
+            //ui->label_22->setText("Création PDF");
+        }
+
+    }else {  sa.stop();}
+    painter.end();
+}
+
+
+void Menu::on_stat_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    sap=new statistique_age_personnels (this);
+    sap->show();
 }
