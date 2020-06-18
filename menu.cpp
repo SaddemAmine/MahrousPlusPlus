@@ -30,12 +30,14 @@ Menu::Menu(QWidget *parent) :
     int h =ui->eye->height();
     ui->eye->setPixmap(pix.scaled(w,h,Qt::KeepAspectRatio));
     //qDebug () << sy.login("00000002","1234");
+    ui->cx_date->setCalendarPopup(true);
     //volume
     QPixmap pix1("C:/Users/ASUS/Downloads/speaker.png");
     int w1 =ui->volume->width();
     int h1 =ui->volume->height();
     ui->volume->setPixmap(pix1.scaled(w1,h1,Qt::KeepAspectRatio));
     lng="";
+
     cl=1;
     speek=1;
     securite =1;
@@ -143,6 +145,18 @@ Menu::~Menu()
 }
 
 //fonction initialisation
+//personnel
+void Menu::initpersonnel()
+{
+    ui->picture->clear();
+    ui->cx_chemin->clear();
+    ui->cx_cin->clear();
+    ui->cx_nom->clear();
+    ui->cx_prenom->clear();
+    ui->cx_adresse->clear();
+    ui->cx_age->setValue(0);
+    ui->password->clear();
+}
 //categorie materiel
 void Menu::initcm()
 {
@@ -309,6 +323,8 @@ void Menu::initmenu()
     ui->pushButton_137->setEnabled(1);
     ui->pushButton_96->setEnabled(1);
     ui->pushButton_95->setEnabled(1);
+    ui->pushButton_24->setEnabled(1);
+    ui->pushButton_29->setEnabled(1);
 
 
 }
@@ -9939,6 +9955,7 @@ void Menu::on_pushButton_140_clicked()
     {
         initmenu();
         ui->stackedWidget->setCurrentIndex(0);
+
     }
     else
     {
@@ -10054,6 +10071,46 @@ void Menu::on_pushButton_140_clicked()
 
 
                     }
+                    else {
+                        if(sy.login(ui->cx_nomuser->text(),ui->cx_password->text())!="")
+                        {
+
+
+                            ui->stackedWidget->setCurrentIndex(0);
+                            ui->pushButton_16->setDisabled(1);
+                            ui->pushButton->setDisabled(1);
+                            ui->pushButton_116->setDisabled(1);
+                            ui->pushButton_117->setDisabled(1);
+                            ui->pushButton_68->setDisabled(1);
+                            ui->pushButton_71->setDisabled(1);
+                            ui->pushButton_5->setDisabled(1);
+                            ui->pushButton_14->setDisabled(1);
+                            ui->pushButton_12->setDisabled(1);
+                            ui->pushButton_17->setDisabled(1);
+                            ui->pushButton_6->setDisabled(1);
+                            ui->pushButton_15->setDisabled(1);
+                            ui->pushButton_70->setDisabled(1);
+                            ui->pushButton_69->setDisabled(1);
+                            ui->pushButton_94->setDisabled(1);
+                            ui->pushButton_97->setDisabled(1);
+                            ui->pushButton_32->setDisabled(1);
+                            ui->pushButton_137->setDisabled(1);
+                            ui->pushButton_50->setDisabled(1);
+                            ui->pushButton_96->setDisabled(1);
+                            ui->pushButton_95->setDisabled(1);
+                            ui->pushButton_127->setDisabled(1);
+                            ui->pushButton_126->setDisabled(1);
+                            ui->pushButton_29->setDisabled(1);
+                            ui->pushButton_24->setDisabled(1);
+                            ui->pushButton_136->setDisabled(1);
+                            ui->pushButton_31->setDisabled(1);
+                            ui->pushButton_44->setDisabled(1);
+                            ui->pushButton_39->setDisabled(1);
+                            ui->pushButton_49->setDisabled(1);
+
+                        }
+
+                    }
                 }
             }
 
@@ -10061,8 +10118,6 @@ void Menu::on_pushButton_140_clicked()
     }
 
 
-    /* qDebug () << sy.login("12345678","1234");
-    ui->stackedWidget->setCurrentIndex(0);*/
 
 }
 //parametre
@@ -10236,6 +10291,9 @@ void Menu::on_pushButton_148_clicked()
     ui->label_160->setText("Security :");
     ui->label_160->setStyleSheet("QLabel{color:#0000ff;}");
     //bouton
+
+    ui->label_130->setText("Welcome to our menu");
+    ui->label_130->setStyleSheet("QLabel{color:#0000ff;font-size: 38px; font-weight:bold ;text-decoration: underline;}");
     ui->pushButton->setText("Material category");
     ui->pushButton_24->setText("Historical");
     ui->pushButton_5->setText("Supplier");
@@ -10520,7 +10578,34 @@ void Menu::on_pushButton_148_clicked()
     ui->pushButton_128->setText("Edit produciton plant");
     ui->pushButton_130->setText("Show produciton plant");
     ui->pushButton_131->setText("Add produciton plant");
+
     //interface personnel
+    ui->label_154->setText("ID Card: ");
+    ui->label_158->setText("Last Name: ");
+    ui->label_153->setText("First Name: ");
+    ui->status_2->setText("No Action ...");
+    ui->label_152->setText("Adress: ");
+    ui->label_157->setText("Hiring date: ");
+    ui->label_155->setText("Dept. : ");
+    ui->label_185->setText("Age: ");
+    ui->label_186->setText("Password: ");
+    ui->label_194->setText("Image: ");
+    ui->label_195->setText("Search: ");
+    ui->label_195->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->pushButton_10->setText("Add Image");
+    ui->pushButton_164->setText("Modify Image");
+    ui->pushButton_165->setText("Show Image");
+    ui->SupprimerPersonnel->setText("Delete Staff");
+    ui->ModifierPeronnel->setText("Modify Staff");
+    ui->AjouterPersonnel->setText("Add Staff");
+    ui->radioButton_61->setText("Adress: A-Z");
+    ui->radioButton_62->setText("Adress: Z-A");
+    ui->trierAZ_4->setText("First Name: A-Z");
+    ui->trierAZ_4->setText("First Name: Z-A");
+    ui->trierAZ_3->setText("Last Name: A-Z");
+    ui->trierAZ_3->setText("Last Name: Z-A");
+    ui->label_156->setText("Sort By: ");
+    ui->label_156->setStyleSheet("QLabel{color:#0000ff;}");
 
 }
 //francias selected
@@ -10565,6 +10650,8 @@ void Menu::on_pushButton_147_clicked()
     ui->pushButton_96->setText("Animaux");
     ui->pushButton_31->setText("Fonction");
     ui->pushButton_32->setText("Personnel");
+    ui->label_130->setText("Bienvenu dans notre menu");
+     ui->label_130->setStyleSheet("QLabel{color:#0000ff;font-size: 37px; font-weight:bold;text-decoration: underline;}");
     //interface Categorie Materiel
     ui->label->setText("Id catégorie:");
     ui->label_2->setText("Nom catégorie :");
@@ -10827,6 +10914,33 @@ void Menu::on_pushButton_147_clicked()
     ui->label_147->setText("Nom Fonction: ");
     ui->label_146->setText("Salaire: ");
     ui->label_144->setText("Description: ");
+    //per(sonnel
+    ui->label_154->setText("CIN: ");
+    ui->label_158->setText("Nom: ");
+    ui->label_153->setText("Prénom: ");
+    ui->label_152->setText("Adresse: ");
+    ui->label_157->setText("Date d'embauche: ");
+    ui->label_155->setText("Fonction: ");
+    ui->label_185->setText("Age: ");
+    ui->label_186->setText("Mot de passe: ");
+    ui->label_194->setText("Image: ");
+    ui->label_195->setText("Recherche: ");
+    ui->label_195->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->pushButton_10->setText("Ajouter Image");
+    ui->pushButton_164->setText("Modifier Image");
+    ui->pushButton_165->setText("Afficher Image");
+    ui->SupprimerPersonnel->setText("Supprimer Personnel");
+    ui->ModifierPeronnel->setText("Modifier Personnel");
+    ui->AjouterPersonnel->setText("Ajouter Personnel");
+    ui->radioButton_61->setText("Adresse: A-Z");
+    ui->radioButton_62->setText("Adresse: Z-A");
+    ui->trierAZ_4->setText("Prénom: A-Z");
+    ui->trierAZ_4->setText("Prénom: Z-A");
+    ui->trierAZ_3->setText("Nom: A-Z");
+    ui->trierAZ_3->setText("Nom: Z-A");
+    ui->label_156->setText("Trier Selon: ");
+    ui->label_156->setStyleSheet("QLabel{color:#0000ff;}");
+    ui->status_2->setText("Pas d'action ...");
 
 
 }
@@ -10965,51 +11079,56 @@ void Menu::on_AjouterCategorieMateriel_2_clicked()
 
         if(controleDeSaisiefonction()){
             rh_fonctions_ops fOps(ui->cx_idFonction->text(),ui->cx_nomFonction->text(),ui->cx_salaire->text().toInt(),ui->cx_description->text());
-            fOps.ajouterFonction();
-            QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueFonction.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
-                return;
-            QTextStream cout(&file);
-            QString message2="\nFonction a été ajoutée sous :\n idF :"+ui->cx_idFonction->text()+" \n nomF : "+ui->cx_nomFonction->text()+" \n Salaire : "+ui->cx_salaire->text().toInt()+"\n Salaire : "+ui->cx_description->text()+"";
-            cout << message2;
-            ui->affichage->setModel(fOps.afficherFonctions(1));
-            initfonction();
-            ui->status->setText("Ajoutée!");
-            if(speek==1)
-            {
-                if (lng=="en")
-                {
-                    sa.languageSelecteden();
-                    sa.mahrous_say("department added");
-                }
-                else {
-                    sa.languageSelectedfr();
-                    sa.mahrous_say("fonction ajoutée");
-                }
 
-            }else {  sa.stop();}
-        }
-        else
-            if(lng=="en")
+            bool test = fOps.ajouterFonction();
+            if(test)
             {
-                QMessageBox msgBox;
-                QPixmap pix("C:/Users/ASUS/Downloads/help.png");
-                msgBox.setText("Departement already exists !.\n"
-                               "Click Cancel to exit.");
-                msgBox.setIconPixmap(pix);
-                msgBox.exec();
+                QFile file("A:\\integration\\integration final\\2\\mahrousplusplus\\Historique\\HistoriqueFonction.txt");
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+                    return;
+                QTextStream cout(&file);
+                QString message2="\nFonction a été ajoutée sous :\n idF :"+ui->cx_idFonction->text()+" \n nomF : "+ui->cx_nomFonction->text()+" \n Salaire : "+ui->cx_salaire->text().toInt()+"\n Salaire : "+ui->cx_description->text()+"";
+                cout << message2;
+                ui->affichage->setModel(fOps.afficherFonctions(1));
+                initfonction();
+                ui->status->setText("Ajoutée!");
+                if(speek==1)
+                {
+                    if (lng=="en")
+                    {
+                        sa.languageSelecteden();
+                        sa.mahrous_say("department added");
+                    }
+                    else {
+                        sa.languageSelectedfr();
+                        sa.mahrous_say("fonction ajoutée");
+                    }
+
+                }else {  sa.stop();}
             }
             else
-            {
+            {  if(lng=="en")
+                {
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Departement already exists !.\n"
+                                   "Click Cancel to exit.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
+                }
+                else
+                {
 
-                QMessageBox msgBox;
-                QPixmap pix("C:/Users/ASUS/Downloads/help.png");
-                msgBox.setText("Fonctions existe deja  !.\n"
-                               "Cliquez sur Annuler pour quitter.");
-                msgBox.setIconPixmap(pix);
-                msgBox.exec();
+                    QMessageBox msgBox;
+                    QPixmap pix("C:/Users/ASUS/Downloads/help.png");
+                    msgBox.setText("Fonctions existe deja  !.\n"
+                                   "Cliquez sur Annuler pour quitter.");
+                    msgBox.setIconPixmap(pix);
+                    msgBox.exec();
 
+                }
             }
+        }
     }
     else
     { if (lng=="en")
@@ -11223,13 +11342,13 @@ bool Menu::controleDeSaisiepersonnel(){
     ui->cx_cin->text().toInt(&number);
 
     if(ui->cx_nom->text() == ""){
-        ui->remarque_nom->setText("*");
-        ui->text_nomf->setText("nom vide!");
+        ui->remarque_nom_6->setText("*");
+        ui->text_nom_2->setText("nom vide!");
         result = false;
     }
     else{
-        ui->remarque_nom->setText("");
-        ui->text_nomf->setText("");
+        ui->remarque_nom_6->setText("");
+        ui->text_nom_2->setText("");
     }
 
     if(ui->cx_prenom->text() == ""){
@@ -11277,7 +11396,47 @@ bool Menu::controleDeSaisiepersonnel(){
         ui->remarque_adresse->setText("");
         ui->text_adresse->setText("");
     }
-
+    if( ui->cx_age->value() == 0 ){
+        ui->remarque_age_2->setText("*");
+        if (lng=="en")
+        { ui->text_age_2->setText("age must be > 0");}
+        else
+        { ui->text_age_2->setText("age doit etre > 0 ");}
+        result = false;
+    }
+    else{
+        ui->remarque_age_2->setText("");
+        ui->text_age_2->setText("");
+    }
+    //pass
+    if( ui->password->text() == "" ){
+        ui->remarque_pass->setText("*");
+        if (lng=="en")
+        { ui->text_pass->setText("password not vide!");}
+        else
+        { ui->text_pass->setText("mot de passe non vide!");}
+        result = false;
+    }
+    else{
+        ui->remarque_pass->setText("");
+        ui->text_pass->setText("");
+    }
+    //chemin
+    if(ui->cx_chemin->text() == "")
+    {
+        ui->remarque_image_2->setText("*");
+        if(lng=="en")
+        { ui->text_image_2->setText("choose an image!");}
+        else
+        {
+            ui->text_image_2->setText("il faut choisir une image !");
+        }
+        result = false;
+    }
+    else{
+        ui->remarque_image_2->setText("");
+        ui->text_image_2->setText("");
+    }
     return result;
 }
 //ajouter  personnel
@@ -11313,9 +11472,14 @@ void Menu::on_AjouterPersonnel_clicked()
             ui->comboBox_cin_3->setModel(tmpa.afficher_CINlist());
             ui->comboBox_cin_2->setModel(tmppl.afficher_CINlist());
 
-
+            initpersonnel();
             ui->affichage_2->setModel(pOps.afficherPersonnels());
-            ui->status->setText("Ajoutée!");
+            if (lng=="en")
+           { ui->status_2->setText("Add!");}
+            else
+            {
+                ui->status_2->setText("Ajoutée!");
+            }
         }
     }
 }
@@ -11347,7 +11511,13 @@ void Menu::on_affichage_2_activated(const QModelIndex &index)
 
     ui->cx_cin->setStyleSheet("color: grey;");
     ui->cx_cin->setReadOnly(true);
-    ui->status->setText("Selectionnée!");
+    if (lng=="en")
+   { ui->status_2->setText("selected!");}
+    else
+    {
+      ui->status_2->setText("Selectionnée!");
+    }
+
 }
 //moddifier personnel
 void Menu::on_ModifierPeronnel_clicked()
@@ -11365,7 +11535,15 @@ void Menu::on_ModifierPeronnel_clicked()
             rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF,ui->password->text(),ui->cx_age->text(),ui->cx_chemin->text());
             pOps.modifPersonnel();
             ui->affichage_2->setModel(pOps.afficherPersonnels());
-            ui->status->setText("Modifiée!");
+            if (lng=="en")
+           { ui->status_2->setText("Edit!");}
+            else
+            {
+               ui->status_2->setText("Modifiée!");
+            }
+
+
+            initpersonnel();
         }
     }
 }
@@ -11385,7 +11563,14 @@ void Menu::on_SupprimerPersonnel_clicked()
             rh_personnels_ops pOps(ui->cx_cin->text(),ui->cx_nom->text(),ui->cx_prenom->text(),ui->cx_adresse->text(),ui->cx_date->text(),idF,ui->password->text(),ui->cx_age->text(),ui->cx_chemin->text());
             pOps.suppPersonnel();
             ui->affichage_2->setModel(pOps.afficherPersonnels());
-            ui->status->setText("Supprimée!");
+            if (lng=="en")
+           { ui->status_2->setText("Delete!");}
+            else
+            {
+              ui->status_2->setText("Supprimée!");
+            }
+
+            initpersonnel();
         }
     }
 }
@@ -11532,10 +11717,12 @@ void Menu::on_trieridcroi_2_clicked()
         {
             sa.languageSelecteden();
             sa.mahrous_say("Sort by ID ascending");
+             ui->status_2->setText("Sort by ID ascending");
         }
         else {
             sa.languageSelectedfr();
             sa.mahrous_say("Tri croissant selon l'id");
+              ui->status_2->setText("Tri croissant selon l'id");
         }
 
     }else {  sa.stop();}
@@ -11553,10 +11740,12 @@ void Menu::on_trieriddecroi_2_clicked()
         {
             sa.languageSelecteden();
             sa.mahrous_say("Sort by ID descending");
+               ui->status_2->setText("Sort by ID descending");
         }
         else {
             sa.languageSelectedfr();
             sa.mahrous_say("Tri décroissant selon l'id");
+              ui->status_2->setText("Tri décroissant selon l'id");
         }
 
     }else {  sa.stop();}
@@ -11574,10 +11763,12 @@ void Menu::on_radioButton_59_clicked()
         {
             sa.languageSelecteden();
             sa.mahrous_say("Sort by salary ascending");
+              ui->status_2->setText("Sort by salary ascending");
         }
         else {
             sa.languageSelectedfr();
             sa.mahrous_say("tri croissant selon salaire");
+              ui->status_2->setText("tri croissant selon salaire");
         }
 
     }else {  sa.stop();}
@@ -11595,10 +11786,12 @@ void Menu::on_radioButton_60_clicked()
         {
             sa.languageSelecteden();
             sa.mahrous_say("Sort by salary descending");
+             ui->status_2->setText("Sort by salary descending");
         }
         else {
             sa.languageSelectedfr();
             sa.mahrous_say("tri décroissant selon salaire");
+              ui->status_2->setText("tri décroissant selon salaire");
         }
 
     }else {  sa.stop();}
@@ -11616,10 +11809,12 @@ void Menu::on_trierAZ_2_clicked()
         {
             sa.languageSelecteden();
             sa.mahrous_say("Sort by name ascending");
+             ui->status_2->setText("Sort by name ascending");
         }
         else {
             sa.languageSelectedfr();
             sa.mahrous_say("tri croissant selon nom");
+            ui->status_2->setText("tri croissant selon nom");
         }
 
     }else {  sa.stop();}
@@ -11637,10 +11832,12 @@ void Menu::on_trierZA_2_clicked()
         {
             sa.languageSelecteden();
             sa.mahrous_say("Sort by name descending");
+             ui->status_2->setText("Sort by name descending");
         }
         else {
             sa.languageSelectedfr();
             sa.mahrous_say("tri décroissant selon nom");
+             ui->status_2->setText("tri décroissant selon nom");
         }
 
     }else {  sa.stop();}
@@ -11659,14 +11856,14 @@ void Menu::on_lineEdit_recherche_3_textChanged(const QString &arg1)
     else {
         ui->affichage->setModel(rhf.rechercher(q)) ;
 
-        /*if (lng=="en")
+        if (lng=="en")
         {
-            ui->label_3->setText("Research");
+            ui->status_2->setText("Research");
         }
         else
         {
-            ui->label_3->setText("Recherche");
-        }*/
+            ui->status_2->setText("Recherche");
+        }
     }
 }
 //statisur fonction salaire
@@ -11780,7 +11977,7 @@ int Menu::on_pushButton_199_clicked()
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
 
-    qDebug() << qrry.prepare("select * from  FONCTIONS order by IDFONCTION ");
+    qrry=rhf.selectfonction();
 
 
     if ( qrry.exec() )
@@ -11844,13 +12041,13 @@ int Menu::on_pushButton_199_clicked()
         {
             sa.languageSelecteden();
             sa.creationpdfen();
-            // ui->label_22->setText("PDF creation");
+            ui->status->setText("PDF creation");
         }
         else
         {
             sa.languageSelectedfr();
             sa.creationpdffr();
-            //ui->label_22->setText("Création PDF");
+           ui->status->setText("Création PDF");
         }
 
     }else {  sa.stop();}
@@ -12010,12 +12207,12 @@ void Menu::on_pushButton_10_clicked()
                 {
                     sa.languageSelecteden();
                     sa.ajouterimageen();
-                    // ui->label_78->setText("Add picture .");
+                   ui->status_2->setText("Add picture .");
                 }
                 else {
                     sa.languageSelectedfr();
                     sa.ajouterimagefr();
-                    //ui->label_78->setText("Ajouter photo .");
+                    ui->status_2->setText("Ajouter photo .");
                 }
 
             }else {  sa.stop();}
@@ -12031,6 +12228,7 @@ void Menu::on_pushButton_159_clicked()
     { click->stop();}
     //  reclamations r;
     r.ajoutreclamation(ui->lineEdit_2->text(),ui->lineEdit_3->text(),ui->plainTextEdit->toPlainText());
+       ui->comboBox_r->setModel(r.preplist());
 }
 
 void Menu::on_comboBox_r_currentIndexChanged()
@@ -12160,12 +12358,12 @@ void Menu::on_pushButton_164_clicked()
                 {
                     sa.languageSelecteden();
                     sa.modifierimageen();
-                    // ui->label_78->setText("Add picture .");
+                     ui->status_2->setText("Edit picture .");
                 }
                 else {
                     sa.languageSelectedfr();
                     sa.modifierimagefr();
-                    //ui->label_78->setText("Ajouter photo .");
+                    ui->status_2->setText("Modifier photo .");
                 }
 
             }else {  sa.stop();}
@@ -12202,7 +12400,7 @@ void Menu::on_pushButton_165_clicked()
 }
 
 
-
+//pdf personnel
 int Menu::on_pushButton_166_clicked()
 {
     if (cl==1)
@@ -12223,8 +12421,7 @@ int Menu::on_pushButton_166_clicked()
 
 
     QSqlQuery   query ;
-    qDebug() << query.prepare("select sysdate from dual  ");//hethi date mta3 systeme d9i9et eli 3melet create pdf (clic 3al bouton )
-    if ( query.exec() )
+   query =tmpmat.selectdate();
     {
 
         QString S= QDate::currentDate().toString();
@@ -12251,7 +12448,7 @@ int Menu::on_pushButton_166_clicked()
     int i =50;
     int k=0;
     //badel i table w les attribues
-    qDebug() << qry.prepare("select * from PERSONNELS order by  CIN ");
+   qry=rhp.selectpersonnel();
 
     painter.drawPixmap(600,50,100,100,QPixmap::fromImage(QImage("A:/photo/logo.png")));//chemin mta3 il logo
     painter.drawText(400,800, image);
@@ -12277,8 +12474,14 @@ int Menu::on_pushButton_166_clicked()
 
                 painter.setPen(penblack);
                 painter.drawText (0,10,"CIN");
-                painter.drawText (40,10,"NOM");
-                painter.drawText (90,10,"PRENOM");
+                painter.drawText (60,10,"Nom");
+                painter.drawText (130,10,"Prenom");
+                painter.drawText (200,10,"Adresse");
+                painter.drawText (300,10,"Date");
+                painter.drawText (350,10,"IdF");
+                painter.drawText (400,10,"MDP");
+                painter.drawText (470,10,"Age");
+                painter.drawText (550,10,"Image");
 
             }
 
@@ -12298,9 +12501,7 @@ int Menu::on_pushButton_166_clicked()
             prenom=qry.value(2).toString();
             painter.drawText(j*65,i,prenom);
             j++;
-            prenom=qry.value(2).toString();
-            painter.drawText(j*65,i,prenom);
-            j++;
+
             adresse=qry.value(3).toString();
             painter.drawText(j*70,i,adresse);
             j++;
@@ -12356,7 +12557,7 @@ int Menu::on_pushButton_166_clicked()
     painter.end();
 }
 
-
+//stat personnel
 void Menu::on_stat_clicked()
 {
     if (cl==1)
@@ -12365,4 +12566,250 @@ void Menu::on_stat_clicked()
     { click->stop();}
     sap=new statistique_age_personnels (this);
     sap->show();
+}
+//trie cin croissant
+void Menu::on_trieridcroi_3_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_cinCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by CIN ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon l'CIN");
+        }
+
+    }else {  sa.stop();}
+}
+//TRIE cin decroissant
+void Menu::on_trieriddecroi_3_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_cinDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by CIN  descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon l'CIN");
+        }
+
+    }else {  sa.stop();}
+}
+//NOM CROISSANT
+void Menu::on_trierAZ_3_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_NOMCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by name ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon le nom");
+        }
+
+    }else {  sa.stop();}
+}
+//nom decroissant
+void Menu::on_trierZA_3_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_NOMDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by name  descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri décroissant selon l'id");
+        }
+
+    }else {  sa.stop();}
+}
+//prenom croissant
+void Menu::on_trierAZ_4_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_PRENOMCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by last name ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon le prénom");
+        }
+
+    }else {  sa.stop();}
+}
+//PRENOM DECROISSANT
+void Menu::on_trierZA_4_clicked()
+{
+
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_PRENOMDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by last name  descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri décroissant selon prenom");
+        }
+
+    }else {  sa.stop();}
+}
+//ADRESSE CROISSANT
+void Menu::on_radioButton_61_clicked()
+{ if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_adresseCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by adresse ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon l'adresse");
+        }
+
+    }else {  sa.stop();}
+}
+//ADRESSE DECROISSANT
+void Menu::on_radioButton_62_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_adresseDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by adresse  descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri décroissant selon adresse");
+        }
+
+    }else {  sa.stop();}
+}
+//AGE CROISSANT
+void Menu::on_radioButton_63_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_ageCroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by agee ascending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri croissant selon l'age");
+        }
+
+    }else {  sa.stop();}
+}
+//AGE DECROISSANT
+void Menu::on_radioButton_64_clicked()
+{
+    if (cl==1)
+    { click->play();}
+    else
+    { click->stop();}
+    ui->affichage_2->setModel(rhp.trie_ageDecroissant());
+    if(speek==1)
+    {
+        if (lng=="en")
+        {
+            sa.languageSelecteden();
+            sa.mahrous_say("Sort by age  descending");
+        }
+        else {
+            sa.languageSelectedfr();
+            sa.mahrous_say("Tri décroissant selon age");
+        }
+
+    }else {  sa.stop();}
+}
+
+void Menu::on_lineEdit_recherche_4_textChanged(const QString &arg1)
+{
+    QString q = arg1;
+
+    if (q=="")
+    {
+        rh_personnels_ops p;
+        ui->affichage_2->setModel(p.afficherPersonnels());
+
+    }
+    else {
+        ui->affichage_2->setModel(rhp.rechercher(q)) ;
+
+
+    }
+}
+
+void Menu::on_pushButton_158_clicked()
+{
+
+   if((sy.login(ui->cx_nomuser->text(),ui->cx_password->text())=="admin")||(sy.login(ui->cx_nomuser->text(),ui->cx_password->text())=="rh"))
+    { ui->stackedWidget->setCurrentIndex(17);}
+    else
+    {ui->stackedWidget->setCurrentIndex(18); }
 }
