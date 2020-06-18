@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSqlQueryModel>
 #include <QSqlQuery>
+#include "reclamations.h"
 
 namespace Ui {
 class reclamations_rh;
@@ -23,7 +24,6 @@ private slots:
     void on_pushButton_2_clicked();
 
 private:
-    void preplist();
     Ui::reclamations_rh *ui;
 };
 

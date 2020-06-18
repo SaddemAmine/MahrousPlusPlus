@@ -31,6 +31,8 @@ public:
     QSqlQueryModel *afficher_NomCroissant();
     QSqlQueryModel *afficher_NomDecroissant();
     QSqlQueryModel *rechercher(QString q);
+    QSqlQuery tableclicked(QString a);
+    QSqlQuery selectfonction();
 };
 
 #endif // RH_FONCTIONS_OPS_H

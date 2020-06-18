@@ -148,7 +148,7 @@ QSqlQueryModel * rh_fonctions_ops::afficher_NomDecroissant()
 QSqlQueryModel *  rh_fonctions_ops::rechercher(QString q)
 {
     QSqlQueryModel *model= new QSqlQueryModel();
-    model->setQuery("select * from fonctions  where idfonction like '"+q+"' OR nomFonction like '"+q+"' OR salaire like '"+q+"' ");
+    model->setQuery("select * from fonctions  where idfonction like '%"+q+"%' OR nomFonction like '%"+q+"%' OR salaire like '%"+q+"%' or DESCFONCTION like '%"+q+"%'");
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("IDPRODUCTIONPLANTE "));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("IDCATEGORIEPLANTE"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("PRODUITPLANTE"));
@@ -156,3 +156,21 @@ QSqlQueryModel *  rh_fonctions_ops::rechercher(QString q)
 
     return (model);
 }
+QSqlQuery  rh_fonctions_ops::tableclicked(QString a)
+{
+
+    QSqlQuery qry ;
+
+  qry.prepare("select * from fonctions where idFonction = '"+a+"';");
+    return qry;
+}
+QSqlQuery rh_fonctions_ops::selectfonction()
+{
+
+    QSqlQuery qry ;
+
+  qry.prepare("select * from  FONCTIONS order by IDFONCTION ");
+    return qry;
+}
+
+
